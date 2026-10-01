@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Inbrev · The practice inbox that never leaves the practice</title>
+    <meta
+      name="description"
+      content="Inbrev sorts the inbox of a Swiss medical practice locally with Apertus: by handling route and administrative deadline, with a verbatim source for every decision."
+    />
+    <meta property="og:title" content="Inbrev" />
+    <meta
+      property="og:description"
+      content="The practice inbox that never leaves the practice. Built on Apertus for Hack Apertus 2026."
+    />
+    <meta property="og:image" content="pitch/og.png" />
+    <link rel="icon" href="assets/inbrev-favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <div class="wrap nav-inner">
+        <a class="brand" href="#top"
+          ><img src="assets/inbrev.svg" alt="" width="30" height="30" /><span
+            >Inbrev</span
+          ></a
+        >
+        <nav>
+          <a href="#approach">Approach</a>
+          <a href="#status">Status</a>
+          <a href="#video">Video</a>
+          <a href="pitch/">Pitch</a>
+          <a href="report.pdf">Report</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="wrap hero-inner">
+          <div class="hero-text">
+            <p class="eyebrow">Hack Apertus 2026 · Track 2B · Team Apertool</p>
+            <h1>The practice inbox that never leaves the practice.</h1>
+            <p class="lead">
+              Inbrev sorts the incoming mail, HIN mail and faxes of a Swiss
+              general practice with Apertus, on a box inside the practice. Every
+              message gets a handling route, an administrative deadline and a
+              person in charge, and every decision points to the words in the
+              message that support it.
+            </p>
+            <div class="cta">
+              <a class="btn primary" href="#video">Watch the demo</a>
+              <a class="btn" href="pitch/">See the pitch</a>
+              <a class="btn" href="report.pdf">Read the report</a>
+            </div>
+          </div>
+          <div class="hero-logo">
+            <img
+              src="assets/inbrev-anim.svg"
+              alt="Inbrev logo: a letter settles into a house"
+              width="256"
+              height="256"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="problem">
+        <div class="wrap">
+          <h2>The problem</h2>
+          <p class="section-lead">
+            Practice staff start the day with a mixed pile: lab reports,
+            prescription requests, appointment changes, insurer forms, referrals
+            and advertising, in German, French and Italian.
+          </p>
+          <div class="grid three">
+            <article class="stat">
+              <div class="num">9.5 h</div>
+              <p>
+                per week of administration for Swiss family physicians in 2025,
+                up from 8.6 h in 2020.
+              </p>
+              <cite>Zeller et al., Praxis 2026, n = 1,776</cite>
+            </article>
+            <article class="stat">
+              <div class="num">54 min</div>
+              <p>
+                per day that physicians in private practice spend on requests
+                from authorities and insurers.
+              </p>
+              <cite>gfs.bern survey for FMH 2025, N = 1,532</cite>
+            </article>
+            <article class="stat">
+              <div class="num">Art. 321</div>
+              <p>
+                Swiss Criminal Code: professional secrecy binds physicians and
+                their assistants. Patient mail should not leave the practice.
+              </p>
+              <cite>SR 311.0</cite>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt" id="approach">
+        <div class="wrap">
+          <h2>Read, route, prove</h2>
+          <p class="section-lead">
+            A fixed pipeline, not an agent. Apertus reads free text in four
+            languages; plain code checks everything it says.
+          </p>
+          <ol class="steps">
+            <li>
+              <b>Read.</b> E-mail, HIN mail, fax (OCR) and web forms become
+              text. Apertus answers in an enforced JSON schema, three times per
+              message.
+            </li>
+            <li>
+              <b>Route.</b> One of nine administrative routes, a deadline
+              computed in code from the quoted date, and the person in charge:
+              assistant, doctor or administration.
+            </li>
+            <li>
+              <b>Prove.</b> Every field needs a verbatim quote that exists in
+              the message. No quote, no value. The inbox highlights the source.
+            </li>
+          </ol>
+          <div class="grid two notes">
+            <article class="note safety">
+              <h3>Routes, never triages</h3>
+              <p>
+                Inbrev does not judge how urgent a medical complaint is. A
+                message that may describe acute symptoms goes to the top and to
+                a person, without any ranking by severity. That keeps the tool
+                administrative.
+              </p>
+            </article>
+            <article class="note human">
+              <h3>A person decides when Inbrev is unsure</h3>
+              <p>
+                If the three samples disagree, the model calls a message
+                ambiguous, or no evidence survives the checks, Inbrev does not
+                guess. The message lands in "A person decides".
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="architecture">
+        <div class="wrap">
+          <h2>Runs where the mail arrives</h2>
+          <div class="flow" aria-label="Pipeline">
+            <div class="flow-box">
+              Inbox<small>e-mail · HIN · fax · form</small>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">→</div>
+            <div class="flow-box strong">
+              Apertus 8B<small>local weights, JSON schema</small>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">→</div>
+            <div class="flow-box">
+              Checks in code<small>quotes · dates · vote</small>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">→</div>
+            <div class="flow-box">
+              Sorted inbox<small>with sources · audit log</small>
+            </div>
+          </div>
+          <p class="flow-caption">
+            Everything inside the dashed line runs in the practice. The model
+            host needs no internet connection at runtime.
+          </p>
+          <div class="grid three deploy">
+            <article>
+              <h3>On-premise</h3>
+              <p>
+                A small box with a GPU in a group practice or physician network.
+              </p>
+            </article>
+            <article>
+              <h3>Air-gapped</h3>
+              <p>
+                The same box without any network route to the outside; only a
+                mail gateway hands messages in.
+              </p>
+            </article>
+            <article>
+              <h3>Swiss cloud</h3>
+              <p>
+                For single-doctor practices: a sovereign Swiss provider under
+                Swiss jurisdiction.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt" id="status">
+        <div class="wrap">
+          <h2>Status</h2>
+          <p class="section-lead">
+            What is built and what is still being measured. Numbers appear here
+            only once they are measured.
+          </p>
+          <div class="grid two">
+            <article class="status-col">
+              <h3>Built</h3>
+              <ul class="checklist">
+                <li class="done">
+                  Pipeline with enforced schema, quote checks, deadline rules
+                  and abstention
+                </li>
+                <li class="done">
+                  Web inbox with highlighted sources and a JSON API
+                </li>
+                <li class="done">
+                  Unit tests and the non-LLM evaluation run in Docker with
+                  <code>--network none</code>
+                </li>
+                <li class="done">
+                  Taxonomy of nine routes, 12 handwritten seed messages and a
+                  synthetic test set of 180 messages in four languages, all
+                  fictional
+                </li>
+                <li class="done">
+                  Baselines without a language model: keyword rules catch 44 %
+                  of the safety cases, a TF-IDF classifier 13 %
+                </li>
+              </ul>
+            </article>
+            <article class="status-col">
+              <h3>In progress</h3>
+              <ul class="checklist">
+                <li class="todo">
+                  Apertus results: safety recall, "today" recall, coverage,
+                  route F1
+                </li>
+                <li class="todo">Full run on local weights without network</li>
+                <li class="todo">Handwritten and faxed test messages</li>
+                <li class="todo">Cost per 1,000 messages on GPU and CPU</li>
+                <li class="todo">Demo video</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="video">
+        <div class="wrap">
+          <h2>Demo video</h2>
+          <div
+            class="video-placeholder"
+            role="img"
+            aria-label="Video placeholder"
+          >
+            <img src="assets/inbrev.svg" alt="" width="72" height="72" />
+            <p>Two-minute demo, in progress.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt" id="material">
+        <div class="wrap grid two">
+          <a class="card-link" href="pitch/">
+            <img
+              src="pitch/og.png"
+              alt="First slide of the Inbrev pitch"
+              loading="lazy"
+            />
+            <span
+              ><b>Pitch</b> Ten slides: problem, approach, architecture,
+              evaluation, cost and roadmap.</span
+            >
+          </a>
+          <a class="card-link" href="report.pdf">
+            <span class="pdf-badge">PDF</span>
+            <span
+              ><b>Technical report</b> Draft: architecture, use of Apertus,
+              data, evaluation plan and limitations. Unmeasured values are
+              marked [TBD].</span
+            >
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="team">
+        <div class="wrap team">
+          <img
+            src="assets/apertool.svg"
+            alt="Apertool logo"
+            width="88"
+            height="88"
+          />
+          <div>
+            <h2>Team Apertool</h2>
+            <p>
+              One builder, four tools for Hack Apertus 2026. Inbrev is the Track
+              2B project.
+            </p>
+            <a class="btn" href="https://apertool.skimu.de">Meet the team</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>Inbrev · Hack Apertus 2026 · Track 2B</span>
+        <span>All messages, people and identifiers shown are fictional.</span>
+      </div>
+    </footer>
+  </body>
+</html>

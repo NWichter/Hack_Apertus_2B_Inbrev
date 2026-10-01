@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <title>Inbrev (Animation)</title>
+  <style>
+    #inb-logo { animation: inb-fade 5s linear infinite; }
+    #inb-house-draw { stroke-dasharray: 100; animation: inb-draw 5s ease-in-out infinite; }
+    #inb-house-line { animation: inb-solid 5s linear infinite; }
+    #inb-house-fill { animation: inb-fill 5s ease-in-out infinite; }
+    #inb-letter-move { animation: inb-drop 5s cubic-bezier(.3, .7, .3, 1) infinite; }
+    #inb-flap { stroke-dasharray: 100; animation: inb-flap 5s ease-in-out infinite; }
+    @keyframes inb-fade {
+      0%, 90% { opacity: 1; }
+      97%, 100% { opacity: 0; }
+    }
+    @keyframes inb-draw {
+      0%, 4% { stroke-dashoffset: 100; opacity: 0; }
+      5% { stroke-dashoffset: 100; opacity: 1; }
+      30% { stroke-dashoffset: 0; opacity: 1; }
+      31%, 100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+    @keyframes inb-solid {
+      0%, 29.5% { opacity: 0; }
+      30%, 100% { opacity: 1; }
+    }
+    @keyframes inb-fill {
+      0%, 27% { opacity: 0; }
+      38%, 100% { opacity: 1; }
+    }
+    @keyframes inb-drop {
+      0%, 30% { transform: translateY(-150px); }
+      48% { transform: translateY(6px); }
+      54%, 100% { transform: translateY(0); }
+    }
+    @keyframes inb-flap {
+      0%, 54% { stroke-dashoffset: 100; opacity: 0; }
+      55% { stroke-dashoffset: 100; opacity: 1; }
+      66%, 100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #inb-logo, #inb-logo * { animation: none !important; }
+      #inb-house-draw { display: none; }
+    }
+  </style>
+  <defs>
+    <clipPath id="inb-inside"><path d="M128 212 H52 A8 8 0 0 1 44 204 V117.7 L128 46.5 L212 117.7 V204 A8 8 0 0 1 204 212 Z"/></clipPath>
+  </defs>
+  <g id="inb-logo">
+    <g id="inb-house">
+      <path id="inb-house-fill" d="M128 220 H52 A16 16 0 0 1 36 204 V114 L128 36 L220 114 V204 A16 16 0 0 1 204 220 Z" fill="#FFFFFF"/>
+      <path id="inb-house-draw" pathLength="100" d="M128 220 H52 A16 16 0 0 1 36 204 V114 L128 36 L220 114 V204 A16 16 0 0 1 204 220 Z" fill="none" stroke="#0F4C5C" stroke-width="16" stroke-linejoin="round"/>
+      <path id="inb-house-line" pathLength="100" d="M128 220 H52 A16 16 0 0 1 36 204 V114 L128 36 L220 114 V204 A16 16 0 0 1 204 220 Z" fill="none" stroke="#0F4C5C" stroke-width="16" stroke-linejoin="round"/>
+    </g>
+    <g id="inb-letter" clip-path="url(#inb-inside)">
+      <g id="inb-letter-move">
+        <rect x="73" y="118.5" width="110" height="75" rx="10" fill="#6CB6A4"/>
+        <path id="inb-flap" pathLength="100" d="M81.8 129.6 L128 162.7 L174.2 129.6" fill="none" stroke="#FFFFFF" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </g>
+  </g>
+</svg>

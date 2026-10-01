@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <title>Inbrev</title>
+  <g id="inb-logo">
+    <g id="inb-house">
+      <path pathLength="100" d="M128 220 H52 A16 16 0 0 1 36 204 V114 L128 36 L220 114 V204 A16 16 0 0 1 204 220 Z" fill="#FFFFFF" stroke="#0F4C5C" stroke-width="16" stroke-linejoin="round"/>
+    </g>
+    <g id="inb-letter">
+      <rect x="73" y="118.5" width="110" height="75" rx="10" fill="#6CB6A4"/>
+      <path id="inb-flap" pathLength="100" d="M81.8 129.6 L128 162.7 L174.2 129.6" fill="none" stroke="#FFFFFF" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

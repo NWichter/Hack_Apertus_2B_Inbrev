@@ -1,0 +1,6 @@
+docker-compose.yml
+.dockerignore
+.env*
+pitch/NOTIZEN.md
+pitch/VIDEO.md
+pitch/render.sh

@@ -1,0 +1,52 @@
+version: 0.1.0
+description: >
+  Administrative routing taxonomy for the inbox of a Swiss general practice.
+  Inbrev routes by handling path and administrative deadline only. It never
+  assesses clinical urgency; anything that may describe acute symptoms is
+  escalated to a human without further automation (safety_flag).
+
+routes:
+  report_received:
+    assignee: doctor
+    description: Lab result, imaging report, discharge letter or specialist report has arrived.
+    examples:
+      de: Laborbefund von Unilabs, Austrittsbericht Kantonsspital
+      fr: Résultats de laboratoire, lettre de sortie
+      it: Referto di laboratorio, lettera di dimissione
+  appointment:
+    assignee: mpa
+    description: Request to book, move or cancel an appointment.
+  prescription_request:
+    assignee: mpa
+    description: Repeat prescription or medication request; MPA prepares, doctor signs.
+  insurer:
+    assignee: admin
+    description: Cost approval (Kostengutsprache), insurer query, disability (IV) or daily allowance forms.
+  referral_in:
+    assignee: mpa
+    description: Referral of a patient to this practice.
+  certificate_request:
+    assignee: mpa
+    description: Request for a sick note (Arbeitsunfähigkeitszeugnis) or other confirmation.
+  billing:
+    assignee: admin
+    description: Invoice, reminder or billing question.
+  spam_marketing:
+    assignee: admin
+    description: Advertising, newsletters, pharma marketing.
+  other:
+    assignee: mpa
+    description: Anything that fits none of the above.
+
+deadlines:
+  today: An administrative deadline expires today or tomorrow, or a report for the doctor arrived.
+  this_week: Deadline within the next 7 days.
+  none: No deadline.
+
+safety_flag:
+  description: >
+    True if the message may describe acute symptoms (e.g. chest pain, breathing
+    problems, suicidal thoughts). Inbrev does not judge severity; it moves the
+    message to the top and hands it to a human immediately.
+
+languages: [de, fr, it, en]

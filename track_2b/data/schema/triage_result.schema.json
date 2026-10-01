@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NWichter/Hack_Apertus_2B_Inbrev/blob/main/track_2b/data/schema/triage_result.schema.json",
+  "title": "Inbrev triage result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "message_id",
+    "language",
+    "route",
+    "deadline",
+    "assignee",
+    "safety_flag",
+    "abstain",
+    "evidence"
+  ],
+  "properties": {
+    "message_id": { "type": "string" },
+    "language": { "enum": ["de", "fr", "it", "en"] },
+    "route": {
+      "enum": [
+        "report_received",
+        "appointment",
+        "prescription_request",
+        "insurer",
+        "referral_in",
+        "certificate_request",
+        "billing",
+        "spam_marketing",
+        "other"
+      ]
+    },
+    "deadline": { "enum": ["today", "this_week", "none"] },
+    "deadline_date": { "type": ["string", "null"], "format": "date" },
+    "assignee": { "enum": ["mpa", "doctor", "admin"] },
+    "safety_flag": { "type": "boolean" },
+    "abstain": {
+      "type": "boolean",
+      "description": "True if the model is unsure; a human decides."
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "patient": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "birth_date": { "type": ["string", "null"], "format": "date" },
+        "insurance_number": { "type": ["string", "null"] },
+        "ahv_number": {
+          "type": ["string", "null"],
+          "pattern": "^756\\.\\d{4}\\.\\d{4}\\.\\d{2}$"
+        },
+        "insurer": { "type": ["string", "null"] }
+      }
+    },
+    "fields": {
+      "type": "object",
+      "description": "Route-specific fields, e.g. requested_dates, medication, insurer_reference, referring_physician.",
+      "additionalProperties": { "type": ["string", "null"] }
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Verbatim quotes from the original message. Every quote must be a substring of the source text.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "quote"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "route, deadline, safety_flag, patient.name, fields.medication, ..."
+          },
+          "quote": { "type": "string" }
+        }
+      }
+    },
+    "reply_draft": {
+      "type": ["string", "null"],
+      "description": "Only for administrative routes (appointment, prescription_request receipt, certificate_request, billing). Never for clinical content."
+    }
+  }
+}

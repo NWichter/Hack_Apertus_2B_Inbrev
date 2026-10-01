@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import random
+import re
 import time
 from dataclasses import dataclass, field
 
@@ -26,6 +27,11 @@ class Completion:
 
 class LLMError(RuntimeError):
     pass
+
+
+def redact(text: str) -> str:
+    """429 bodies name a hash of the API key; never store it."""
+    return re.sub(r"(api_key:?\s*)\S+", lambda m: m.group(1) + "<redacted>", text)
 
 
 class LLMClient:
@@ -82,7 +88,7 @@ class LLMClient:
                     status = None
                 else:
                     status = r.status_code
-                    err = r.text[:300]
+                    err = redact(r.text[:300])
                     if status == 200:
                         j = r.json()
                         usage = j.get("usage") or {}

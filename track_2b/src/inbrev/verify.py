@@ -19,6 +19,9 @@ from .extract import (
 )
 
 
+THINKING_END = "<|inner_suffix|>"
+
+
 @dataclass
 class Sample:
     ok: bool
@@ -65,8 +68,9 @@ def _date_consistent(value: str, quote: str) -> bool:
 def check_sample(raw: str, finish_reason: str, text: str, received: date) -> Sample:
     if finish_reason == "length":
         return Sample(ok=False, raw=raw, error="truncated")
+    answer = raw.split(THINKING_END)[-1].strip()
     try:
-        obj = json.loads(raw)
+        obj = json.loads(answer)
     except json.JSONDecodeError as e:
         return Sample(ok=False, raw=raw, error=f"json: {e.msg}")
     if not isinstance(obj, dict) or obj.get("route") not in taxonomy.routes():

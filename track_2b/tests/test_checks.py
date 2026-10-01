@@ -185,3 +185,11 @@ def test_lexicon_examples():
     assert lexical_flag("j'ai du mal à respirer depuis ce matin")
     assert lexical_flag("dolore al petto da stamattina")
     assert not lexical_flag("Bitte Termin verschieben auf Dienstag")
+
+
+def test_thinking_prefix_and_redaction():
+    from inbrev.llm import redact
+
+    raw = "<|inner_prefix|>Let me think.<|inner_suffix|>" + sample()
+    assert check_sample(raw, "stop", TEXT, date(2026, 10, 1)).route == "insurer"
+    assert "abc123" not in redact("Rate limit exceeded for api_key: abc123. Retry later")

@@ -25,3 +25,6 @@ build/
 .DS_Store
 .idea/
 .vscode/
+runs/
+models/
+.pytest_cache/

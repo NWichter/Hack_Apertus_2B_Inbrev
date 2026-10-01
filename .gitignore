@@ -25,3 +25,8 @@ build/
 .DS_Store
 .idea/
 .vscode/
+
+# Internal notes
+website/pitch/NOTIZEN.md
+website/pitch/VIDEO.md
+.ruff_cache/

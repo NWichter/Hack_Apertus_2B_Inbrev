@@ -1,0 +1,33 @@
+[project]
+name = "inbrev"
+version = "0.1.0"
+description = "Local, administrative inbox routing for Swiss general practices with Apertus"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "httpx>=0.27",
+    "pyyaml>=6.0",
+    "jsonschema>=4.20",
+    "python-multipart>=0.0.9",
+]
+
+[project.optional-dependencies]
+ocr = ["pdfplumber>=0.11", "pytesseract>=0.3.10", "Pillow>=10.0", "pypdfium2>=4.30"]
+eval = ["scikit-learn>=1.5"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+inbrev = "inbrev.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/inbrev"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

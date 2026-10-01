@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inbrev</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <style>
+      :root {
+        --ink: #12262c;
+        --muted: #5b6f75;
+        --line: #dde5e7;
+        --bg: #f5f8f8;
+        --card: #ffffff;
+        --brand: #0f4c5c;
+        --brand-2: #6cb6a4;
+        --mark: #fff1a8;
+        --mark-line: #e0c13a;
+        --red: #b42318;
+        --red-bg: #fdecea;
+        --amber: #a15c07;
+        --amber-bg: #fff4e0;
+        --blue-bg: #e8f1f3;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font:
+          14px/1.45 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 18px;
+        background: var(--card);
+        border-bottom: 1px solid var(--line);
+      }
+      header img {
+        width: 34px;
+        height: 34px;
+      }
+      header h1 {
+        font-size: 19px;
+        margin: 0;
+        color: var(--brand);
+        letter-spacing: 0.2px;
+      }
+      header .tag {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      header .spacer {
+        flex: 1;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: var(--blue-bg);
+        color: var(--brand);
+        white-space: nowrap;
+      }
+      .badge.local::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #2e9e6a;
+      }
+      .badge.remote::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #d08a12;
+      }
+      button,
+      select,
+      label.btn {
+        font: inherit;
+        border: 1px solid var(--line);
+        background: var(--card);
+        color: var(--ink);
+        padding: 6px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      button.primary {
+        background: var(--brand);
+        color: #fff;
+        border-color: var(--brand);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      main {
+        display: grid;
+        grid-template-columns: minmax(320px, 420px) 1fr;
+        height: calc(100vh - 57px);
+      }
+      #list {
+        overflow-y: auto;
+        border-right: 1px solid var(--line);
+        background: var(--card);
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--line);
+        flex-wrap: wrap;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background: var(--card);
+        z-index: 1;
+      }
+      .toolbar .count {
+        color: var(--muted);
+        font-size: 12px;
+        margin-left: auto;
+      }
+      .group h2 {
+        margin: 0;
+        padding: 8px 14px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--muted);
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+      }
+      .group.safety h2 {
+        color: var(--red);
+        background: var(--red-bg);
+      }
+      .group.human h2 {
+        color: var(--amber);
+        background: var(--amber-bg);
+      }
+      .item {
+        padding: 9px 14px;
+        border-bottom: 1px solid var(--line);
+        cursor: pointer;
+        display: grid;
+        gap: 3px;
+      }
+      .item:hover {
+        background: #f0f5f6;
+      }
+      .item.active {
+        background: #e3eff1;
+        box-shadow: inset 3px 0 0 var(--brand);
+      }
+      .item .top {
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+      }
+      .item .subj {
+        font-weight: 600;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .item .from {
+        color: var(--muted);
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .chips {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        font-size: 11px;
+        padding: 1px 7px;
+        border-radius: 999px;
+        background: var(--blue-bg);
+        color: var(--brand);
+      }
+      .chip.red {
+        background: var(--red-bg);
+        color: var(--red);
+        font-weight: 600;
+      }
+      .chip.amber {
+        background: var(--amber-bg);
+        color: var(--amber);
+      }
+      .chip.grey {
+        background: #eef0f1;
+        color: var(--muted);
+      }
+      #detail {
+        overflow-y: auto;
+        padding: 18px 24px 40px;
+      }
+      #detail .empty {
+        color: var(--muted);
+        margin-top: 60px;
+        text-align: center;
+      }
+      .banner {
+        padding: 10px 14px;
+        border-radius: 10px;
+        margin-bottom: 12px;
+      }
+      .banner.red {
+        background: var(--red-bg);
+        color: var(--red);
+        border: 1px solid #f3c5c0;
+      }
+      .banner.amber {
+        background: var(--amber-bg);
+        color: var(--amber);
+        border: 1px solid #f2d7a6;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-bottom: 14px;
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--muted);
+      }
+      .meta {
+        color: var(--muted);
+        font-size: 12.5px;
+        margin-bottom: 8px;
+      }
+      .subject {
+        font-size: 18px;
+        font-weight: 650;
+        margin: 2px 0 6px;
+      }
+      .text {
+        white-space: pre-wrap;
+        font-size: 14px;
+      }
+      mark {
+        background: var(--mark);
+        border-bottom: 2px solid var(--mark-line);
+        padding: 0 1px;
+        border-radius: 2px;
+        cursor: help;
+      }
+      mark.safety {
+        background: #ffd9d4;
+        border-bottom-color: var(--red);
+      }
+      .decision {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+      }
+      .decision div {
+        background: var(--bg);
+        border-radius: 8px;
+        padding: 8px 10px;
+      }
+      .decision b {
+        display: block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      td,
+      th {
+        text-align: left;
+        padding: 5px 8px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+        font-size: 13px;
+      }
+      th {
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 12px;
+      }
+      td.q {
+        color: var(--muted);
+        font-style: italic;
+      }
+      textarea {
+        width: 100%;
+        min-height: 150px;
+        font:
+          13px/1.4 ui-monospace,
+          Consolas,
+          monospace;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px;
+      }
+      details summary {
+        cursor: pointer;
+        color: var(--muted);
+      }
+      pre.trace {
+        font-size: 12px;
+        background: var(--bg);
+        padding: 8px;
+        border-radius: 8px;
+        overflow-x: auto;
+      }
+      .spinner {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border: 2px solid var(--brand-2);
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .note {
+        font-size: 12px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="/static/logo.svg" alt="" />
+      <h1>Inbrev</h1>
+      <span class="tag">Practice inbox, sorted where it arrives</span>
+      <span class="spacer"></span>
+      <span id="model" class="badge">model …</span>
+    </header>
+    <main>
+      <section id="list">
+        <div class="toolbar">
+          <select id="set" title="Demo inbox"></select>
+          <button id="load">Load</button>
+          <button id="sort" class="primary">Sort inbox</button>
+          <label class="btn" title="E-mail (.eml), fax (PDF/PNG) or text"
+            >Upload<input
+              id="file"
+              type="file"
+              hidden
+              accept=".eml,.pdf,.png,.jpg,.jpeg,.tif,.tiff,.txt"
+          /></label>
+          <span class="count" id="count"></span>
+        </div>
+        <div id="groups"></div>
+      </section>
+      <section id="detail">
+        <div class="empty">
+          Load a demo inbox and press <b>Sort inbox</b>.<br /><br />Inbrev
+          routes by handling path and administrative deadline. It never assesses
+          clinical urgency.
+        </div>
+      </section>
+    </main>
+    <script>
+      const ROUTE = {
+        report_received: "Report received",
+        appointment: "Appointment",
+        prescription_request: "Prescription",
+        insurer: "Insurer",
+        referral_in: "Referral",
+        certificate_request: "Certificate",
+        billing: "Billing",
+        spam_marketing: "Marketing",
+        other: "Other",
+      };
+      const DEADLINE = {
+        today: "Today",
+        this_week: "This week",
+        none: "No deadline",
+      };
+      const ASSIGNEE = { mpa: "MPA", doctor: "Doctor", admin: "Admin" };
+      const GROUPS = [
+        [
+          "safety",
+          "Hand to a person now",
+          (it) => it.result && it.result.safety_flag,
+        ],
+        [
+          "human",
+          "A person decides",
+          (it) => it.result && !it.result.safety_flag && it.result.abstain,
+        ],
+        [
+          "today",
+          "Today",
+          (it) =>
+            it.result &&
+            !it.result.safety_flag &&
+            !it.result.abstain &&
+            it.result.deadline === "today",
+        ],
+        [
+          "week",
+          "This week",
+          (it) =>
+            it.result &&
+            !it.result.safety_flag &&
+            !it.result.abstain &&
+            it.result.deadline === "this_week",
+        ],
+        [
+          "none",
+          "No deadline",
+          (it) =>
+            it.result &&
+            !it.result.safety_flag &&
+            !it.result.abstain &&
+            it.result.deadline === "none",
+        ],
+        ["pending", "Not sorted yet", (it) => !it.result],
+      ];
+      let items = [],
+        selected = null,
+        polling = null;
+
+      const $ = (s) => document.querySelector(s);
+      const esc = (s) =>
+        String(s ?? "").replace(
+          /[&<>"]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+        );
+      const api = (path, opt = {}) =>
+        fetch(path, opt).then((r) =>
+          r.ok
+            ? r.json()
+            : r.text().then((t) => {
+                throw new Error(t);
+              }),
+        );
+
+      async function init() {
+        const h = await api("/v1/health");
+        const m = $("#model");
+        m.textContent = `${h.model} · ${h.endpoint_local ? "local endpoint" : h.endpoint_host}`;
+        m.classList.add(h.endpoint_local ? "local" : "remote");
+        m.title = h.endpoint_local
+          ? "Model runs inside this deployment"
+          : "Development endpoint; production runs the same model on-premise";
+        $("#set").innerHTML = h.demo_sets
+          .map((s) => `<option value="${s}">${s} inbox</option>`)
+          .join("");
+        await refresh();
+      }
+
+      async function refresh() {
+        const data = await api("/v1/inbox");
+        items = data.items;
+        const busy = items.some(
+          (i) => i.status === "queued" || i.status === "running",
+        );
+        const done = items.filter((i) => i.result).length;
+        $("#count").innerHTML =
+          (busy ? '<span class="spinner"></span> ' : "") +
+          `${done}/${items.length} sorted`;
+        $("#sort").disabled =
+          busy ||
+          !items.some((i) => i.status === "pending" || i.status === "error");
+        renderList();
+        if (selected)
+          renderDetail(items.find((i) => i.message.message_id === selected));
+        if (busy && !polling) polling = setInterval(refresh, 1200);
+        if (!busy && polling) {
+          clearInterval(polling);
+          polling = null;
+        }
+      }
+
+      function chips(r) {
+        if (!r) return "";
+        const c = [];
+        if (r.safety_flag)
+          c.push('<span class="chip red">Possible acute symptoms</span>');
+        if (r.abstain && !r.safety_flag)
+          c.push('<span class="chip amber">Unsure</span>');
+        c.push(`<span class="chip">${ROUTE[r.route]}</span>`);
+        c.push(`<span class="chip grey">${ASSIGNEE[r.assignee]}</span>`);
+        if (r.deadline_date)
+          c.push(`<span class="chip grey">due ${r.deadline_date}</span>`);
+        c.push(`<span class="chip grey">${r.language}</span>`);
+        return c.join("");
+      }
+
+      function renderList() {
+        $("#groups").innerHTML = GROUPS.map(([key, title, test]) => {
+          const g = items.filter(test);
+          if (!g.length) return "";
+          return (
+            `<div class="group ${key}"><h2>${title} · ${g.length}</h2>` +
+            g
+              .map((it) => {
+                const m = it.message;
+                const st =
+                  it.status === "running" || it.status === "queued"
+                    ? '<span class="spinner"></span>'
+                    : it.status === "error"
+                      ? "⚠"
+                      : "";
+                return `<div class="item ${m.message_id === selected ? "active" : ""}" data-id="${esc(m.message_id)}">
+        <div class="top"><span class="subj">${esc(m.subject || "(no subject)")}</span>${st}</div>
+        <div class="from">${esc(m.sender)}${m.channel ? " · " + esc(m.channel) : ""}</div>
+        <div class="chips">${chips(it.result)}</div></div>`;
+              })
+              .join("") +
+            "</div>"
+          );
+        }).join("");
+        document.querySelectorAll(".item").forEach(
+          (el) =>
+            (el.onclick = () => {
+              selected = el.dataset.id;
+              renderList();
+              renderDetail(
+                items.find((i) => i.message.message_id === selected),
+              );
+            }),
+        );
+      }
+
+      function highlight(text, evidence) {
+        const spans = [];
+        for (const e of evidence || []) {
+          if (!e.quote) continue;
+          let i = text.indexOf(e.quote);
+          if (i < 0) continue;
+          spans.push([i, i + e.quote.length, e.field]);
+        }
+        spans.sort((a, b) => a[0] - b[0] || b[1] - a[1]);
+        let out = "",
+          pos = 0;
+        for (const [s, e, f] of spans) {
+          if (s < pos) continue;
+          out +=
+            esc(text.slice(pos, s)) +
+            `<mark class="${f === "safety_flag" ? "safety" : ""}" title="${esc(f)}">${esc(text.slice(s, e))}</mark>`;
+          pos = e;
+        }
+        return out + esc(text.slice(pos));
+      }
+
+      function renderDetail(it) {
+        if (!it) {
+          $("#detail").innerHTML = "";
+          return;
+        }
+        const m = it.message,
+          r = it.result,
+          t = it.trace || {};
+        const full = (m.subject || "") + "\n" + (m.body || "");
+        const marked = r ? highlight(full, r.evidence) : esc(full);
+        const nl = marked.indexOf("\n");
+        let html = "";
+        if (r && r.safety_flag)
+          html += `<div class="banner red"><b>Hand to a person now.</b> The message may describe acute symptoms. Inbrev does not assess severity; it only moves the message to the top.</div>`;
+        else if (r && r.abstain)
+          html += `<div class="banner amber"><b>A person decides.</b> ${esc((t.abstain_reasons || []).join("; "))}</div>`;
+        if (it.status === "error")
+          html += `<div class="banner amber">Model call failed: ${esc(t.error || "")}</div>`;
+        if (r) {
+          html += `<div class="card"><h3>Decision</h3><div class="decision">
+      <div><b>Route</b>${ROUTE[r.route]}</div><div><b>Assignee</b>${ASSIGNEE[r.assignee]}</div>
+      <div><b>Deadline</b>${DEADLINE[r.deadline]}${r.deadline_date ? " · " + r.deadline_date : ""}</div>
+      <div><b>Agreement</b>${Math.round((r.confidence || 0) * 100)} % of samples</div></div></div>`;
+        }
+        html += `<div class="card"><div class="meta">${esc(m.sender)} · ${esc(m.channel || "")} · received ${esc(m.received_at || "–")}</div>
+    <div class="subject">${nl >= 0 ? marked.slice(0, nl) : marked}</div><div class="text">${nl >= 0 ? marked.slice(nl + 1) : ""}</div></div>`;
+        if (r) {
+          const rows = [];
+          for (const [k, v] of Object.entries(r.patient || {}))
+            if (v) rows.push([`patient.${k}`, v]);
+          for (const [k, v] of Object.entries(r.fields || {}))
+            if (v) rows.push([`fields.${k}`, v]);
+          const quote = (f) =>
+            (r.evidence.find((e) => e.field === f) || {}).quote || "";
+          html +=
+            `<div class="card"><h3>Extracted, each with its source</h3>` +
+            (rows.length
+              ? `<table><tr><th>Field</th><th>Value</th><th>Evidence in the message</th></tr>${rows.map(([f, v]) => `<tr><td>${esc(f)}</td><td>${esc(v)}</td><td class="q">“${esc(quote(f))}”</td></tr>`).join("")}</table>`
+              : `<div class="note">Nothing extracted.</div>`) +
+            `<div class="note" style="margin-top:6px">Values without a verbatim quote in the message are discarded.</div></div>`;
+          if (r.reply_draft)
+            html += `<div class="card"><h3>Reply draft (fixed template)</h3><textarea>${esc(r.reply_draft)}</textarea></div>`;
+          html += `<div class="card"><details><summary>Why (samples, votes, cost)</summary><pre class="trace">${esc(JSON.stringify(t, null, 1))}</pre></details></div>`;
+        }
+        $("#detail").innerHTML = html;
+      }
+
+      $("#load").onclick = async () => {
+        selected = null;
+        await api(`/v1/inbox/load/${$("#set").value}?with_predictions=true`, {
+          method: "POST",
+        });
+        $("#detail").innerHTML = "";
+        refresh();
+      };
+      $("#sort").onclick = async () => {
+        await api("/v1/inbox/sort", { method: "POST" });
+        refresh();
+      };
+      $("#file").onchange = async (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const fd = new FormData();
+        fd.append("file", f);
+        $("#count").innerHTML = '<span class="spinner"></span> reading upload';
+        try {
+          const it = await api("/v1/upload", { method: "POST", body: fd });
+          selected = it.message.message_id;
+        } catch (err) {
+          $("#detail").innerHTML =
+            `<div class="banner amber">${esc(err.message)}</div>`;
+        }
+        e.target.value = "";
+        refresh();
+      };
+      init();
+    </script>
+  </body>
+</html>

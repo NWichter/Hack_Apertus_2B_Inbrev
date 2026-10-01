@@ -1,4 +1,4 @@
-version: 0.1.0
+version: 0.2.0
 description: >
   Administrative routing taxonomy for the inbox of a Swiss general practice.
   Inbrev routes by handling path and administrative deadline only. It never
@@ -9,39 +9,48 @@ routes:
   report_received:
     assignee: doctor
     description: Lab result, imaging report, discharge letter or specialist report has arrived.
+    fields: [report_type, sender_institution, examination_date]
     examples:
-      de: Laborbefund von Unilabs, Austrittsbericht Kantonsspital
+      de: Laborbefund eines Labors, Austrittsbericht eines Spitals
       fr: Résultats de laboratoire, lettre de sortie
       it: Referto di laboratorio, lettera di dimissione
   appointment:
     assignee: mpa
     description: Request to book, move or cancel an appointment.
+    fields: [appointment_action, existing_appointment, requested_dates]
   prescription_request:
     assignee: mpa
     description: Repeat prescription or medication request; MPA prepares, doctor signs.
+    fields: [medication, pharmacy]
   insurer:
     assignee: admin
     description: Cost approval (Kostengutsprache), insurer query, disability (IV) or daily allowance forms.
+    fields: [insurer_reference, requested_document]
   referral_in:
     assignee: mpa
     description: Referral of a patient to this practice.
+    fields: [referring_physician, referral_reason]
   certificate_request:
     assignee: mpa
     description: Request for a sick note (Arbeitsunfähigkeitszeugnis) or other confirmation.
+    fields: [certificate_type, period]
   billing:
     assignee: admin
     description: Invoice, reminder or billing question.
+    fields: [invoice_number, amount, creditor]
   spam_marketing:
     assignee: admin
     description: Advertising, newsletters, pharma marketing.
+    fields: []
   other:
     assignee: mpa
     description: Anything that fits none of the above.
+    fields: [topic]
 
 deadlines:
-  today: An administrative deadline expires today or tomorrow, or a report for the doctor arrived.
-  this_week: Deadline within the next 7 days.
-  none: No deadline.
+  today: Action needed today or tomorrow (relative to received_at), or a report for the doctor arrived, or safety_flag is true.
+  this_week: Action needed within 2 to 7 days.
+  none: No deadline, or a deadline more than 7 days away.
 
 safety_flag:
   description: >

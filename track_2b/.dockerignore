@@ -1,0 +1,9 @@
+.env
+.env.*
+.venv
+runs
+models
+report
+*.pdf
+**/__pycache__
+.pytest_cache

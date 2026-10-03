@@ -1,8 +1,10 @@
 # Data
 
-All messages, people, practices and identifiers in this folder are **fictional**.
-AHV numbers follow the official format but carry an invalid check digit on purpose.
-No real patient data is used anywhere in this project.
+All messages, people, practices, organisations and identifiers in the files committed to this
+folder are **fictional**. AHV numbers follow the official format but carry an invalid check digit
+on purpose. No real patient data is committed. Optional external datasets are downloaded into
+`external/` (gitignored, see below); one of them contains real, de-identified patient questions and
+is never committed or used for a reported number.
 
 | Path                               | Content                                                                         |
 | ---------------------------------- | ------------------------------------------------------------------------------- |
@@ -10,6 +12,8 @@ No real patient data is used anywhere in this project.
 | `schema/triage_result.schema.json` | JSON Schema of one triage result (also used for constrained decoding)           |
 | `seed/messages.seed.jsonl`         | 12 handwritten seed messages (DE/FR/IT; e-mail, fax, web form) with gold labels |
 | `generation/PROMPT.md`             | Exact generation prompt for the synthetic part (both generators)                |
+| `ood/swiss_practice_inbox.jsonl`   | 30 synthetic Swiss practice messages (DE/FR/IT/EN), fictitious senders/domains  |
+| `external/` (gitignored)           | Optional external datasets, downloaded by `scripts/adapt_external_data.py`      |
 
 ## Gold set (planned, ~300 messages)
 
@@ -52,6 +56,27 @@ Extra record fields in this part: `sender_type`, `received_at` (deadlines are re
 `scripts/render_fax.py` renders selected rows as degraded fax pages (PNG and PDF: skew, noise,
 stamp) for the OCR path. Dependencies: `scripts/requirements.txt`.
 
+## Synthetic Swiss practice set (`ood/`)
+
+30 messages written with an LLM coding assistant (not Apertus) on 2026-10-02/03, then edited so
+that every organisation and e-mail domain is fictitious (`KV Beispiel AG`, `*.example`). Labels
+have not been reviewed by a person yet. Used as a small extra check, not as gold data.
+
+## External datasets (not in the repository)
+
+`python scripts/adapt_external_data.py --download` fetches raw data into `external/`; adapters then
+map it to the record format below with **heuristic** labels (e.g. every symptom-triage case becomes
+route `other`). Licences as stated on the dataset cards (checked 2026-10-03):
+
+| Dataset                                             | Licence on the card | Note                                                                |
+| --------------------------------------------------- | ------------------- | ------------------------------------------------------------------- |
+| `sweatSmile/medical-symptom-triage`                 | none declared       | English symptom descriptions with urgency labels                    |
+| `ale-dp/german-english-email-ticket-classification` | CC-BY-NC-4.0        | IT support tickets, not practice mail                               |
+| `PortalPal-AI/Portal-Messaging-Topics`              | CC-BY-NC-4.0        | Topic list only                                                     |
+| `lavita/ChatDoctor-HealthCareMagic-100k`            | none declared       | Real de-identified patient questions; only with `--include-real-patient-text`, never committed |
+
+No number in the technical report is computed on these sets.
+
 ## Record format (`*.jsonl`)
 
 ```json
@@ -72,4 +97,4 @@ Every `quote` must be a substring of `subject + "\n" + body`; the evaluation che
 
 ## Licence
 
-Data: CDLA-Permissive-2.0. Larger working files (scans, model outputs) are kept outside the repository and passed in via `DATA_DIR`.
+Data committed here: CDLA-Permissive-2.0. Larger working files (scans, model outputs) are kept outside the repository and passed in via `DATA_DIR`.

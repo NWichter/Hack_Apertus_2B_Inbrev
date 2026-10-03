@@ -23,6 +23,7 @@ def main(argv: list[str] | None = None) -> None:
     t.add_argument("--temperature", type=float, default=None)
     t.add_argument("--no-schema", action="store_true")
     t.add_argument("--thinking", action="store_true")
+    t.add_argument("--mode", choices=["admin", "clinical-triage"], default=None, help="admin (default) or clinical-triage (optional research mode, not a medical device)")
     t.add_argument("--limit", type=int, default=None)
     t.add_argument("--ids", nargs="*", default=None)
 
@@ -39,11 +40,13 @@ def main(argv: list[str] | None = None) -> None:
     r.add_argument("predictions", type=Path)
     r.add_argument("--out", type=Path, required=True)
     r.add_argument("--safety-mode", default=None, choices=["llm", "lexical", "or"])
+    r.add_argument("--mode", choices=["admin", "clinical-triage"], default=None, help="admin (default) or clinical-triage (optional research mode, not a medical device)")
     r.add_argument("--abstain-below", type=float, default=None)
 
     s = sub.add_parser("serve", help="start the web app")
     s.add_argument("--host", default="0.0.0.0")
     s.add_argument("--port", type=int, default=8000)
+    s.add_argument("--mode", choices=["admin", "clinical-triage"], default=None, help="admin (default) or clinical-triage (optional research mode, not a medical device)")
 
     args = p.parse_args(argv)
     cfg = settings()
@@ -54,6 +57,8 @@ def main(argv: list[str] | None = None) -> None:
         from .runner import read_jsonl, run_batch
 
         opts = Options.from_env(cfg)
+        if args.mode:
+            opts.mode = args.mode
         if args.samples is not None:
             opts.samples = args.samples
         if args.temperature is not None:
@@ -88,6 +93,8 @@ def main(argv: list[str] | None = None) -> None:
         from .runner import read_jsonl
 
         opts = Options.from_env(cfg)
+        if args.mode:
+            opts.mode = args.mode
         if args.safety_mode:
             opts.safety_mode = args.safety_mode
         if args.abstain_below is not None:
@@ -108,7 +115,11 @@ def main(argv: list[str] | None = None) -> None:
 
         main_eval(args.gold, args.predictions, args.report, args.baselines)
     elif args.cmd == "serve":
+        import os
         import uvicorn
+
+        if args.mode:
+            os.environ["INBREV_MODE"] = args.mode
 
         uvicorn.run("inbrev.web:app", host=args.host, port=args.port)
 

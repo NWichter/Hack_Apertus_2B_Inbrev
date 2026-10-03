@@ -6,8 +6,10 @@ import asyncio
 import hashlib
 import json
 import os
+from dataclasses import replace
 from datetime import datetime
 from pathlib import Path
+from typing import Literal
 from urllib.parse import urlparse
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
@@ -42,6 +44,7 @@ class MessageIn(BaseModel):
     body: str
     received_at: str | None = None
     language: str | None = None
+    mode: Literal["admin", "clinical-triage"] | None = None
 
 
 def client() -> LLMClient:
@@ -138,6 +141,7 @@ def health() -> dict:
     return {
         "version": __version__,
         "model": cfg.llm_name,
+        "mode": opts.mode,
         "endpoint_host": host,
         "endpoint_local": host in ("localhost", "127.0.0.1", "llm")
         or host.endswith(".local")
@@ -211,7 +215,8 @@ def clear_inbox() -> dict:
 async def triage_one(msg: MessageIn) -> dict:
     m = msg.model_dump()
     m["message_id"] = m["message_id"] or ingest._new_id("api")
-    row = await triage(m, client(), opts)
+    req_opts = replace(opts, mode=m["mode"]) if m.get("mode") else opts
+    row = await triage(m, client(), req_opts)
     _audit(m, row)
     return row["result"]
 

@@ -225,3 +225,56 @@ def test_degraded_ocr_abstention():
     out = assemble(deg_msg, [hallucinated_sample] * 3, ["stop"] * 3, Options(), {})["result"]
     assert out["abstain"] is True
     assert out["patient"]["name"] is None
+
+
+def test_admin_mode_is_default_and_never_ranks():
+    acute_msg = {
+        **MSG,
+        "body": "Notfall! Plötzlicher starker Brustschmerz und Atemnot seit 20 Minuten.",
+    }
+    raws = [sample(safety_flag=True, safety_quote="Brustschmerz")] * 3
+    assert Options().mode == "admin"
+    out = assemble(acute_msg, raws, ["stop"] * 3, Options(), {})["result"]
+    assert out["mode"] == "admin"
+    assert out["safety_flag"] is True
+    assert out["assignee"] == "doctor"
+    assert out["deadline"] == "today"
+    assert out["clinical_triage"] is None
+    assert not list(Draft202012Validator(SCHEMA).iter_errors(out))
+
+
+def test_clinical_research_mode_is_labelled_and_schema_valid():
+    acute_msg = {
+        **MSG,
+        "body": "Notfall! Plötzlicher starker Brustschmerz und Atemnot seit 20 Minuten.",
+    }
+    raws = [sample(safety_flag=True, safety_quote="Brustschmerz")] * 3
+    out = assemble(acute_msg, raws, ["stop"] * 3, Options(mode="clinical-triage"), {})["result"]
+    ct = out["clinical_triage"]
+    assert out["mode"] == "clinical-triage"
+    assert ct["esi_level"] == 2 and ct["category"] == "emergency"
+    assert ct["status"] == "research_prototype"
+    assert "not a medical device" in ct["disclaimer"]
+    blob = json.dumps(ct)
+    for claim in ("Class IIa", "62304", "13485", "certified clinical"):
+        assert claim not in blob
+    assert not list(Draft202012Validator(SCHEMA).iter_errors(out))
+
+
+def test_clinical_keywords_respect_word_boundaries():
+    from inbrev.pipeline import classify_clinical_urgency
+
+    for text in (
+        "Bitte Rezept für Mundspülung, sonst bin ich gesund.",
+        "Termin wegen Krampfadern am Bein.",
+        "Il a une bouche sèche, rien de grave.",
+        "Mundart-Kurs im Gemeindehaus, Anmeldung bis Freitag.",
+    ):
+        ct = classify_clinical_urgency(text, safety_flag=True)
+        assert ct["esi_level"] == 3, text
+        assert ct["matched"] is None, text
+    assert classify_clinical_urgency("Hängender Mundwinkel seit heute", True)["esi_level"] == 2
+    assert classify_clinical_urgency("Er hat Brustschmerzen", True)["esi_level"] == 2
+    assert classify_clinical_urgency("Sie war kurz bewusstlos", True)["esi_level"] == 1
+    assert classify_clinical_urgency("Er hatte einen Krampfanfall", True)["esi_level"] == 3
+    assert classify_clinical_urgency("Er hat Brustschmerzen", False)["esi_level"] == 5

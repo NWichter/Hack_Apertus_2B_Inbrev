@@ -7,6 +7,7 @@ samples, so changes to the checks are measured without new model calls.
 from __future__ import annotations
 
 import os
+import re
 from collections import Counter
 from dataclasses import asdict, dataclass
 from datetime import datetime
@@ -36,6 +37,7 @@ class Options:
     abstain_below: float = 0.99  # route vote share needed to run automatically
     use_schema: bool = True
     thinking: bool = False
+    mode: str = "admin"  # admin (default) | clinical-triage (optional research mode)
 
     @classmethod
     def from_env(cls, cfg: Settings) -> "Options":
@@ -44,7 +46,80 @@ class Options:
             temperature=cfg.temperature,
             safety_mode=os.getenv("INBREV_SAFETY_MODE", "or"),
             abstain_below=float(os.getenv("INBREV_ABSTAIN_BELOW", "0.99")),
+            mode=os.getenv("INBREV_MODE", "admin"),
         )
+
+
+CLINICAL_MODES = ("clinical-triage", "clinical_triage")
+CLINICAL_DISCLAIMER = (
+    "Research prototype, not a medical device, not certified. A clinical mode "
+    "would require an MDR/MDSW conformity assessment before any real use."
+)
+
+# Prefix match at a word start: "brustschmerz" also hits "Brustschmerzen",
+# but "mund" never hits "Mundart" or "gesund".
+_ESI_TERMS = {
+    1: [
+        "bewusstlos", "ohnmacht", "kollabiert", "kann nicht mehr atmen", "keine luft",
+        "perte de connaissance", "évanoui", "perso conoscenza", "svenut", "unconscious",
+        "passed out", "suizid", "selbstmord", "suicid",
+    ],
+    2: [
+        "brustschmerz", "schmerz in der brust", "schmerzen in der brust", "druck auf der brust",
+        "engegefühl", "atemnot", "kurzatmig", "douleur thoracique", "dolore al petto",
+        "dolore toracico", "chest pain", "lähmung", "gelähmt", "paralys", "paralisi",
+        "hängender mundwinkel", "hängende mundwinkel", "mundwinkel hängt",
+        "spricht verwaschen", "starke blutung", "blutet stark", "allergische reaktion",
+        "zunge schwillt", "anaphylax",
+    ],
+    3: [
+        "hohes fieber", "fieber über 39", "starke kopfschmerzen", "forte fièvre",
+        "febbre alta", "high fever", "severe headache", "krampfanfall", "krampft",
+        "convulsion", "seizure",
+    ],
+}
+_ESI_RX = {
+    level: re.compile(r"\b(?:" + "|".join(re.escape(t) for t in terms) + ")", re.IGNORECASE)
+    for level, terms in _ESI_TERMS.items()
+}
+_ESI_TEXT = {
+    1: ("resuscitation", "immediate", "Keyword match for ESI level 1 wording."),
+    2: ("emergency", "emergent", "Keyword match for ESI level 2 wording."),
+    3: ("urgent", "urgent", "Keyword match for ESI level 3 wording, or flagged without a keyword match."),
+}
+
+
+def classify_clinical_urgency(text: str, safety_flag: bool) -> dict:
+    """Keyword-based ESI-style urgency hint for the optional research mode.
+
+    Only called with --mode clinical-triage (off by default). Not validated, not
+    certified, not for patient care. The default admin mode never ranks severity.
+    """
+    base = {"status": "research_prototype", "disclaimer": CLINICAL_DISCLAIMER}
+    if not safety_flag:
+        return {
+            **base,
+            "esi_level": 5,
+            "category": "routine",
+            "urgency": "none",
+            "matched": None,
+            "description": "No safety flag; no urgency hint.",
+        }
+    level, matched = 3, None
+    for lvl in (1, 2, 3):
+        m = _ESI_RX[lvl].search(text)
+        if m:
+            level, matched = lvl, m.group()
+            break
+    cat, urg, desc = _ESI_TEXT[level]
+    return {
+        **base,
+        "esi_level": level,
+        "category": cat,
+        "urgency": urg,
+        "matched": matched,
+        "description": desc,
+    }
 
 
 def _vote(values: list) -> tuple[object, float]:
@@ -157,8 +232,14 @@ def assemble(
         if dq:
             evidence.append({"field": "deadline", "quote": dq})
 
+    is_clinical_triage = opts.mode.lower() in CLINICAL_MODES
+    clinical_triage = (
+        classify_clinical_urgency(text, safety) if is_clinical_triage else None
+    )
+
     result = {
         "message_id": message.get("message_id") or "",
+        "mode": "clinical-triage" if is_clinical_triage else "admin",
         "language": language,
         "route": route,
         "deadline": deadline,
@@ -170,6 +251,7 @@ def assemble(
         "patient": patient,
         "fields": fields,
         "evidence": evidence,
+        "clinical_triage": clinical_triage,
         "reply_draft": None
         if (safety or abstain)
         else reply_draft(route, language, patient, fields),

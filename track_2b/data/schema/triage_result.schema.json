@@ -77,6 +77,25 @@
     "reply_draft": {
       "type": ["string", "null"],
       "description": "Only for administrative routes (appointment, prescription_request receipt, certificate_request, billing). Never for clinical content."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["admin", "clinical-triage"],
+      "description": "admin (default): administrative routing, no severity ranking. clinical-triage: optional, off-by-default research mode; not a medical device, not certified."
+    },
+    "clinical_triage": {
+      "type": ["object", "null"],
+      "description": "Only in the research mode clinical-triage: keyword-based ESI-style urgency hint. Not validated, not for patient care. Null in admin mode.",
+      "properties": {
+        "status": { "type": "string", "const": "research_prototype" },
+        "disclaimer": { "type": "string" },
+        "esi_level": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "category": { "type": "string" },
+        "urgency": { "type": "string" },
+        "matched": { "type": ["string", "null"] },
+        "description": { "type": "string" }
+      },
+      "additionalProperties": false
     }
   }
 }

@@ -193,3 +193,35 @@ def test_thinking_prefix_and_redaction():
     raw = "<|inner_prefix|>Let me think.<|inner_suffix|>" + sample()
     assert check_sample(raw, "stop", TEXT, date(2026, 10, 1)).route == "insurer"
     assert "abc123" not in redact("Rate limit exceeded for api_key: abc123. Retry later")
+
+
+def test_degraded_ocr_abstention():
+    # Test light degradation preserves fuzzy matching
+    noisy_light = "Sehr geehrte Damen und Herren, bitte um Kostengutsprache fur Anna Meier."
+    status, span = find_quote("Kostengutsprache", noisy_light)
+    assert status in ["exact", "normalized", "fuzzy"]
+
+    # Test severe OCR failure -> quote not grounded -> drops field -> abstains safely
+    noisy_heavy = "S..r g##hrte D..en, [unleserlich] b!tte K0stng... 0xFD4"
+    deg_msg = {
+        "message_id": "deg-1",
+        "subject": "Fax",
+        "body": noisy_heavy,
+        "received_at": "2026-10-01T08:00",
+    }
+    # Model returns an ungrounded route quote and a placeholder value
+    hallucinated_sample = sample(
+        route_quote="Kostengutsprache",
+        extracted=[
+            {"field": "patient.name", "value": "Anna Meier", "quote": "Anna Meier"},
+            {"field": "patient.ahv_number", "value": "null", "quote": "null"},
+        ],
+    )
+    s = check_sample(hallucinated_sample, "stop", noisy_heavy, date(2026, 10, 1))
+    # Ungrounded quotes and placeholder values are dropped
+    assert s.extracted == []
+    assert s.route_quote is None
+    # assemble abstains due to no verifiable evidence for route
+    out = assemble(deg_msg, [hallucinated_sample] * 3, ["stop"] * 3, Options(), {})["result"]
+    assert out["abstain"] is True
+    assert out["patient"]["name"] is None

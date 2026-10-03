@@ -97,4 +97,4 @@ Every `quote` must be a substring of `subject + "\n" + body`; the evaluation che
 
 ## Licence
 
-Data committed here: CDLA-Permissive-2.0. Larger working files (scans, model outputs) are kept outside the repository and passed in via `DATA_DIR`.
+Data: CDLA-Permissive-2.0. Larger working files (scans, model outputs) are kept outside the repository and passed in via `DATA_DIR`.

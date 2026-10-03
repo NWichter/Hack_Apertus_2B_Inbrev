@@ -6,8 +6,10 @@ what the numbers say.
 - #strong[Team:] Apertool --- Niklas Wichter
 - #strong[Demo:] \[TBD: link to video\]
 
-#emph[Draft of 1 October 2026. Values marked \[TBD\] are not measured
-yet; numbers without that mark are measured or cited.]
+#emph[Draft of 4 October 2026. Values marked \[TBD\] are not measured
+yet; numbers without that mark are measured or cited. Measured numbers
+come from synthetic data whose labels have not yet been reviewed by a
+person.]
 
 = 1. Summary
 <summary>
@@ -30,8 +32,11 @@ case fields, and backs every decision with a verbatim quote from the
 message. It never assesses clinical urgency: a message that may describe
 acute symptoms is flagged and handed to a person at once, and a message
 the model is unsure about goes to a person instead of being guessed.
-Headline result: \[TBD: safety recall and "today" recall at coverage X
-%, route macro-F1, CHF per 1,000 messages\].
+Headline result on 180 synthetic messages (labels not yet reviewed by a
+person): with Apertus 8B, Inbrev finds 13 of 16 safety cases (recall
+0.81, 95 % CI 0.57--0.93) and 43 of 50 "today" deadlines (0.86) while 96
+% of the messages run without a person; route macro-F1 is 0.85. Apertus
+70B finds 15 of 16 safety cases. \[TBD: CHF per 1,000 messages.\]
 
 = 2. Architecture
 <architecture>
@@ -107,11 +112,13 @@ the model auditable @riedemann2024open@apertus2025.
   , kind: table
   )
 
-The unit tests and the non-LLM evaluation run in the image with
-`docker run --network none`. \[TBD: log of a full triage run with local
-GGUF weights and no network.\] For variant c), a blog calculation puts a
-Swiss API at CHF 0.00335 per request of 3,000 input and 500 output
-tokens @pupel2026sovereign.
+The unit tests and the non-LLM baselines run in the image with
+`docker run --network none` (`scripts/run_offline_test.sh` or `.ps1`\;
+the log also records that the container cannot open an outbound
+connection). No language model is called in that check. \[TBD: log of a
+full triage run with local GGUF weights and no network.\] For variant
+c), a blog calculation puts a Swiss API at CHF 0.00335 per request of
+3,000 input and 500 output tokens @pupel2026sovereign.
 
 = 3. Use of Apertus
 <use-of-apertus>
@@ -183,37 +190,70 @@ quotes found in the message) @rashkin2023attribution, tokens, latency
 and cost; all broken down by language, writing level, channel and
 generator.
 
-Baselines without a language model, on the synthetic set v0 (n = 180;
-TF-IDF with five-fold cross-validation):
+Results on the synthetic set v0 (n = 180; 16 safety cases, 50 "today"
+deadlines; labels not yet reviewed by a person). Baselines without a
+language model; TF-IDF with five-fold cross-validation. Both Apertus
+rows run the full pipeline (schema, three samples at T = 0.7, checks,
+vote), prompt p2, on the Hack Apertus endpoint on 3 October 2026.
+Coverage is the share of messages Inbrev handles without "a person
+decides".
 
 #figure(
   align(center)[#table(
-    columns: (31.62%, 8.55%, 11.97%, 11.11%, 13.68%, 11.97%, 11.11%),
-    align: (auto,auto,auto,auto,auto,auto,auto,),
+    columns: (30.16%, 7.94%, 11.11%, 10.32%, 12.7%, 11.11%, 10.32%, 6.35%),
+    align: (auto,auto,auto,auto,auto,auto,auto,auto,),
     table.header([Setup], [Route acc.], [Route macro-F1], [Safety
-      recall], [Safety precision], ["Today" recall], [Deadline acc.],),
+      recall], [Safety precision], ["Today" recall], [Deadline
+      acc.], [Coverage],),
     table.hline(),
-    [Majority class], [0.14], [0.03], [0.00], [--], [0.00], [0.37],
+    [Majority
+    class], [0.14], [0.03], [0.00], [--], [0.00], [0.37], [1.00],
     [Keyword rules + lexical safety
-    net], [0.79], [0.76], [0.44], [0.32], [0.76], [0.68],
+    net], [0.79], [0.76], [0.44], [0.32], [0.76], [0.68], [1.00],
     [TF-IDF + logistic
-    regression], [0.83], [0.82], [0.13], [1.00], [0.66], [0.68],
+    regression], [0.83], [0.82], [0.13], [1.00], [0.66], [0.68], [1.00],
     [Apertus 8B, one sample, no
-    checks], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]],
-    [Apertus
-    70B], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]],
+    checks], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]],
     [#strong[Inbrev] (8B, schema, checks,
-    vote)], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]],
+    vote)], [0.88], [0.85], [0.81], [0.46], [0.86], [0.82], [0.96],
+    [Inbrev with Apertus
+    70B], [0.91], [0.89], [0.94], [0.50], [0.94], [0.85], [0.94],
   )]
   , kind: table
   )
 
-The baselines already route 83 % of the synthetic messages correctly, so
-the route alone does not justify a language model on this set. They fail
-where it matters: they find at most 44 % of the safety cases. For
-context only, not as a direct comparison: clinical emergency detection
-with a triage manual reached a sensitivity of 0.98 @liu2025emergency,
-and a deployed acuity classifier ran at 0.63 @yang2024prioritization.
+With 95 % Wilson intervals: safety recall 13/16 = 0.81 \[0.57, 0.93\]
+for 8B and 15/16 = 0.94 \[0.72, 0.99\] for 70B, against 7/16 = 0.44
+\[0.23, 0.67\] for the keyword rules; route accuracy 159/180 = 0.88
+\[0.83, 0.92\] for 8B, 163/180 = 0.91 \[0.85, 0.94\] for 70B and 143/180
+\= 0.79 \[0.73, 0.85\] for the keyword rules. With 16 safety cases the
+intervals are wide, and the 8B--70B difference is not significant. The
+safety net is tuned for recall: about half of the flags are false alarms
+(13 of 28 for 8B), which costs a doctor a glance, not a missed case.
+Mean latency per message (three samples in one request) was 3.0 s for 8B
+and 10.7 s for 70B on the shared endpoint.
+
+The baselines already route 79--83 % of the synthetic messages
+correctly, so the route alone does not justify a language model on this
+set. They fail where it matters: they find at most 44 % of the safety
+cases. For context only, not as a direct comparison: clinical emergency
+detection with a triage manual reached a sensitivity of 0.98
+@liu2025emergency, and a deployed acuity classifier ran at 0.63
+@yang2024prioritization.
+
+Two small sets are reported separately because they are too small to
+rank systems. On the 12 handwritten seed messages (1 safety case),
+Inbrev with 8B routes 10 of 12 correctly (0.83, macro-F1 0.82), the
+keyword rules 11 of 12. On 30 further synthetic Swiss practice messages
+(4 safety cases; `data/ood/`, labels not reviewed), 8B reaches route
+accuracy 0.77 (macro-F1 0.76), 70B 0.90, the keyword rules 0.83; all
+three find the 4 safety cases, and deadline accuracy is low for all
+(0.47--0.53).
+
+A unit test covers the OCR failure path: when a fax is so degraded that
+no quote can be found in the text, the checks drop every value and
+Inbrev abstains instead of filling fields. \[TBD: OCR measurement on
+rendered fax pages.\]
 
 \[TBD: Figure 2, coverage--accuracy curve; breakdown by language and
 writing level; operation and cost per message on GPU and CPU; time to
@@ -230,10 +270,17 @@ sort 30 messages by hand vs.~with Inbrev (n = 1, self-experiment).\]
   reprioritises by clinical criticality based on patient data qualifies
   as medical device software @mdcg2025software\; in Switzerland
   classification follows Annex VIII of the EU MDR
-  @schweiz2020mepv@eu2017mdr. Inbrev therefore never orders by severity:
-  the safety flag only takes a message out of automation. The final
-  classification depends on the written intended purpose; this is not
-  legal advice.
+  @schweiz2020mepv@eu2017mdr. Inbrev therefore never orders by severity
+  in its default mode: the safety flag only takes a message out of
+  automation. The final classification depends on the written intended
+  purpose; this is not legal advice.
+- #strong[Optional research mode.] `--mode clinical-triage` (off by
+  default) adds a keyword-based urgency hint in the style of the
+  Emergency Severity Index (levels 1--5) to flagged messages. It is a
+  research prototype, not a medical device and not certified; it has not
+  been validated. Any clinical use would require an MDR/MDSW conformity
+  assessment first. All numbers in this report use the default
+  administrative mode.
 - Enforced formats can cost reasoning quality @tam2024format\; three
   samples triple the output tokens.
 - No measurement on real practice data; US inbox figures transfer only

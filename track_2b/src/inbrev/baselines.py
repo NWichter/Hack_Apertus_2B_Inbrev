@@ -92,7 +92,7 @@ def tfidf_logreg(gold: list[dict], folds: int = 5, seed: int = 2026) -> list[dic
     }
     preds: dict[str, list] = {k: [None] * len(gold) for k in targets}
     for key, y in targets.items():
-        if min(Counter(y).values()) < 2:
+        if len(set(y)) < 2 or min(Counter(y).values()) < 2:
             preds[key] = [Counter(y).most_common(1)[0][0]] * len(gold)
             continue
         n_splits = min(folds, min(Counter(y).values()))

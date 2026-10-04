@@ -1,0 +1,18 @@
+start 2026-10-04T19:57:26Z git 791e503
+--- gold p3 19:57:27
+{"written": 180, "errors": 0, "out": "runs\\p3\\gold-p3-8b.jsonl"}
+--- gold p2 19:59:03
+{"written": 180, "errors": 0, "out": "runs\\p3\\gold-p2-8b.jsonl"}
+--- swiss p3 20:00:44
+{"written": 30, "errors": 0, "out": "runs\\p3\\swiss-p3-8b.jsonl"}
+--- swiss p2 20:01:02
+{"written": 30, "errors": 0, "out": "runs\\p3\\swiss-p2-8b.jsonl"}
+--- nemotron p3 20:01:23
+{"written": 42, "errors": 0, "out": "runs\\p3\\nemotron-p3-8b.jsonl"}
+--- nemotron p2 20:01:51
+{"written": 42, "errors": 0, "out": "runs\\p3\\nemotron-p2-8b.jsonl"}
+--- grascco p3 20:02:20
+{"written": 40, "errors": 0, "out": "runs\\p3\\grascco-p3-8b.jsonl"}
+--- grascco p2 20:04:21
+{"written": 40, "errors": 0, "out": "runs\\p3\\grascco-p2-8b.jsonl"}
+done 2026-10-04T20:05:58Z

@@ -1,0 +1,6 @@
+start 2026-10-04T20:22:35Z 70B p3
+--- gold p3 70b 20:22:36
+{"written": 180, "errors": 0, "out": "runs\\p3\\gold-p3-70b.jsonl"}
+--- nemotron p3 70b 20:31:55
+{"written": 42, "errors": 0, "out": "runs\\p3\\nemotron-p3-70b.jsonl"}
+done 2026-10-04T20:34:23Z

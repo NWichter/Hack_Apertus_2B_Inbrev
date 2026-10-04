@@ -1,0 +1,503 @@
+[
+ {
+  "batch": 1,
+  "attempt": 0,
+  "specs": [
+   "dev-001",
+   "dev-002",
+   "dev-003",
+   "dev-004",
+   "dev-005"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3273,
+  "completion_tokens": 3355,
+  "reasoning_tokens": 0,
+  "cost": 0.0090175,
+  "seconds": 17.6,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 2,
+  "attempt": 0,
+  "specs": [
+   "dev-006",
+   "dev-007",
+   "dev-008",
+   "dev-009",
+   "dev-010"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3251,
+  "completion_tokens": 3210,
+  "reasoning_tokens": 0,
+  "cost": 0.0086875,
+  "seconds": 18.8,
+  "returned": 5,
+  "failed": {
+   "dev-006": [
+    "fiction: e-mail domain not fictitious: sandra.morel@example.ch"
+   ],
+   "dev-008": [
+    "fiction: e-mail domain not fictitious: mario.rossi@example.ch"
+   ],
+   "dev-010": [
+    "evidence: quote not verbatim (fields.referral_reason): 'Weiterbehandlung nach Spitalaustritt, COPD Exazerbation'"
+   ]
+  }
+ },
+ {
+  "batch": 2,
+  "attempt": 1,
+  "specs": [
+   "dev-006",
+   "dev-008",
+   "dev-010"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2943,
+  "completion_tokens": 1637,
+  "reasoning_tokens": 0,
+  "cost": 0.0050729,
+  "seconds": 10.3,
+  "returned": 3,
+  "failed": {}
+ },
+ {
+  "batch": 3,
+  "attempt": 0,
+  "specs": [
+   "dev-011",
+   "dev-012",
+   "dev-013",
+   "dev-014",
+   "dev-015"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3248,
+  "completion_tokens": 2765,
+  "reasoning_tokens": 0,
+  "cost": 0.007707,
+  "seconds": 20.7,
+  "returned": 5,
+  "failed": {
+   "dev-014": [
+    "evidence: quote not verbatim (fields.sender_institution): 'Praxis Dr. med. Thomas Weber, Kardiologie'"
+   ]
+  }
+ },
+ {
+  "batch": 3,
+  "attempt": 1,
+  "specs": [
+   "dev-014"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2483,
+  "completion_tokens": 655,
+  "reasoning_tokens": 0,
+  "cost": 0.0026825,
+  "seconds": 4.0,
+  "returned": 1,
+  "failed": {
+   "dev-014": [
+    "evidence: quote not verbatim (fields.report_type): 'kardiologischer Befundbericht'"
+   ]
+  }
+ },
+ {
+  "batch": 3,
+  "attempt": 2,
+  "specs": [
+   "dev-014"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2477,
+  "completion_tokens": 620,
+  "reasoning_tokens": 0,
+  "cost": 0.0026025,
+  "seconds": 5.2,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 4,
+  "attempt": 0,
+  "specs": [
+   "dev-016",
+   "dev-017",
+   "dev-018",
+   "dev-019",
+   "dev-020"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3248,
+  "completion_tokens": 3402,
+  "reasoning_tokens": 0,
+  "cost": 0.0091084,
+  "seconds": 19.5,
+  "returned": 5,
+  "failed": {
+   "dev-018": [
+    "evidence: quote not verbatim (safety_flag): 'stark i Brustschmerz links, drückt extrem und geht bis in de Arm'"
+   ],
+   "dev-020": [
+    "evidence: quote not verbatim (route): 'Lettera di dimissione della Sig.ra Giulia Colombo'",
+    "evidence: quote not verbatim (fields.referral_reason): 'Follow-up dopo scompenso cardiaco acuto'"
+   ]
+  }
+ },
+ {
+  "batch": 4,
+  "attempt": 1,
+  "specs": [
+   "dev-018",
+   "dev-020"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2754,
+  "completion_tokens": 1022,
+  "reasoning_tokens": 0,
+  "cost": 0.0036254,
+  "seconds": 4.4,
+  "returned": 2,
+  "failed": {
+   "dev-018": [
+    "fiction: e-mail domain not fictitious: thomas.berger@example.ch"
+   ],
+   "dev-020": [
+    "evidence: quote not verbatim (fields.referral_reason): 'Follow-up dopo scompenso cardiaco acuto'"
+   ]
+  }
+ },
+ {
+  "batch": 4,
+  "attempt": 2,
+  "specs": [
+   "dev-018",
+   "dev-020"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2716,
+  "completion_tokens": 1139,
+  "reasoning_tokens": 0,
+  "cost": 0.0038638,
+  "seconds": 4.7,
+  "returned": 2,
+  "failed": {}
+ },
+ {
+  "batch": 5,
+  "attempt": 0,
+  "specs": [
+   "dev-021",
+   "dev-022",
+   "dev-023",
+   "dev-024",
+   "dev-025"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3243,
+  "completion_tokens": 2362,
+  "reasoning_tokens": 0,
+  "cost": 0.0068179,
+  "seconds": 9.9,
+  "returned": 5,
+  "failed": {
+   "dev-023": [
+    "evidence: quote not verbatim (fields.appointment_action): 'einen Termin ... machen'"
+   ]
+  }
+ },
+ {
+  "batch": 5,
+  "attempt": 1,
+  "specs": [
+   "dev-023"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2479,
+  "completion_tokens": 484,
+  "reasoning_tokens": 0,
+  "cost": 0.0023043,
+  "seconds": 4.7,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 6,
+  "attempt": 0,
+  "specs": [
+   "dev-026",
+   "dev-027",
+   "dev-028",
+   "dev-029",
+   "dev-030"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3250,
+  "completion_tokens": 2721,
+  "reasoning_tokens": 0,
+  "cost": 0.0076112,
+  "seconds": 13.4,
+  "returned": 5,
+  "failed": {
+   "dev-026": [
+    "evidence: quote not verbatim (secondary_route): \"gleich en Termin für d'Konsultation abmache\""
+   ]
+  }
+ },
+ {
+  "batch": 6,
+  "attempt": 1,
+  "specs": [
+   "dev-026"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2492,
+  "completion_tokens": 506,
+  "reasoning_tokens": 0,
+  "cost": 0.0023592,
+  "seconds": 2.9,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 7,
+  "attempt": 0,
+  "specs": [
+   "dev-031",
+   "dev-032",
+   "dev-033",
+   "dev-034",
+   "dev-035"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3234,
+  "completion_tokens": 2741,
+  "reasoning_tokens": 0,
+  "cost": 0.0076472,
+  "seconds": 11.9,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 8,
+  "attempt": 0,
+  "specs": [
+   "dev-036",
+   "dev-037",
+   "dev-038",
+   "dev-039",
+   "dev-040"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3281,
+  "completion_tokens": 2808,
+  "reasoning_tokens": 0,
+  "cost": 0.0078181,
+  "seconds": 11.9,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 9,
+  "attempt": 0,
+  "specs": [
+   "dev-041",
+   "dev-042",
+   "dev-043",
+   "dev-044",
+   "dev-045"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3266,
+  "completion_tokens": 2584,
+  "reasoning_tokens": 0,
+  "cost": 0.0073178,
+  "seconds": 12.0,
+  "returned": 5,
+  "failed": {
+   "dev-042": [
+    "evidence: quote not verbatim (fields.topic): 'transfert dossier medical complet'",
+    "fiction: phone number outside the 000 block: 021 555 00 12",
+    "fiction: phone number outside the 000 block: 021 555 00 12"
+   ],
+   "dev-044": [
+    "evidence: quote not verbatim (fields.referral_reason): 'rezidivierende Magenbeschwerden'",
+    "fiction: phone number outside the 000 block: 031 333 00 44"
+   ],
+   "dev-045": [
+    "evidence: quote not verbatim (fields.topic): 'ärztlicher Bericht über Herrn Markus Keller'",
+    "fiction: phone number outside the 000 block: 062 888 00 77"
+   ]
+  }
+ },
+ {
+  "batch": 9,
+  "attempt": 1,
+  "specs": [
+   "dev-042",
+   "dev-044",
+   "dev-045"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3073,
+  "completion_tokens": 1792,
+  "reasoning_tokens": 0,
+  "cost": 0.0054789,
+  "seconds": 10.0,
+  "returned": 3,
+  "failed": {}
+ },
+ {
+  "batch": 10,
+  "attempt": 0,
+  "specs": [
+   "dev-046",
+   "dev-047",
+   "dev-048",
+   "dev-049",
+   "dev-050"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3225,
+  "completion_tokens": 2384,
+  "reasoning_tokens": 0,
+  "cost": 0.0068573,
+  "seconds": 9.2,
+  "returned": 5,
+  "failed": {
+   "dev-048": [
+    "evidence: quote not verbatim (patient.name): 'Patient Peter Meier'",
+    "evidence: quote not verbatim (fields.topic): 'Ruckmeldung bezuglich des Patienten'"
+   ],
+   "dev-049": [
+    "evidence: quote not verbatim (fields.topic): 'Termin fur mini Mueter ... Vorsorgeuntersuchig'"
+   ],
+   "dev-050": [
+    "evidence: quote not verbatim (patient.name): 'Herr Andreas Hofmann'",
+    "evidence: quote not verbatim (fields.sender_institution): 'Radiologie Roth'"
+   ]
+  }
+ },
+ {
+  "batch": 10,
+  "attempt": 1,
+  "specs": [
+   "dev-048",
+   "dev-049",
+   "dev-050"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2973,
+  "completion_tokens": 1746,
+  "reasoning_tokens": 0,
+  "cost": 0.0053277,
+  "seconds": 7.9,
+  "returned": 3,
+  "failed": {
+   "dev-048": [
+    "evidence: quote not verbatim (patient.name): 'Patient Peter Meier'"
+   ]
+  }
+ },
+ {
+  "batch": 10,
+  "attempt": 2,
+  "specs": [
+   "dev-048"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2471,
+  "completion_tokens": 453,
+  "reasoning_tokens": 0,
+  "cost": 0.0022321,
+  "seconds": 3.6,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 11,
+  "attempt": 0,
+  "specs": [
+   "dev-051",
+   "dev-052",
+   "dev-053",
+   "dev-054",
+   "dev-055"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3224,
+  "completion_tokens": 2210,
+  "reasoning_tokens": 0,
+  "cost": 0.006474,
+  "seconds": 9.3,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 12,
+  "attempt": 0,
+  "specs": [
+   "dev-056",
+   "dev-057",
+   "dev-058",
+   "dev-059",
+   "dev-060"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3221,
+  "completion_tokens": 2856,
+  "reasoning_tokens": 0,
+  "cost": 0.0078937,
+  "seconds": 13.6,
+  "returned": 5,
+  "failed": {}
+ }
+]

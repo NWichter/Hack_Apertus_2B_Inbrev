@@ -72,6 +72,41 @@ GRID_45 = {
     "ABSTAIN_N": 2,
 }
 
+# Development set for prompt work (seed 4049, prefix "dev"): "other" oversampled.
+# Never used for reported test numbers; test sets stay gold v0, Swiss, Nemotron, GraSCCo.
+GRID_DEV = {
+    "ROUTE_COUNTS": {
+        "report_received": 6,
+        "appointment": 6,
+        "prescription_request": 5,
+        "insurer": 6,
+        "referral_in": 4,
+        "certificate_request": 6,
+        "billing": 4,
+        "spam_marketing": 3,
+        "other": 20,
+    },
+    "SAFETY_SLOTS": {
+        "acute_explicit": {"other": 3, "appointment": 2},
+        "acute_incidental": {
+            "appointment": 1,
+            "prescription_request": 1,
+            "certificate_request": 1,
+            "other": 1,
+        },
+        "medical_trap": {
+            "report_received": 1,
+            "insurer": 1,
+            "certificate_request": 1,
+            "other": 2,
+        },
+    },
+    "LANG_COUNTS": {"de": 33, "fr": 15, "it": 9, "en": 3},
+    "MIXED_N": 6,
+    "ABSTAIN_N": 3,
+}
+PRESETS = {"45": GRID_45, "dev": GRID_DEV}
+
 PROMPT_EDITS = [
     (
         '("PS: since this morning my chest\n  feels tight, probably nothing")',
@@ -121,7 +156,7 @@ def build_prompt() -> str:
 
 
 def cmd_grid(args: argparse.Namespace) -> None:
-    for k, v in GRID_45.items():
+    for k, v in PRESETS[args.preset].items():
         setattr(make_grid, k, v)
     specs = make_grid.build(args.seed)
     for s in specs:
@@ -338,6 +373,7 @@ def main() -> None:
     g = sub.add_parser("grid")
     g.add_argument("--seed", type=int, default=2027)
     g.add_argument("--prefix", default="nem")
+    g.add_argument("--preset", choices=sorted(PRESETS), default="45")
     g.add_argument("--out", required=True)
     r = sub.add_parser("generate")
     r.add_argument("--grid", required=True)

@@ -154,8 +154,9 @@ All messages, people, practices and identifiers are fictional; AHV
 numbers have a valid format and an invalid check digit. No real patient
 data is used. Licence: CDLA-Permissive-2.0.
 
-- #strong[Seed:] 12 handwritten messages (German, French, Italian;
-  e-mail, fax, web form) with gold labels, in the repository.
+- #strong[Seed:] 12 messages (German, French, Italian; e-mail, fax,
+  web form) with gold labels, in the repository, written one by one by
+  Claude (`claude-opus-5-5`), not by a person; development set.
 - #strong[Synthetic part (v0):] 180 messages. Labels are fixed by a
   seeded grid #emph[before] any text exists (route, deadline, assignee,
   safety flag, abstain, language, channel, writing level, mixed topics,
@@ -168,6 +169,10 @@ data is used. Licence: CDLA-Permissive-2.0.
   acute; 9 genuinely ambiguous messages. A validator checks schema,
   verbatim quotes, date consistency, invalid AHV check digits,
   fictitious domains and phone numbers, and near-duplicates.
+- #strong[Swiss practice set:] 30 messages (`data/ood/`) written by an
+  Antigravity (Gemini) session, edited by Codex (`gpt-6.1-sol`); labels
+  not reviewed. External Hugging Face datasets are used only for local
+  stress tests and give no reported number (`data/README.md`).
 - #strong[Planned:] about 60 handwritten, deliberately messy messages
   and about 60 fax pages rendered with skew, noise and stamps for the
   OCR path; at least 60 messages relabelled blind after 48 hours to
@@ -229,7 +234,8 @@ for 8B and 15/16 = 0.94 \[0.72, 0.99\] for 70B, against 7/16 = 0.44
 \= 0.79 \[0.73, 0.85\] for the keyword rules. With 16 safety cases the
 intervals are wide, and the 8B--70B difference is not significant. The
 safety net is tuned for recall: about half of the flags are false alarms
-(13 of 28 for 8B), which costs a doctor a glance, not a missed case.
+(15 of 28 for 8B, 15 of 30 for 70B; all from the lexical net, none from
+the model), which costs a doctor a glance, not a missed case.
 Mean latency per message (three samples in one request) was 3.0 s for 8B
 and 10.7 s for 70B on the shared endpoint.
 
@@ -242,7 +248,7 @@ detection with a triage manual reached a sensitivity of 0.98
 @yang2024prioritization.
 
 Two small sets are reported separately because they are too small to
-rank systems. On the 12 handwritten seed messages (1 safety case),
+rank systems. On the 12 seed messages (1 safety case; prompt p1),
 Inbrev with 8B routes 10 of 12 correctly (0.83, macro-F1 0.82), the
 keyword rules 11 of 12. On 30 further synthetic Swiss practice messages
 (4 safety cases; `data/ood/`, labels not reviewed), 8B reaches route

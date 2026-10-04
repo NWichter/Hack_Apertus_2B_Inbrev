@@ -14,9 +14,10 @@ Sources (licence as stated on the dataset card, checked 2026-10-03):
   contains real, de-identified patient questions scraped from HealthCareMagic.
   Download only with --include-real-patient-text; never commit or redistribute.
 - portal_topics: PortalPal-AI/Portal-Messaging-Topics -- CC-BY-NC-4.0 (topic list only)
-- swiss_practice: data/ood/swiss_practice_inbox.jsonl -- synthetic, written with an
-  LLM coding assistant (not Apertus); fictitious people, organisations and domains;
-  labels not yet reviewed by a person
+- swiss_practice: data/ood/swiss_practice_inbox.jsonl -- synthetic, written by an
+  Antigravity (Gemini) session on 2026-10-03 and edited by Codex (gpt-6.1-sol), not
+  Apertus; fictitious people and domains, four real organisation names remain (see
+  data/README.md); labels not yet reviewed by a person
 - degraded_ocr: synthetic OCR noise applied to the Swiss practice set
 """
 

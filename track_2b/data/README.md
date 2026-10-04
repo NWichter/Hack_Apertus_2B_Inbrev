@@ -1,7 +1,8 @@
 # Data
 
 All messages, people, practices, organisations and identifiers in the files committed to this
-folder are **fictional**. AHV numbers follow the official format but carry an invalid check digit
+folder are **fictional**, except four real Swiss organisation names in the Swiss practice set
+(see below). AHV numbers follow the official format but carry an invalid check digit
 on purpose. No real patient data is committed. Optional external datasets are downloaded into
 `external/` (gitignored, see below); one of them contains real, de-identified patient questions and
 is never committed or used for a reported number.
@@ -10,10 +11,20 @@ is never committed or used for a reported number.
 | ---------------------------------- | ------------------------------------------------------------------------------- |
 | `taxonomy.yaml`                    | Routes, deadlines, assignees and the safety flag, with definitions              |
 | `schema/triage_result.schema.json` | JSON Schema of one triage result (also used for constrained decoding)           |
-| `seed/messages.seed.jsonl`         | 12 handwritten seed messages (DE/FR/IT; e-mail, fax, web form) with gold labels |
+| `seed/messages.seed.jsonl`         | 12 seed messages (DE/FR/IT; e-mail, fax, web form) with gold labels, written by Claude (see below) |
 | `generation/PROMPT.md`             | Exact generation prompt for the synthetic part (both generators)                |
-| `ood/swiss_practice_inbox.jsonl`   | 30 synthetic Swiss practice messages (DE/FR/IT/EN), fictitious senders/domains  |
+| `ood/swiss_practice_inbox.jsonl`   | 30 synthetic Swiss practice messages (DE/FR/IT/EN), `.example` e-mail domains (see below) |
 | `external/` (gitignored)           | Optional external datasets, downloaded by `scripts/adapt_external_data.py`      |
+
+## Seed messages (`seed/`)
+
+The 12 seed messages were **not written by a person**. Claude (`claude-opus-5-5`, Claude Code agent
+session) wrote them and their labels on 2026-10-01 (about 14:20 CEST) as a Python script that
+emitted the JSONL file; on the same day it replaced a real insurer name with `KV Beispiel AG`. The
+value `source: handwritten_seed` means "written one by one, not from the grid", not "written by
+hand". Rows carry no generator, date or review fields. Evidence quotes were checked by script to
+be verbatim; no person has reviewed the labels. The seeds were used to develop prompt p2 and the
+checks, so they are a development set, not a held-out test set.
 
 ## Gold set (planned, ~300 messages)
 
@@ -38,7 +49,8 @@ generates nor labels any of them.
   ambiguous messages with `abstain: true` (9), safety cases (16 true: explicit and mentioned in
   passing) and 14 traps that sound medical but are not acute are fixed in the grid too.
 - **Two generator families, one prompt.** 90 messages by Claude (`claude-opus-5-5`), 90 by OpenAI
-  Codex (`gpt-5.5`). The split is balanced over all grid variables. The prompt is in
+  Codex (`gpt-5.5`). The split is roughly balanced over the grid variables (largest gaps: English
+  6 vs 3, safety cases 9 vs 7, Claude vs Codex). The prompt is in
   `generation/PROMPT.md`. Every row records `generator`, `generator_model`, `generated_at` and
   `prompt_version`.
 - **Checks.** `scripts/validate.py` checks each row against the grid and the schema. It also checks
@@ -58,9 +70,17 @@ stamp) for the OCR path. Dependencies: `scripts/requirements.txt`.
 
 ## Synthetic Swiss practice set (`ood/`)
 
-30 messages written with an LLM coding assistant (not Apertus) on 2026-10-02/03, then edited so
-that every organisation and e-mail domain is fictitious (`KV Beispiel AG`, `*.example`). Labels
-have not been reviewed by a person yet. Used as a small extra check, not as gold data.
+30 messages and labels written by an Antigravity agent session (Google Gemini, not Apertus) on
+2026-10-03 at about 06:54 CEST; no generation prompt or model version was recorded. On the evening
+of 2026-10-03 a Codex session (`gpt-6.1-sol`, per the git-ai authorship note of commit `fecd8d2`)
+replaced real e-mail domains and insurer, hospital and IV-office names with fictitious ones
+(`KV Beispiel AG`, `*.example`). Four rows still name real Swiss organisations: `swiss-prx-0010`
+(Sun Store pharmacy), `swiss-prx-0017` (Ospedale Regionale di Bellinzona e Valli),
+`swiss-prx-0021` (Labor Viollier AG) and `swiss-prx-0022` (Coop Vitality). Rows carry no
+generator, date or review fields and no `received_at`, so deadline labels cannot be checked
+against a time of receipt. Labels have not been reviewed by a person. Used as a small extra check,
+not as gold data. The unedited first version (real domains) exists only in the gitignored
+`external/` folder.
 
 ## External datasets (not in the repository)
 
@@ -76,6 +96,29 @@ route `other`). Licences as stated on the dataset cards (checked 2026-10-03):
 | `lavita/ChatDoctor-HealthCareMagic-100k`            | none declared       | Real de-identified patient questions; only with `--include-real-patient-text`, never committed |
 
 No number in the technical report is computed on these sets.
+
+## Sources and provenance
+
+Who or what made each dataset, why it is used and whether it is redistributed. Licences: see the
+table above and the Licence section below.
+
+| Dataset | Made by / source | Rows | In this repository? | Why it is used | Used for |
+| --- | --- | --- | --- | --- | --- |
+| Seed (`seed/`) | Claude `claude-opus-5-5`, 2026-10-01; labels by the same session | 12 | yes | Development set for prompt and checks | Seed row in the report (8B, prompt p1) |
+| Synthetic v0 (`$DATA_DIR/gold-set/merged.v0.jsonl`) | Grid `make_grid.py --seed 2026`; text by Claude `claude-opus-5-5` (90) and Codex `gpt-5.5` (90), 2026-10-01, prompt v0.1 | 180 | no (outside, `DATA_DIR`) | Main evaluation set; labels fixed before text | Main table (8B, 70B, baselines) |
+| Swiss practice set (`ood/`) | Antigravity (Gemini) session, 2026-10-03; edited by Codex `gpt-6.1-sol` | 30 | yes | Small extra check with practice-style mail | Swiss row in the report (8B, 70B, keywords) |
+| `sweatSmile/medical-symptom-triage` (https://huggingface.co/datasets/sweatSmile/medical-symptom-triage), split `validation` | Third party | 278 downloaded | no, local only | English symptom texts with urgency labels as an out-of-domain safety stress test | 10 cases sent to Apertus 8B on 2026-10-02 (local `runs/ood_eval_10`, plus one test call); no reported number |
+| `ale-dp/german-english-email-ticket-classification` (https://huggingface.co/datasets/ale-dp/german-english-email-ticket-classification) | Third party | 699 downloaded | no, local only | German support tickets for administrative wording | Baselines only; no reported number |
+| `PortalPal-AI/Portal-Messaging-Topics` (https://huggingface.co/datasets/PortalPal-AI/Portal-Messaging-Topics) | Third party | topic list | no, local only | Compare the route taxonomy with patient-portal topics | Not used in any run |
+| `lavita/ChatDoctor-HealthCareMagic-100k` (https://huggingface.co/datasets/lavita/ChatDoctor-HealthCareMagic-100k) | Third party | 250 downloaded | no, local only | Excluded from evaluation: real (de-identified) patient questions, no licence declared, English clinical Q&A rather than practice administration | No stored run shows it was sent to a model; no number |
+
+The four third-party files were downloaded on 2026-10-02 (about 21:00 CEST) from the `main`
+revision via `resolve/main` or the Hugging Face datasets-server rows API; no commit hash was
+recorded, so a new download may differ. A copy of `jonas-is-coding/german-emails` (2,576 rows) was
+downloaded at the same time; no script reads it and no number uses it. GraSCCo (Zenodo) was
+considered as a template source for `report_received` but has not been downloaded or used.
+Closed models (Claude, GPT-5.5/Codex, Gemini/Antigravity) were used only to write or edit test
+data and code during development; Inbrev itself calls only Apertus.
 
 ## Record format (`*.jsonl`)
 

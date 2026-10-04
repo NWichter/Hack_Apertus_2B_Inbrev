@@ -2,8 +2,8 @@ version: 0.2.0
 description: >
   Administrative routing taxonomy for the inbox of a Swiss general practice.
   Inbrev routes by handling path and administrative deadline only. It never
-  assesses clinical urgency; anything that may describe acute symptoms is
-  escalated to a human without further automation (safety_flag).
+  assesses clinical content; a message that may contain symptoms is excluded
+  from automation and handed to a person (safety_flag).
 
 routes:
   report_received:
@@ -54,8 +54,9 @@ deadlines:
 
 safety_flag:
   description: >
-    True if the message may describe acute symptoms (e.g. chest pain, breathing
-    problems, suicidal thoughts). Inbrev does not judge severity; it moves the
-    message to the top and hands it to a human immediately.
+    True if the message may contain symptoms that a clinician has to read
+    (e.g. chest pain, breathing problems, suicidal thoughts). Inbrev does not
+    judge them; the message leaves automation and goes to "A person decides",
+    with no ranking by severity.
 
 languages: [de, fr, it, en]

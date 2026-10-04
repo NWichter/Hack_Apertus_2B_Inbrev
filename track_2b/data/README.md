@@ -1,8 +1,7 @@
 # Data
 
 All messages, people, practices, organisations and identifiers in the files committed to this
-folder are **fictional**, except four real Swiss organisation names in the Swiss practice set
-(see below). AHV numbers follow the official format but carry an invalid check digit
+folder are **fictional**. AHV numbers follow the official format but carry an invalid check digit
 on purpose. No real patient data is committed. Optional external datasets are downloaded into
 `external/` (gitignored, see below); one of them contains real, de-identified patient questions and
 is never committed or used for a reported number.
@@ -13,7 +12,7 @@ is never committed or used for a reported number.
 | `schema/triage_result.schema.json` | JSON Schema of one triage result (also used for constrained decoding)           |
 | `seed/messages.seed.jsonl`         | 12 seed messages (DE/FR/IT; e-mail, fax, web form) with gold labels, written by Claude (see below) |
 | `generation/PROMPT.md`             | Exact generation prompt for the synthetic part (both generators)                |
-| `ood/swiss_practice_inbox.jsonl`   | 30 synthetic Swiss practice messages (DE/FR/IT/EN), `.example` e-mail domains (see below) |
+| `ood/swiss_practice_inbox.jsonl`   | 30 synthetic Swiss practice messages (DE/FR/IT/EN), fictitious organisations, per-row provenance (see below) |
 | `external/` (gitignored)           | Optional external datasets, downloaded by `scripts/adapt_external_data.py`      |
 
 ## Seed messages (`seed/`)
@@ -70,17 +69,23 @@ stamp) for the OCR path. Dependencies: `scripts/requirements.txt`.
 
 ## Synthetic Swiss practice set (`ood/`)
 
-30 messages and labels written by an Antigravity agent session (Google Gemini, not Apertus) on
-2026-10-03 at about 06:54 CEST; no generation prompt or model version was recorded. On the evening
-of 2026-10-03 a Codex session (`gpt-6.1-sol`, per the git-ai authorship note of commit `fecd8d2`)
+30 messages and labels written by an Antigravity CLI agent session (Google Gemini
+`gemini-3.8-flash`, not Apertus) on 2026-10-03 at 04:54 UTC (06:54 CEST); the generation prompt
+was not recorded. Evidence: the session transcript (`write_to_file` steps at 04:54:13Z and
+04:54:43Z) and the model name in the session's conversation database. On the evening of
+2026-10-03 a Codex session (`gpt-6.1-sol`, per the git-ai authorship note of commit `fecd8d2`)
 replaced real e-mail domains and insurer, hospital and IV-office names with fictitious ones
-(`KV Beispiel AG`, `*.example`). Four rows still name real Swiss organisations: `swiss-prx-0010`
-(Sun Store pharmacy), `swiss-prx-0017` (Ospedale Regionale di Bellinzona e Valli),
-`swiss-prx-0021` (Labor Viollier AG) and `swiss-prx-0022` (Coop Vitality). Rows carry no
-generator, date or review fields and no `received_at`, so deadline labels cannot be checked
-against a time of receipt. Labels have not been reviewed by a person. Used as a small extra check,
-not as gold data. The unedited first version (real domains) exists only in the gitignored
-`external/` folder.
+(`KV Beispiel AG`, `*.example`). On 2026-10-04 `scripts/annotate_swiss_set.py` replaced the last
+four real Swiss organisation names (a pharmacy chain, a hospital, a laboratory and a pharmacy;
+rows 0010, 0017, 0021, 0022) with fictitious ones and added a `provenance` object to every row:
+generator, tool, model, date, prompt status, each edit with model, date and evidence,
+`human_review: false` and the licence. Labels (route, deadline, assignee, safety flag, abstain)
+were not changed. Rows have no `received_at`, so deadline labels cannot be checked against a time
+of receipt. Labels have not been reviewed by a person. Used as a small extra check, not as gold
+data. The unedited first version (real domains) exists only in the gitignored `external/` folder.
+Results after the change (run of 2026-10-04, 60 model calls, prompt p2, three samples): route
+accuracy 23/30 = 0.77 (Apertus 8B), 27/30 = 0.90 (70B), 25/30 = 0.83 (keyword rules); all three
+take the 4 messages with clinical content out of automation; deadline accuracy 0.47 for both models.
 
 ## External datasets (not in the repository)
 
@@ -106,7 +111,7 @@ table above and the Licence section below.
 | --- | --- | --- | --- | --- | --- |
 | Seed (`seed/`) | Claude `claude-opus-5-5`, 2026-10-01; labels by the same session | 12 | yes | Development set for prompt and checks | Seed row in the report (8B, prompt p1) |
 | Synthetic v0 (`$DATA_DIR/gold-set/merged.v0.jsonl`) | Grid `make_grid.py --seed 2026`; text by Claude `claude-opus-5-5` (90) and Codex `gpt-5.5` (90), 2026-10-01, prompt v0.1 | 180 | no (outside, `DATA_DIR`) | Main evaluation set; labels fixed before text | Main table (8B, 70B, baselines) |
-| Swiss practice set (`ood/`) | Antigravity (Gemini) session, 2026-10-03; edited by Codex `gpt-6.1-sol` | 30 | yes | Small extra check with practice-style mail | Swiss row in the report (8B, 70B, keywords) |
+| Swiss practice set (`ood/`) | Antigravity (Gemini `gemini-3.8-flash`) session, 2026-10-03; edited by Codex `gpt-6.1-sol` (2026-10-03) and `scripts/annotate_swiss_set.py` (2026-10-04); per-row `provenance` | 30 | yes | Small extra check with practice-style mail | Swiss row in the report (8B, 70B, keywords) |
 | `sweatSmile/medical-symptom-triage` (https://huggingface.co/datasets/sweatSmile/medical-symptom-triage), split `validation` | Third party | 278 downloaded | no, local only | English symptom texts with urgency labels as an out-of-domain safety stress test | 10 cases sent to Apertus 8B on 2026-10-02 (local `runs/ood_eval_10`, plus one test call); no reported number |
 | `ale-dp/german-english-email-ticket-classification` (https://huggingface.co/datasets/ale-dp/german-english-email-ticket-classification) | Third party | 699 downloaded | no, local only | German support tickets for administrative wording | Baselines only; no reported number |
 | `PortalPal-AI/Portal-Messaging-Topics` (https://huggingface.co/datasets/PortalPal-AI/Portal-Messaging-Topics) | Third party | topic list | no, local only | Compare the route taxonomy with patient-portal topics | Not used in any run |

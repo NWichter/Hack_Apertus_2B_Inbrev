@@ -381,7 +381,7 @@
         <div class="empty">
           Load a demo inbox and press <b>Sort inbox</b>.<br /><br />Inbrev
           routes by handling path and administrative deadline. It never assesses
-          clinical urgency.
+          clinical content.
         </div>
       </section>
     </main>
@@ -405,14 +405,9 @@
       const ASSIGNEE = { mpa: "MPA", doctor: "Doctor", admin: "Admin" };
       const GROUPS = [
         [
-          "safety",
-          "Hand to a person now",
-          (it) => it.result && it.result.safety_flag,
-        ],
-        [
           "human",
           "A person decides",
-          (it) => it.result && !it.result.safety_flag && it.result.abstain,
+          (it) => it.result && (it.result.safety_flag || it.result.abstain),
         ],
         [
           "today",
@@ -503,7 +498,7 @@
         if (!r) return "";
         const c = [];
         if (r.safety_flag)
-          c.push('<span class="chip red">Possible acute symptoms</span>');
+          c.push('<span class="chip amber">Clinical content</span>');
         if (r.abstain && !r.safety_flag)
           c.push('<span class="chip amber">Unsure</span>');
         c.push(`<span class="chip">${ROUTE[r.route]}</span>`);
@@ -551,24 +546,27 @@
       }
 
       function highlight(text, evidence) {
-        const spans = [];
+        const cover = Array.from({ length: text.length }, () => []);
         for (const e of evidence || []) {
           if (!e.quote) continue;
-          let i = text.indexOf(e.quote);
+          const i = text.indexOf(e.quote);
           if (i < 0) continue;
-          spans.push([i, i + e.quote.length, e.field]);
+          for (let k = i; k < i + e.quote.length; k++)
+            if (!cover[k].includes(e.field)) cover[k].push(e.field);
         }
-        spans.sort((a, b) => a[0] - b[0] || b[1] - a[1]);
         let out = "",
           pos = 0;
-        for (const [s, e, f] of spans) {
-          if (s < pos) continue;
-          out +=
-            esc(text.slice(pos, s)) +
-            `<mark class="${f === "safety_flag" ? "safety" : ""}" title="${esc(f)}">${esc(text.slice(s, e))}</mark>`;
-          pos = e;
+        while (pos < text.length) {
+          const key = cover[pos].join(" · ");
+          let end = pos + 1;
+          while (end < text.length && cover[end].join(" · ") === key) end++;
+          const chunk = esc(text.slice(pos, end));
+          out += key
+            ? `<mark class="${cover[pos].includes("safety_flag") ? "safety" : ""}" title="${esc(key)}">${chunk}</mark>`
+            : chunk;
+          pos = end;
         }
-        return out + esc(text.slice(pos));
+        return out;
       }
 
       function renderDetail(it) {
@@ -584,7 +582,7 @@
         const nl = marked.indexOf("\n");
         let html = "";
         if (r && r.safety_flag)
-          html += `<div class="banner red"><b>Hand to a person now.</b> The message may describe acute symptoms. Inbrev does not assess severity; it only moves the message to the top.</div>`;
+          html += `<div class="banner amber"><b>Not processed by Inbrev: clinical content.</b> The message may contain symptoms, so a person reads it. Inbrev does not assess it and does not rank it.</div>`;
         else if (r && r.abstain)
           html += `<div class="banner amber"><b>A person decides.</b> ${esc((t.abstain_reasons || []).join("; "))}</div>`;
         if (it.status === "error")

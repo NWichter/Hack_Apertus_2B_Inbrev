@@ -58,12 +58,10 @@ def _sort_key(item: dict):
     r = item.get("result")
     if not r:
         return (5, 0, item["message"].get("received_at") or "")
-    if r["safety_flag"]:
+    if r["safety_flag"] or r["abstain"]:
         group = 0
-    elif r["abstain"]:
-        group = 1
     else:
-        group = 2 + DEADLINE_ORDER.get(r["deadline"], 2)
+        group = 1 + DEADLINE_ORDER.get(r["deadline"], 2)
     return (group, 0, item["message"].get("received_at") or "")
 
 

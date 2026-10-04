@@ -80,3 +80,19 @@ def test_baselines_and_score_on_seed():
         and s["safety"]["recall"] == 1
         and s["fields"]["ALL"]["f1"] == 1
     )
+
+
+def test_clinical_content_is_not_ranked_above_unsure_messages():
+    def item(mid, received, safety=False, abstain=False, deadline="none"):
+        return {
+            "message": {"message_id": mid, "received_at": received},
+            "result": {"safety_flag": safety, "abstain": abstain, "deadline": deadline},
+        }
+
+    items = [
+        item("today", "2026-10-01T07:00", deadline="today"),
+        item("clinical", "2026-10-01T09:00", safety=True),
+        item("unsure", "2026-10-01T08:00", abstain=True),
+    ]
+    order = [i["message"]["message_id"] for i in sorted(items, key=web._sort_key)]
+    assert order == ["unsure", "clinical", "today"]

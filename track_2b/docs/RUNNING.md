@@ -1,8 +1,9 @@
 # Running Inbrev
 
 Inbrev sorts the inbox of a Swiss general practice by handling route and administrative
-deadline. It never assesses clinical urgency: a message that may describe acute symptoms is
-flagged and handed to a person (`safety_flag`).
+deadline. It never assesses clinical content: a message that may contain symptoms is excluded
+from automation (`safety_flag`) and lands in "A person decides", together with messages Inbrev is
+unsure about, ordered by time of receipt and without any ranking by severity.
 
 ## Quick start (Docker)
 

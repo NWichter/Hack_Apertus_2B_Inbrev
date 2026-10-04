@@ -55,6 +55,17 @@ LLM_API_KEY — your API key
 3. Read its `README.md` and fill in `technical_report.md`.
 4. Make `make run` work from the root of the project, on a clean checkout.
 
+## Inbrev in short
+
+Inbrev sorts the inbox of a Swiss general practice with Apertus, on the practice's own hardware.
+Start: `make run` (endpoint from `track_2b/.env`) or `make run-local` (local Apertus GGUF, internal
+Docker network without internet); details in [`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md).
+
+| Mode | What it does |
+| --- | --- |
+| **Triage mode** (default) | Administrative sorting only: route, deadline, assignee, extracted fields with verbatim evidence. **Safety net:** a message that may contain symptoms is taken out of automation and goes to "A person decides" with deadline today, without any ranking by severity. All reported numbers use this mode. |
+| **Clinical research mode** (`INBREV_MODE=clinical-triage`, off by default) | Adds a keyword-based urgency hint to flagged messages. Research prototype, not a medical device, not validated. |
+
 The project website (`website/`) embeds the demo video (`website/media/video.mp4`, subtitles `website/media/video.vtt`).
 
 ## License

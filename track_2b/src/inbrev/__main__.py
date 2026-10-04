@@ -23,7 +23,12 @@ def main(argv: list[str] | None = None) -> None:
     t.add_argument("--temperature", type=float, default=None)
     t.add_argument("--no-schema", action="store_true")
     t.add_argument("--thinking", action="store_true")
-    t.add_argument("--mode", choices=["admin", "clinical-triage"], default=None, help="admin (default) or clinical-triage (optional research mode, not a medical device)")
+    t.add_argument(
+        "--mode",
+        choices=["admin", "clinical-triage"],
+        default=None,
+        help="admin (default) or clinical-triage (optional research mode, not a medical device)",
+    )
     t.add_argument("--limit", type=int, default=None)
     t.add_argument("--ids", nargs="*", default=None)
 
@@ -40,13 +45,44 @@ def main(argv: list[str] | None = None) -> None:
     r.add_argument("predictions", type=Path)
     r.add_argument("--out", type=Path, required=True)
     r.add_argument("--safety-mode", default=None, choices=["llm", "lexical", "or"])
-    r.add_argument("--mode", choices=["admin", "clinical-triage"], default=None, help="admin (default) or clinical-triage (optional research mode, not a medical device)")
+    r.add_argument(
+        "--mode",
+        choices=["admin", "clinical-triage"],
+        default=None,
+        help="admin (default) or clinical-triage (optional research mode, not a medical device)",
+    )
     r.add_argument("--abstain-below", type=float, default=None)
+
+    f = sub.add_parser(
+        "fetch-imap",
+        help="read new messages from an IMAP mailbox into a JSONL file (read-only by default)",
+    )
+    f.add_argument("--host", required=True)
+    f.add_argument("--port", type=int, default=None)
+    f.add_argument("--user", required=True)
+    f.add_argument(
+        "--password-env",
+        default="INBREV_IMAP_PASSWORD",
+        help="name of the variable that holds the password",
+    )
+    f.add_argument("--security", choices=["ssl", "starttls", "plain"], default="ssl")
+    f.add_argument("--folder", default="INBOX")
+    f.add_argument(
+        "--all", action="store_true", help="all messages, not only unseen ones"
+    )
+    f.add_argument("--mark-seen", action="store_true")
+    f.add_argument("--limit", type=int, default=None)
+    f.add_argument("--out", type=Path, required=True)
 
     s = sub.add_parser("serve", help="start the web app")
     s.add_argument("--host", default="0.0.0.0")
     s.add_argument("--port", type=int, default=8000)
-    s.add_argument("--mode", choices=["admin", "clinical-triage"], default=None, help="admin (default) or clinical-triage (optional research mode, not a medical device)")
+    s.add_argument(
+        "--mode",
+        choices=["admin", "clinical-triage"],
+        default=None,
+        help="admin (default) or clinical-triage (optional research mode, not a medical device)",
+    )
 
     args = p.parse_args(argv)
     cfg = settings()
@@ -110,6 +146,29 @@ def main(argv: list[str] | None = None) -> None:
             encoding="utf-8",
         )
         print(json.dumps({"replayed": len(rows), "out": str(args.out)}))
+    elif args.cmd == "fetch-imap":
+        import os
+
+        from .mailbox import ImapConfig, fetch
+
+        imap = ImapConfig(
+            host=args.host,
+            user=args.user,
+            password=os.getenv(args.password_env, ""),
+            port=args.port or (993 if args.security == "ssl" else 143),
+            security=args.security,
+            folder=args.folder,
+            unseen_only=not args.all,
+            mark_seen=args.mark_seen,
+            limit=args.limit,
+        )
+        msgs = fetch(imap)
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(
+            "".join(json.dumps(m, ensure_ascii=False) + "\n" for m in msgs),
+            encoding="utf-8",
+        )
+        print(json.dumps({"fetched": len(msgs), "out": str(args.out)}))
     elif args.cmd == "eval":
         from .evaluate import main_eval
 

@@ -58,9 +58,9 @@ reliable on narrowly cut tasks and weak on complex ones @xu2026small, so
 the model does only what rules cannot: read free text in four languages
 and point to the passage that supports a decision.
 
-+ #strong[Intake.] E-mail (`.eml`, including PDF attachments), HIN mail,
-  fax pages as PDF or image (Tesseract OCR for German, French and
-  Italian), web forms.
++ #strong[Intake.] E-mail (`.eml` or IMAP, read-only, including PDF
+  attachments), HIN mail, fax pages as PDF or image (Tesseract OCR for
+  German, French and Italian), web forms.
 + #strong[Apertus with an enforced JSON schema]
   @willard2023outlines@geng2023grammar. The schema orders each quote
   before its decision (route quote → route, safety quote → flag,
@@ -119,7 +119,7 @@ the model auditable @riedemann2024open@apertus2025.
     Tesseract language data, Apertus weights from Hugging Face
     (checksum)],
     [Runtime], [none; the model is reached over an internal Docker
-    network without internet access. Optional: mail pick-up from HIN],
+    network without internet access. Optional: IMAP mail pick-up],
   )]
   , kind: table
   )
@@ -152,9 +152,9 @@ Inbrev 167 MiB; results are in §5. The run is in `evidence/offline/`.
 Settings: temperature 0.7 for the three samples, at most 900 output
 tokens, thinking off by default because it lowers instruction following
 @wiegand2026apertusbench\; thinking is measured as an ablation. The
-system prompt (version p2) lists the routes with short multilingual
-cues, the rules for safety, deadlines and quotes, and an output format
-with placeholders only.
+system prompt (p2; p3 since 4 October, see section 5) lists the routes
+with short multilingual cues, the rules for safety, deadlines and
+quotes, and an output format with placeholders only.
 
 Two observations shaped the prompt. With the schema enforced but no
 format example in the prompt, the 8B model got stuck in a loop of
@@ -315,16 +315,15 @@ clinical triage model guided by a triage manual reached a sensitivity of
 messages, 8B is right where the rules are wrong 27 times and the reverse
 11 times (exact McNemar p = 0.014; 70B: 31 vs 11, p = 0.003). The model
 wins on insurer mail (24/24 vs 16/24), marketing (11/14 vs 4/14) and
-symptoms mentioned in passing (7/9 vs 3/9); it loses on "other" (3/16 vs
-9/16), where it pushes vague messages into a specific route, and on
-billing (14/16 vs 15/16). A rules-first hybrid, where the keyword rules
-decide whenever exactly one route family matches and the lexical net is
-silent and Apertus decides otherwise, needs the model for only 94 of 180
-messages but drops to route 152/180 and clinical exclusion 10/16: 5 of
-the 16 clinical messages look like plain administration to the rules
-(one keyword family, no lexicon hit); on the Nemotron set the hybrid
-drops 2 of 8. We therefore keep Apertus on every message
-(`scripts/compare_hybrid.py`).
+symptoms mentioned in passing (7/9 vs 3/9); with prompt p2 it lost on
+"other" (3/16 vs 9/16) and billing (14/16 vs 15/16). A rules-first
+hybrid, where the keyword rules decide whenever exactly one route family
+matches and the lexical net is silent and Apertus decides otherwise,
+needs the model for only 94 of 180 messages but drops to route 152/180
+and clinical exclusion 10/16: 5 of the 16 clinical messages look like
+plain administration to the rules (one keyword family, no lexicon hit);
+on the Nemotron set the hybrid drops 2 of 8. We therefore keep Apertus
+on every message (`scripts/compare_hybrid.py`).
 
 #figure(
   align(center)[#table(
@@ -347,6 +346,18 @@ On the Nemotron set 70B scores the same route accuracy (38/42) and also
 (e.g.~negated "Suizidalität" in a psychiatric letter), one from the
 model; the cost is a doctor's glance at a report that goes to the doctor
 anyway.
+
+#strong[Prompt p3 for "other".] p3 only sharpens the route boundaries
+(copy or transfer of records, referral elsewhere, symptoms only:
+"other"). It was developed on a separate dev set (60 new Nemotron
+messages, 20 "other"\; p2 0/20, p3 11/20), frozen after one dev run,
+then run once on every test set next to a fresh p2 run: gold route
+158/180 → 170/180 \[0.90, 0.97\] (13 vs 1 discordant, McNemar p = 0.002;
+two p2 runs differ on 3 routes), "other" 2/16 → 13/16 (rules 9/16),
+clinical exclusion 13/16 with no discordant pair; Swiss 23 → 24/30,
+Nemotron 38 → 39/42, GraSCCo 40/40; 70B gold 163 → 172/180. Against the
+rules, p3 8B wins 32 to 5 (`evidence/prompt-p3/`). The tables keep the
+p2 runs.
 
 #strong[One sample is nearly as good as three.] Replaying the stored 8B
 run with only the first sample, but with checks, lexical net and
@@ -424,12 +435,12 @@ sort 30 messages by hand versus with Inbrev.
   automatically. The final classification depends on the written
   intended purpose; this is not legal advice.
 - #strong[Optional research mode.] `--mode clinical-triage` (off by
-  default, not in the web inbox) adds a keyword-based hint in the style
-  of the Emergency Severity Index to flagged messages. It is an optional
-  research mode, not a medical device and not certified; it has not been
-  validated. Any clinical use would require an MDR/MDSW conformity
-  assessment first. All numbers in this report use the default
-  administrative mode.
+  default; the app then shows a labelled research hint) adds a
+  keyword-based hint in the style of the Emergency Severity Index to
+  flagged messages. It is an optional research mode, not a medical
+  device and not certified; it has not been validated. Any clinical use
+  would require an MDR/MDSW conformity assessment first. All numbers in
+  this report use the default administrative mode.
 - Enforced formats can cost reasoning quality @tam2024format\; three
   samples triple the output tokens.
 - No measurement on real practice data; US inbox figures transfer only
@@ -463,8 +474,9 @@ follows after human review.
 <next-steps>
 - Five to ten interviews with practice assistants and practice owners:
   real volume, category mix, share of fax; a pilot in a group practice.
-- Connectors for HIN mail and practice software; a data protection
-  impact assessment template @schweiz2020dsg.
+- HIN connection (the IMAP import is tested against a local test server
+  only) and practice software; a data protection impact assessment
+  template @schweiz2020dsg.
 - For Germany and Austria, check the EU AI Act; it classifies the system
   as high-risk only if it is a medical device @eu2024aiact.
 

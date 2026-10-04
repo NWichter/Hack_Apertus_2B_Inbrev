@@ -1,0 +1,18 @@
+Inbrev IMAP import check, 2026-10-04 20:47:03 UTC, git 791e503
+mail server: greenmail/standalone:2.1.2@sha256:572d22796908375678119a13fabfcdc5416c9003404ab975fe824692fe02ba03 on network inbrev-mailtest (internal: true)
+sent: seed-001 | Labor Rheintal AG <befunde@labor-rheintal.example> | Befund: Hämatologie, Patient Weber Lukas
+sent: seed-002 | s.keller@mail.example | Termin verschieben
+sent: seed-003 | m.rochat@mail.example | Renouvellement ordonnance
+--- fetch 1 (unseen, read-only)
+{"fetched": 3, "out": "/tmp/a.jsonl"}
+imap-1 email 2026-10-05T08:15 | Befund: Hämatologie, Patient Weber Lukas
+imap-2 email 2026-10-05T08:15 | Termin verschieben
+imap-3 email 2026-10-05T08:15 | Renouvellement ordonnance
+--- fetch 2 (unseen, read-only: same messages again)
+{"fetched": 3, "out": "/tmp/b.jsonl"}
+--- fetch 3 (--mark-seen)
+{"fetched": 3, "out": "/tmp/c.jsonl"}
+--- fetch 4 (unseen: nothing new)
+{"fetched": 0, "out": "/tmp/d.jsonl"}
+--- wrong password (must fail)
+imaplib.IMAP4.error: b'LOGIN failed. Invalid login/password for user id praxis'

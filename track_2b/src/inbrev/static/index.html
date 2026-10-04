@@ -71,6 +71,10 @@
         color: var(--brand);
         white-space: nowrap;
       }
+      .badge.mode.clinical {
+        background: var(--amber-bg);
+        color: var(--amber);
+      }
       .badge.local::before {
         content: "";
         width: 7px;
@@ -358,6 +362,7 @@
       <h1>Inbrev</h1>
       <span class="tag">Practice inbox, sorted where it arrives</span>
       <span class="spacer"></span>
+      <span id="mode" class="badge mode">mode …</span>
       <span id="model" class="badge">model …</span>
     </header>
     <main>
@@ -365,6 +370,7 @@
         <div class="toolbar">
           <select id="set" title="Demo inbox"></select>
           <button id="load">Load</button>
+          <button id="fetch" hidden title="Read new mail from the configured IMAP mailbox">Fetch mail</button>
           <button id="sort" class="primary">Sort inbox</button>
           <label class="btn" title="E-mail (.eml), fax (PDF/PNG) or text"
             >Upload<input
@@ -381,7 +387,12 @@
         <div class="empty">
           Load a demo inbox and press <b>Sort inbox</b>.<br /><br />Inbrev
           routes by handling path and administrative deadline. It never assesses
-          clinical content.
+          clinical content.<br /><br /><b>Triage mode</b> (default): administrative
+          sorting with a safety net. Messages that may contain symptoms leave
+          automation and go to a person, without any ranking.<br /><b>Clinical research
+          mode</b> (<code>INBREV_MODE=clinical-triage</code>, off by default): adds a
+          keyword-based urgency hint to flagged messages. Research prototype, not a
+          medical device, not validated.
         </div>
       </section>
     </main>
@@ -459,6 +470,14 @@
 
       async function init() {
         const h = await api("/v1/health");
+        $("#fetch").hidden = !h.mailbox;
+        const md = $("#mode");
+        const clinical = h.mode === "clinical-triage";
+        md.textContent = clinical ? "Clinical research mode" : "Triage mode";
+        md.classList.toggle("clinical", clinical);
+        md.title = clinical
+          ? "Research prototype: flagged messages get a keyword-based urgency hint. Not a medical device, not validated."
+          : "Administrative sorting with a safety net: possible symptoms go to a person, never ranked.";
         const m = $("#model");
         m.textContent = `${h.model} · ${h.endpoint_local ? "local endpoint" : h.endpoint_host}`;
         m.classList.add(h.endpoint_local ? "local" : "remote");
@@ -585,6 +604,8 @@
           html += `<div class="banner amber"><b>Not processed by Inbrev: clinical content.</b> The message may contain symptoms, so a person reads it. Inbrev does not assess it and does not rank it.</div>`;
         else if (r && r.abstain)
           html += `<div class="banner amber"><b>A person decides.</b> ${esc((t.abstain_reasons || []).join("; "))}</div>`;
+        if (r && r.clinical_triage && r.safety_flag)
+          html += `<div class="banner amber"><b>Research hint (clinical research mode): ${esc(r.clinical_triage.category)}</b>${r.clinical_triage.matched ? " · keyword “" + esc(r.clinical_triage.matched) + "”" : ""}. ${esc(r.clinical_triage.disclaimer)}</div>`;
         if (it.status === "error")
           html += `<div class="banner amber">Model call failed: ${esc(t.error || "")}</div>`;
         if (r) {
@@ -622,6 +643,15 @@
           method: "POST",
         });
         $("#detail").innerHTML = "";
+        refresh();
+      };
+      $("#fetch").onclick = async () => {
+        try {
+          const f = await api("/v1/inbox/fetch", { method: "POST" });
+          $("#count").textContent = `${f.new} new from mailbox`;
+        } catch (err) {
+          $("#detail").innerHTML = `<div class="banner amber">${esc(err.message)}</div>`;
+        }
         refresh();
       };
       $("#sort").onclick = async () => {

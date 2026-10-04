@@ -15,10 +15,10 @@ build:
 	docker compose build app
 
 test: build
-	docker run --rm --network none $(IMAGE) python -m pytest -q
+	docker run --rm --network none $(IMAGE) python -m pytest -q -p no:cacheprovider
 
 offline-check: build
-	docker run --rm --network none $(IMAGE) sh -c "python -m pytest -q && python -m inbrev eval data/seed/messages.seed.jsonl --baselines"
+	docker run --rm --network none $(IMAGE) sh -c "python -m pytest -q -p no:cacheprovider && python -m inbrev eval data/seed/messages.seed.jsonl --baselines"
 
 eval: build
 	docker run --rm --network none $(IMAGE) python -m inbrev eval data/seed/messages.seed.jsonl --baselines

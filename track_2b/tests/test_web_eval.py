@@ -37,7 +37,8 @@ def test_web_flow(monkeypatch, tmp_path):
     monkeypatch.setattr(web, "_client", FakeClient())
     monkeypatch.setattr(web.cfg, "audit_log", tmp_path / "audit.jsonl")
     c = TestClient(web.app)
-    assert c.get("/v1/health").json()["model"]
+    h = c.get("/v1/health").json()
+    assert h["model"] and h["mode"] == "admin" and h["prompt_version"] == "p3"
     assert c.post("/v1/inbox/load/seed").json()["loaded"] == len(SEED)
     r = c.post(
         "/v1/triage",

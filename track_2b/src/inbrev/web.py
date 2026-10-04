@@ -17,7 +17,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import __version__, ingest
+from . import __version__, ingest, prompt
 from .config import REPO_DATA, settings
 from .llm import LLMClient
 from .pipeline import Options, triage
@@ -140,6 +140,8 @@ def health() -> dict:
         "version": __version__,
         "model": cfg.llm_name,
         "mode": opts.mode,
+        "prompt_version": prompt.PROMPT_VERSION,
+        "mailbox": bool(os.getenv("INBREV_IMAP_HOST")),
         "endpoint_host": host,
         "endpoint_local": host in ("localhost", "127.0.0.1", "llm")
         or host.endswith(".local")
@@ -186,6 +188,30 @@ def load_demo(name: str, limit: int = 30, with_predictions: bool = False) -> dic
                     result=row["result"], trace=_trace_view(row["trace"]), status="done"
                 )
     return {"loaded": len(msgs)}
+
+
+@app.post("/v1/inbox/fetch")
+def fetch_mail() -> dict:
+    from .mailbox import ImapConfig, fetch
+
+    imap = ImapConfig.from_env()
+    if imap is None:
+        raise HTTPException(404, "no mailbox configured (INBREV_IMAP_HOST)")
+    try:
+        msgs = fetch(imap)
+    except Exception as e:  # noqa: BLE001 - shown to the user as a failed fetch
+        raise HTTPException(502, f"mailbox: {type(e).__name__}") from e
+    new = 0
+    for m in msgs:
+        if m["message_id"] not in inbox:
+            inbox[m["message_id"]] = {
+                "message": m,
+                "result": None,
+                "trace": None,
+                "status": "pending",
+            }
+            new += 1
+    return {"fetched": len(msgs), "new": new}
 
 
 @app.post("/v1/inbox/sort")

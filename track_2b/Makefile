@@ -27,4 +27,4 @@ triage-seed: build
 	docker compose run --rm app python -m inbrev triage data/seed/messages.seed.jsonl --out /app/runs/seed.jsonl
 
 stop:
-	docker compose down
+	docker compose --profile local down

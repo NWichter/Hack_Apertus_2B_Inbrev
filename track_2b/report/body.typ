@@ -253,7 +253,9 @@ language model; TF-IDF with five-fold cross-validation. Both Apertus
 rows run the full pipeline (schema, three samples at T = 0.7, checks,
 vote), prompt p2, on the Hack Apertus endpoint on 3 October 2026.
 Coverage is the share of messages Inbrev handles without "a person
-decides". The row "one sample, no checks" needs no new model call: it
+decides", i.e.~neither abstained nor flagged for clinical content; at
+most 164 of 180 (0.91) here, because the 16 clinical messages must go to
+a person. The row "one sample, no checks" needs no new model call: it
 scores the first of the three stored 8B samples as the model wrote it,
 without quote checks, lexical net, vote or abstention
 (`scripts/ablation_first_sample.py`).
@@ -268,15 +270,15 @@ without quote checks, lexical net, vote or abstention
     [Majority
     class], [0.14], [0.03], [0.00], [--], [0.00], [0.37], [1.00],
     [Keyword rules + lexical
-    net], [0.79], [0.76], [0.44], [0.32], [0.76], [0.68], [1.00],
+    net], [0.79], [0.76], [0.44], [0.32], [0.76], [0.68], [0.88],
     [TF-IDF + logistic
-    regression], [0.83], [0.82], [0.13], [1.00], [0.66], [0.68], [1.00],
+    regression], [0.83], [0.82], [0.13], [1.00], [0.66], [0.68], [0.99],
     [8B, one sample, no
-    checks], [0.87], [0.84], [0.56], [1.00], [0.70], [0.67], [1.00],
+    checks], [0.87], [0.84], [0.56], [1.00], [0.70], [0.67], [0.95],
     [#strong[Inbrev 8B] (schema, checks,
-    vote)], [0.88], [0.85], [0.81], [0.46], [0.86], [0.82], [0.96],
+    vote)], [0.88], [0.85], [0.81], [0.46], [0.86], [0.82], [0.81],
     [Inbrev
-    70B], [0.91], [0.89], [0.94], [0.50], [0.94], [0.85], [0.94],
+    70B], [0.91], [0.89], [0.94], [0.50], [0.94], [0.85], [0.79],
   )]
   , kind: table
   )
@@ -354,15 +356,15 @@ messages, 20 "other"\; p2 0/20, p3 11/20), frozen after one dev run,
 then run once on every test set next to a fresh p2 run: gold route
 158/180 → 170/180 \[0.90, 0.97\] (13 vs 1 discordant, McNemar p = 0.002;
 two p2 runs differ on 3 routes), "other" 2/16 → 13/16 (rules 9/16),
-clinical exclusion 13/16 with no discordant pair; Swiss 23 → 24/30,
-Nemotron 38 → 39/42, GraSCCo 40/40; 70B gold 163 → 172/180. Against the
-rules, p3 8B wins 32 to 5 (`evidence/prompt-p3/`). The tables keep the
-p2 runs.
+clinical exclusion 13/16 with no discordant pair, coverage 146 →
+151/180; Swiss 23 → 24/30, Nemotron 38 → 39/42, GraSCCo 40/40; 70B gold
+163 → 172/180. Against the rules, p3 8B wins 32 to 5
+(`evidence/prompt-p3/`). The tables keep the p2 runs.
 
 #strong[One sample is nearly as good as three.] Replaying the stored 8B
 run with only the first sample, but with checks, lexical net and
 abstention, gives route 157/180, clinical exclusion 12/16 and coverage
-0.98, against 159/180, 13/16 and 0.96 with three samples
+150/180, against 159/180, 13/16 and 145/180 with three samples
 (`scripts/replay_k_samples.py`, no new model call). Most of the gain
 over a single raw answer (9/16) comes from the checks and the net, not
 from sampling. The CPU deployment therefore uses one sample.
@@ -405,10 +407,10 @@ not reviewed; run again on 4 October after the names were neutralised,
 60 model calls), 8B routes 23 of 30 correctly (0.77 \[0.59, 0.88\],
 macro-F1 0.76), 70B 27 of 30 (0.90 \[0.74, 0.97\]; McNemar p = 0.125),
 the keyword rules 25 of 30 (0.83): on this set the keyword rules route
-better than 8B. All three take the 4 cases out of automation; 70B hands
-4 messages to a person, including both ambiguous ones, 8B none. Deadline
-accuracy is low for all (0.47 for both models, 0.53 for the keyword
-rules), partly because the rows carry no time of receipt.
+better than 8B. All three take the 4 cases out of automation; 70B also
+abstains on 4 messages, including both ambiguous ones, 8B on none.
+Deadline accuracy is low for all (0.47 for both models, 0.53 for the
+keyword rules), partly because the rows carry no time of receipt.
 
 A unit test covers the OCR failure path: when a fax is so degraded that
 no quote can be found in the text, the checks drop every value and

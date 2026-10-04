@@ -1,0 +1,594 @@
+{
+ "majority": {
+  "n": 40,
+  "route_accuracy_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "deadline_accuracy_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "coverage_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "route_accuracy": 1.0,
+  "route_macro_f1": 1.0,
+  "route_f1": {
+   "report_received": 1.0
+  },
+  "deadline_accuracy": 1.0,
+  "assignee_accuracy": 1.0,
+  "safety": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "today": {
+   "tp": 40,
+   "fp": 0,
+   "fn": 0,
+   "recall": 1.0,
+   "precision": 1.0,
+   "recall_ci": [
+    0.9123783975415363,
+    1.0
+   ],
+   "precision_ci": [
+    0.9123783975415363,
+    1.0
+   ]
+  },
+  "abstain": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "coverage": 1.0,
+  "route_accuracy_covered": 1.0,
+  "all_correct_covered": 1.0,
+  "safety_missed_ids": [],
+  "fields": {
+   "fields.sender_institution": {
+    "gold": 40,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "fields.report_type": {
+    "gold": 40,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "ALL": {
+    "gold": 80,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   }
+  },
+  "confusion": [],
+  "coverage_curve": [
+   {
+    "threshold": 1.0,
+    "coverage": 1.0,
+    "accuracy": 1.0
+   }
+  ]
+ },
+ "keywords": {
+  "n": 40,
+  "route_accuracy_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "deadline_accuracy_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "coverage_ci": [
+   0.6805000953869541,
+   0.9125458630150444
+  ],
+  "route_accuracy": 1.0,
+  "route_macro_f1": 1.0,
+  "route_f1": {
+   "report_received": 1.0
+  },
+  "deadline_accuracy": 1.0,
+  "assignee_accuracy": 1.0,
+  "safety": {
+   "tp": 0,
+   "fp": 7,
+   "fn": 0,
+   "recall": null,
+   "precision": 0.0,
+   "recall_ci": null,
+   "precision_ci": [
+    0.0,
+    0.35433043867586833
+   ]
+  },
+  "today": {
+   "tp": 40,
+   "fp": 0,
+   "fn": 0,
+   "recall": 1.0,
+   "precision": 1.0,
+   "recall_ci": [
+    0.9123783975415363,
+    1.0
+   ],
+   "precision_ci": [
+    0.9123783975415363,
+    1.0
+   ]
+  },
+  "abstain": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "coverage": 0.825,
+  "route_accuracy_covered": 1.0,
+  "all_correct_covered": 1.0,
+  "safety_missed_ids": [],
+  "fields": {
+   "fields.sender_institution": {
+    "gold": 40,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "fields.report_type": {
+    "gold": 40,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "ALL": {
+    "gold": 80,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   }
+  },
+  "confusion": [],
+  "coverage_curve": [
+   {
+    "threshold": 1.0,
+    "coverage": 1.0,
+    "accuracy": 1.0
+   }
+  ]
+ },
+ "tfidf_logreg": {
+  "n": 40,
+  "route_accuracy_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "deadline_accuracy_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "coverage_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "route_accuracy": 1.0,
+  "route_macro_f1": 1.0,
+  "route_f1": {
+   "report_received": 1.0
+  },
+  "deadline_accuracy": 1.0,
+  "assignee_accuracy": 1.0,
+  "safety": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "today": {
+   "tp": 40,
+   "fp": 0,
+   "fn": 0,
+   "recall": 1.0,
+   "precision": 1.0,
+   "recall_ci": [
+    0.9123783975415363,
+    1.0
+   ],
+   "precision_ci": [
+    0.9123783975415363,
+    1.0
+   ]
+  },
+  "abstain": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "coverage": 1.0,
+  "route_accuracy_covered": 1.0,
+  "all_correct_covered": 1.0,
+  "safety_missed_ids": [],
+  "fields": {
+   "fields.sender_institution": {
+    "gold": 40,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "fields.report_type": {
+    "gold": 40,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "ALL": {
+    "gold": 80,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   }
+  },
+  "confusion": [],
+  "coverage_curve": [
+   {
+    "threshold": 1.0,
+    "coverage": 1.0,
+    "accuracy": 1.0
+   }
+  ]
+ },
+ "grascco-p2-8b": {
+  "n": 40,
+  "route_accuracy_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "deadline_accuracy_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "coverage_ci": [
+   0.6805000953869541,
+   0.9125458630150444
+  ],
+  "route_accuracy": 1.0,
+  "route_macro_f1": 1.0,
+  "route_f1": {
+   "report_received": 1.0
+  },
+  "deadline_accuracy": 1.0,
+  "assignee_accuracy": 1.0,
+  "safety": {
+   "tp": 0,
+   "fp": 7,
+   "fn": 0,
+   "recall": null,
+   "precision": 0.0,
+   "recall_ci": null,
+   "precision_ci": [
+    0.0,
+    0.35433043867586833
+   ]
+  },
+  "today": {
+   "tp": 40,
+   "fp": 0,
+   "fn": 0,
+   "recall": 1.0,
+   "precision": 1.0,
+   "recall_ci": [
+    0.9123783975415363,
+    1.0
+   ],
+   "precision_ci": [
+    0.9123783975415363,
+    1.0
+   ]
+  },
+  "abstain": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "coverage": 0.825,
+  "route_accuracy_covered": 1.0,
+  "all_correct_covered": 1.0,
+  "safety_missed_ids": [],
+  "fields": {
+   "patient.birth_date": {
+    "gold": 0,
+    "pred": 27,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "fields.examination_date": {
+    "gold": 0,
+    "pred": 32,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "fields.report_type": {
+    "gold": 40,
+    "pred": 39,
+    "match": 38,
+    "precision": 0.9743589743589743,
+    "recall": 0.95,
+    "f1": 0.9620253164556962
+   },
+   "fields.sender_institution": {
+    "gold": 40,
+    "pred": 39,
+    "match": 36,
+    "precision": 0.9230769230769231,
+    "recall": 0.9,
+    "f1": 0.9113924050632911
+   },
+   "patient.name": {
+    "gold": 0,
+    "pred": 28,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "patient.insurer": {
+    "gold": 0,
+    "pred": 1,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "ALL": {
+    "gold": 80,
+    "pred": 166,
+    "match": 74,
+    "precision": 0.4457831325301205,
+    "recall": 0.925,
+    "f1": 0.6016260162601625
+   }
+  },
+  "confusion": [],
+  "coverage_curve": [
+   {
+    "threshold": 1.0,
+    "coverage": 1.0,
+    "accuracy": 1.0
+   }
+  ],
+  "ops": {
+   "errors": 0,
+   "invalid_samples": 3,
+   "samples": 120,
+   "sample_error_kinds": [
+    [
+     "truncated",
+     3
+    ]
+   ],
+   "prompt_tokens_mean": 2474.625,
+   "completion_tokens_mean": 1231.3,
+   "latency_mean_s": 5.035275,
+   "latency_p95_s": 9.699,
+   "quote_status": {
+    "route:exact": 117,
+    "exact": 557,
+    "dropped": 92,
+    "normalized": 19,
+    "fuzzy": 37
+   },
+   "lexical_only_safety": 6
+  }
+ },
+ "grascco-p3-8b": {
+  "n": 40,
+  "route_accuracy_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "deadline_accuracy_ci": [
+   0.9123783975415363,
+   1.0
+  ],
+  "coverage_ci": [
+   0.6805000953869541,
+   0.9125458630150444
+  ],
+  "route_accuracy": 1.0,
+  "route_macro_f1": 1.0,
+  "route_f1": {
+   "report_received": 1.0
+  },
+  "deadline_accuracy": 1.0,
+  "assignee_accuracy": 1.0,
+  "safety": {
+   "tp": 0,
+   "fp": 7,
+   "fn": 0,
+   "recall": null,
+   "precision": 0.0,
+   "recall_ci": null,
+   "precision_ci": [
+    0.0,
+    0.35433043867586833
+   ]
+  },
+  "today": {
+   "tp": 40,
+   "fp": 0,
+   "fn": 0,
+   "recall": 1.0,
+   "precision": 1.0,
+   "recall_ci": [
+    0.9123783975415363,
+    1.0
+   ],
+   "precision_ci": [
+    0.9123783975415363,
+    1.0
+   ]
+  },
+  "abstain": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "coverage": 0.825,
+  "route_accuracy_covered": 1.0,
+  "all_correct_covered": 1.0,
+  "safety_missed_ids": [],
+  "fields": {
+   "patient.name": {
+    "gold": 0,
+    "pred": 30,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "patient.birth_date": {
+    "gold": 0,
+    "pred": 30,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "fields.examination_date": {
+    "gold": 0,
+    "pred": 32,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "fields.report_type": {
+    "gold": 40,
+    "pred": 40,
+    "match": 38,
+    "precision": 0.95,
+    "recall": 0.95,
+    "f1": 0.9500000000000001
+   },
+   "fields.sender_institution": {
+    "gold": 40,
+    "pred": 39,
+    "match": 36,
+    "precision": 0.9230769230769231,
+    "recall": 0.9,
+    "f1": 0.9113924050632911
+   },
+   "patient.insurer": {
+    "gold": 0,
+    "pred": 3,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "patient.insurance_number": {
+    "gold": 0,
+    "pred": 1,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "ALL": {
+    "gold": 80,
+    "pred": 175,
+    "match": 74,
+    "precision": 0.4228571428571429,
+    "recall": 0.925,
+    "f1": 0.5803921568627451
+   }
+  },
+  "confusion": [],
+  "coverage_curve": [
+   {
+    "threshold": 1.0,
+    "coverage": 1.0,
+    "accuracy": 1.0
+   }
+  ],
+  "ops": {
+   "errors": 0,
+   "invalid_samples": 3,
+   "samples": 120,
+   "sample_error_kinds": [
+    [
+     "truncated",
+     3
+    ]
+   ],
+   "prompt_tokens_mean": 2676.625,
+   "completion_tokens_mean": 1164.425,
+   "latency_mean_s": 5.7542,
+   "latency_p95_s": 19.721,
+   "quote_status": {
+    "route:exact": 117,
+    "exact": 575,
+    "dropped": 74,
+    "fuzzy": 37,
+    "normalized": 11
+   },
+   "lexical_only_safety": 6
+  }
+ }
+}

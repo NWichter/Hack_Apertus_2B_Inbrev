@@ -11,7 +11,7 @@
 | gold | Clinical exclusion precision | 15/30 [0.33, 0.67] | 15/30 [0.33, 0.67] |
 | gold | Today recall | 47/50 [0.84, 0.98] | 47/50 [0.84, 0.98] |
 | gold | Deadline accuracy | 153/180 [0.79, 0.89] | 156/180 [0.81, 0.91] |
-| gold | Coverage | 169/180 [0.89, 0.97] | 176/180 [0.94, 0.99] |
+| gold | Coverage | 143/180 [0.73, 0.85] | 147/180 [0.75, 0.87] |
 | nemotron | Route accuracy | 38/42 [0.78, 0.96] | 37/42 [0.75, 0.95] |
 | nemotron | Recall of route other | 0/3 [0.00, 0.56] | 0/3 [0.00, 0.56] |
 | nemotron | Precision of route other | – | – |
@@ -19,7 +19,7 @@
 | nemotron | Clinical exclusion precision | 8/9 [0.57, 0.98] | 8/9 [0.57, 0.98] |
 | nemotron | Today recall | 17/18 [0.74, 0.99] | 17/18 [0.74, 0.99] |
 | nemotron | Deadline accuracy | 37/42 [0.75, 0.95] | 37/42 [0.75, 0.95] |
-| nemotron | Coverage | 39/42 [0.81, 0.98] | 38/42 [0.78, 0.96] |
+| nemotron | Coverage | 30/42 [0.56, 0.83] | 29/42 [0.54, 0.81] |
 
 Paired per message (exact two-sided McNemar test on the discordant pairs):
 

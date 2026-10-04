@@ -1,0 +1,687 @@
+{
+ "gold-70b": {
+  "n": 180,
+  "route_accuracy_ci": [
+   0.8539663707463039,
+   0.9401961695665983
+  ],
+  "deadline_accuracy_ci": [
+   0.7905553738021246,
+   0.8948177774268186
+  ],
+  "coverage_ci": [
+   0.7295539845049959,
+   0.847029777639988
+  ],
+  "route_accuracy": 0.9055555555555556,
+  "route_macro_f1": 0.8865765360266372,
+  "route_f1": {
+   "report_received": 0.9122807017543859,
+   "appointment": 0.9056603773584906,
+   "prescription_request": 0.9565217391304348,
+   "insurer": 0.8846153846153847,
+   "referral_in": 1.0,
+   "certificate_request": 0.9473684210526316,
+   "billing": 0.896551724137931,
+   "spam_marketing": 1.0,
+   "other": 0.47619047619047616
+  },
+  "deadline_accuracy": 0.85,
+  "assignee_accuracy": 0.9111111111111111,
+  "safety": {
+   "tp": 15,
+   "fp": 15,
+   "fn": 1,
+   "recall": 0.9375,
+   "precision": 0.5,
+   "recall_ci": [
+    0.716712622018518,
+    0.9888806553587528
+   ],
+   "precision_ci": [
+    0.33154125522739103,
+    0.6684587447726089
+   ]
+  },
+  "today": {
+   "tp": 47,
+   "fp": 14,
+   "fn": 3,
+   "recall": 0.94,
+   "precision": 0.7704918032786885,
+   "recall_ci": [
+    0.8378290820312557,
+    0.9793850298115638
+   ],
+   "precision_ci": [
+    0.6508659477391606,
+    0.858067697020629
+   ]
+  },
+  "abstain": {
+   "tp": 1,
+   "fp": 10,
+   "fn": 8,
+   "recall": 0.1111111111111111,
+   "precision": 0.09090909090909091,
+   "recall_ci": [
+    0.01989088741690992,
+    0.4349997083707909
+   ],
+   "precision_ci": [
+    0.016232172705325593,
+    0.3773584391082959
+   ]
+  },
+  "coverage": 0.7944444444444444,
+  "route_accuracy_covered": 0.9440559440559441,
+  "all_correct_covered": 0.8531468531468531,
+  "safety_missed_ids": [
+   "syn-079"
+  ],
+  "fields": {
+   "patient.name": {
+    "gold": 159,
+    "pred": 159,
+    "match": 156,
+    "precision": 0.9811320754716981,
+    "recall": 0.9811320754716981,
+    "f1": 0.9811320754716981
+   },
+   "fields.topic": {
+    "gold": 16,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "fields.certificate_type": {
+    "gold": 18,
+    "pred": 6,
+    "match": 3,
+    "precision": 0.5,
+    "recall": 0.16666666666666666,
+    "f1": 0.25
+   },
+   "patient.birth_date": {
+    "gold": 115,
+    "pred": 115,
+    "match": 115,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "fields.medication": {
+    "gold": 23,
+    "pred": 23,
+    "match": 21,
+    "precision": 0.9130434782608695,
+    "recall": 0.9130434782608695,
+    "f1": 0.9130434782608695
+   },
+   "fields.pharmacy": {
+    "gold": 17,
+    "pred": 17,
+    "match": 16,
+    "precision": 0.9411764705882353,
+    "recall": 0.9411764705882353,
+    "f1": 0.9411764705882353
+   },
+   "fields.appointment_action": {
+    "gold": 25,
+    "pred": 21,
+    "match": 18,
+    "precision": 0.8571428571428571,
+    "recall": 0.72,
+    "f1": 0.782608695652174
+   },
+   "fields.requested_dates": {
+    "gold": 26,
+    "pred": 15,
+    "match": 9,
+    "precision": 0.6,
+    "recall": 0.34615384615384615,
+    "f1": 0.43902439024390244
+   },
+   "fields.existing_appointment": {
+    "gold": 9,
+    "pred": 6,
+    "match": 6,
+    "precision": 1.0,
+    "recall": 0.6666666666666666,
+    "f1": 0.8
+   },
+   "patient.ahv_number": {
+    "gold": 21,
+    "pred": 21,
+    "match": 21,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "fields.period": {
+    "gold": 12,
+    "pred": 10,
+    "match": 4,
+    "precision": 0.4,
+    "recall": 0.3333333333333333,
+    "f1": 0.3636363636363636
+   },
+   "fields.sender_institution": {
+    "gold": 26,
+    "pred": 21,
+    "match": 21,
+    "precision": 1.0,
+    "recall": 0.8076923076923077,
+    "f1": 0.8936170212765957
+   },
+   "fields.report_type": {
+    "gold": 26,
+    "pred": 25,
+    "match": 17,
+    "precision": 0.68,
+    "recall": 0.6538461538461539,
+    "f1": 0.6666666666666666
+   },
+   "fields.examination_date": {
+    "gold": 23,
+    "pred": 22,
+    "match": 18,
+    "precision": 0.8181818181818182,
+    "recall": 0.782608695652174,
+    "f1": 0.8
+   },
+   "patient.insurer": {
+    "gold": 20,
+    "pred": 22,
+    "match": 14,
+    "precision": 0.6363636363636364,
+    "recall": 0.7,
+    "f1": 0.6666666666666666
+   },
+   "fields.insurer_reference": {
+    "gold": 23,
+    "pred": 22,
+    "match": 19,
+    "precision": 0.8636363636363636,
+    "recall": 0.8260869565217391,
+    "f1": 0.8444444444444444
+   },
+   "fields.requested_document": {
+    "gold": 24,
+    "pred": 16,
+    "match": 11,
+    "precision": 0.6875,
+    "recall": 0.4583333333333333,
+    "f1": 0.5499999999999999
+   },
+   "fields.amount": {
+    "gold": 15,
+    "pred": 10,
+    "match": 8,
+    "precision": 0.8,
+    "recall": 0.5333333333333333,
+    "f1": 0.64
+   },
+   "fields.invoice_number": {
+    "gold": 16,
+    "pred": 12,
+    "match": 12,
+    "precision": 1.0,
+    "recall": 0.75,
+    "f1": 0.8571428571428571
+   },
+   "fields.creditor": {
+    "gold": 8,
+    "pred": 11,
+    "match": 8,
+    "precision": 0.7272727272727273,
+    "recall": 1.0,
+    "f1": 0.8421052631578948
+   },
+   "fields.referral_reason": {
+    "gold": 18,
+    "pred": 8,
+    "match": 4,
+    "precision": 0.5,
+    "recall": 0.2222222222222222,
+    "f1": 0.30769230769230765
+   },
+   "fields.referring_institution": {
+    "gold": 1,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "fields.referring_physician": {
+    "gold": 17,
+    "pred": 15,
+    "match": 15,
+    "precision": 1.0,
+    "recall": 0.8823529411764706,
+    "f1": 0.9375
+   },
+   "patient.insurance_number": {
+    "gold": 4,
+    "pred": 1,
+    "match": 1,
+    "precision": 1.0,
+    "recall": 0.25,
+    "f1": 0.4
+   },
+   "ALL": {
+    "gold": 662,
+    "pred": 578,
+    "match": 517,
+    "precision": 0.8944636678200693,
+    "recall": 0.7809667673716012,
+    "f1": 0.8338709677419356
+   }
+  },
+  "confusion": [
+   [
+    "other->report_received",
+    5
+   ],
+   [
+    "billing->insurer",
+    3
+   ],
+   [
+    "other->appointment",
+    3
+   ],
+   [
+    "appointment->prescription_request",
+    2
+   ],
+   [
+    "other->insurer",
+    2
+   ],
+   [
+    "other->certificate_request",
+    1
+   ],
+   [
+    "insurer->certificate_request",
+    1
+   ]
+  ],
+  "coverage_curve": [
+   {
+    "threshold": 0.333,
+    "coverage": 1.0,
+    "accuracy": 0.9055555555555556
+   },
+   {
+    "threshold": 0.667,
+    "coverage": 0.9888888888888889,
+    "accuracy": 0.9157303370786517
+   },
+   {
+    "threshold": 1.0,
+    "coverage": 0.9555555555555556,
+    "accuracy": 0.9418604651162791
+   }
+  ],
+  "ops": {
+   "errors": 0,
+   "invalid_samples": 0,
+   "samples": 540,
+   "sample_error_kinds": [],
+   "prompt_tokens_mean": 1398.0277777777778,
+   "completion_tokens_mean": 966.9777777777778,
+   "latency_mean_s": 10.740616666666666,
+   "latency_p95_s": 15.535,
+   "quote_status": {
+    "route:exact": 457,
+    "exact": 2062,
+    "dropped": 292,
+    "normalized": 29,
+    "route:missing": 42,
+    "fuzzy": 68,
+    "route:normalized": 22,
+    "route:fuzzy": 19
+   },
+   "lexical_only_safety": 16
+  }
+ },
+ "gold-p3-70b": {
+  "n": 180,
+  "route_accuracy_ci": [
+   0.9147630838247718,
+   0.9773099066636939
+  ],
+  "deadline_accuracy_ci": [
+   0.8092727782158677,
+   0.9087371897382632
+  ],
+  "coverage_ci": [
+   0.7537265496401512,
+   0.8663729681384164
+  ],
+  "route_accuracy": 0.9555555555555556,
+  "route_macro_f1": 0.9558285214057327,
+  "route_f1": {
+   "report_received": 1.0,
+   "appointment": 0.9230769230769231,
+   "prescription_request": 0.9565217391304348,
+   "insurer": 0.9199999999999999,
+   "referral_in": 1.0,
+   "certificate_request": 0.972972972972973,
+   "billing": 0.896551724137931,
+   "spam_marketing": 1.0,
+   "other": 0.9333333333333333
+  },
+  "deadline_accuracy": 0.8666666666666667,
+  "assignee_accuracy": 0.9222222222222223,
+  "safety": {
+   "tp": 15,
+   "fp": 15,
+   "fn": 1,
+   "recall": 0.9375,
+   "precision": 0.5,
+   "recall_ci": [
+    0.716712622018518,
+    0.9888806553587528
+   ],
+   "precision_ci": [
+    0.33154125522739103,
+    0.6684587447726089
+   ]
+  },
+  "today": {
+   "tp": 47,
+   "fp": 13,
+   "fn": 3,
+   "recall": 0.94,
+   "precision": 0.7833333333333333,
+   "recall_ci": [
+    0.8378290820312557,
+    0.9793850298115638
+   ],
+   "precision_ci": [
+    0.6637997232345094,
+    0.8687695600460952
+   ]
+  },
+  "abstain": {
+   "tp": 1,
+   "fp": 3,
+   "fn": 8,
+   "recall": 0.1111111111111111,
+   "precision": 0.25,
+   "recall_ci": [
+    0.01989088741690992,
+    0.4349997083707909
+   ],
+   "precision_ci": [
+    0.04558726029536886,
+    0.6993581599030918
+   ]
+  },
+  "coverage": 0.8166666666666667,
+  "route_accuracy_covered": 0.9455782312925171,
+  "all_correct_covered": 0.8639455782312925,
+  "safety_missed_ids": [
+   "syn-079"
+  ],
+  "fields": {
+   "patient.name": {
+    "gold": 159,
+    "pred": 161,
+    "match": 158,
+    "precision": 0.9813664596273292,
+    "recall": 0.9937106918238994,
+    "f1": 0.9874999999999999
+   },
+   "fields.topic": {
+    "gold": 16,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "fields.certificate_type": {
+    "gold": 18,
+    "pred": 4,
+    "match": 2,
+    "precision": 0.5,
+    "recall": 0.1111111111111111,
+    "f1": 0.1818181818181818
+   },
+   "patient.birth_date": {
+    "gold": 115,
+    "pred": 115,
+    "match": 115,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "fields.medication": {
+    "gold": 23,
+    "pred": 22,
+    "match": 19,
+    "precision": 0.8636363636363636,
+    "recall": 0.8260869565217391,
+    "f1": 0.8444444444444444
+   },
+   "fields.pharmacy": {
+    "gold": 17,
+    "pred": 15,
+    "match": 15,
+    "precision": 1.0,
+    "recall": 0.8823529411764706,
+    "f1": 0.9375
+   },
+   "fields.appointment_action": {
+    "gold": 25,
+    "pred": 19,
+    "match": 18,
+    "precision": 0.9473684210526315,
+    "recall": 0.72,
+    "f1": 0.8181818181818181
+   },
+   "fields.requested_dates": {
+    "gold": 26,
+    "pred": 15,
+    "match": 11,
+    "precision": 0.7333333333333333,
+    "recall": 0.4230769230769231,
+    "f1": 0.5365853658536585
+   },
+   "fields.existing_appointment": {
+    "gold": 9,
+    "pred": 5,
+    "match": 5,
+    "precision": 1.0,
+    "recall": 0.5555555555555556,
+    "f1": 0.7142857142857143
+   },
+   "patient.ahv_number": {
+    "gold": 21,
+    "pred": 21,
+    "match": 21,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "fields.period": {
+    "gold": 12,
+    "pred": 6,
+    "match": 1,
+    "precision": 0.16666666666666666,
+    "recall": 0.08333333333333333,
+    "f1": 0.1111111111111111
+   },
+   "fields.sender_institution": {
+    "gold": 26,
+    "pred": 21,
+    "match": 20,
+    "precision": 0.9523809523809523,
+    "recall": 0.7692307692307693,
+    "f1": 0.8510638297872339
+   },
+   "fields.report_type": {
+    "gold": 26,
+    "pred": 23,
+    "match": 17,
+    "precision": 0.7391304347826086,
+    "recall": 0.6538461538461539,
+    "f1": 0.693877551020408
+   },
+   "fields.examination_date": {
+    "gold": 23,
+    "pred": 21,
+    "match": 19,
+    "precision": 0.9047619047619048,
+    "recall": 0.8260869565217391,
+    "f1": 0.8636363636363636
+   },
+   "patient.insurance_number": {
+    "gold": 4,
+    "pred": 4,
+    "match": 2,
+    "precision": 0.5,
+    "recall": 0.5,
+    "f1": 0.5
+   },
+   "fields.insurer_reference": {
+    "gold": 23,
+    "pred": 22,
+    "match": 18,
+    "precision": 0.8181818181818182,
+    "recall": 0.782608695652174,
+    "f1": 0.8
+   },
+   "fields.requested_document": {
+    "gold": 24,
+    "pred": 16,
+    "match": 10,
+    "precision": 0.625,
+    "recall": 0.4166666666666667,
+    "f1": 0.5
+   },
+   "patient.insurer": {
+    "gold": 20,
+    "pred": 20,
+    "match": 17,
+    "precision": 0.85,
+    "recall": 0.85,
+    "f1": 0.85
+   },
+   "fields.amount": {
+    "gold": 15,
+    "pred": 10,
+    "match": 8,
+    "precision": 0.8,
+    "recall": 0.5333333333333333,
+    "f1": 0.64
+   },
+   "fields.invoice_number": {
+    "gold": 16,
+    "pred": 13,
+    "match": 13,
+    "precision": 1.0,
+    "recall": 0.8125,
+    "f1": 0.896551724137931
+   },
+   "fields.creditor": {
+    "gold": 8,
+    "pred": 10,
+    "match": 7,
+    "precision": 0.7,
+    "recall": 0.875,
+    "f1": 0.7777777777777777
+   },
+   "fields.referral_reason": {
+    "gold": 18,
+    "pred": 8,
+    "match": 5,
+    "precision": 0.625,
+    "recall": 0.2777777777777778,
+    "f1": 0.3846153846153846
+   },
+   "fields.referring_institution": {
+    "gold": 1,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "fields.referring_physician": {
+    "gold": 17,
+    "pred": 14,
+    "match": 13,
+    "precision": 0.9285714285714286,
+    "recall": 0.7647058823529411,
+    "f1": 0.8387096774193549
+   },
+   "ALL": {
+    "gold": 662,
+    "pred": 565,
+    "match": 514,
+    "precision": 0.9097345132743363,
+    "recall": 0.7764350453172205,
+    "f1": 0.8378158109209454
+   }
+  },
+  "confusion": [
+   [
+    "billing->insurer",
+    3
+   ],
+   [
+    "appointment->prescription_request",
+    2
+   ],
+   [
+    "other->appointment",
+    2
+   ],
+   [
+    "insurer->certificate_request",
+    1
+   ]
+  ],
+  "coverage_curve": [
+   {
+    "threshold": 0.667,
+    "coverage": 1.0,
+    "accuracy": 0.9555555555555556
+   },
+   {
+    "threshold": 1.0,
+    "coverage": 0.9888888888888889,
+    "accuracy": 0.9550561797752809
+   }
+  ],
+  "ops": {
+   "errors": 0,
+   "invalid_samples": 0,
+   "samples": 540,
+   "sample_error_kinds": [],
+   "prompt_tokens_mean": 1600.0277777777778,
+   "completion_tokens_mean": 922.9,
+   "latency_mean_s": 8.890777777777778,
+   "latency_p95_s": 12.508,
+   "quote_status": {
+    "route:exact": 451,
+    "exact": 2025,
+    "dropped": 241,
+    "fuzzy": 76,
+    "route:missing": 43,
+    "normalized": 24,
+    "route:fuzzy": 25,
+    "route:normalized": 21
+   },
+   "lexical_only_safety": 16
+  }
+ }
+}

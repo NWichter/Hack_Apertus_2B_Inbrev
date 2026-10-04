@@ -45,7 +45,7 @@ def stats(gold: list[dict], pred: list[dict]) -> dict:
         "safety_prec": (sum(gl[i]["safety_flag"] for i in flagged), len(flagged)),
         "today": (sum(pred[i]["deadline"] == "today" for i in today), len(today)),
         "deadline": (sum(x["deadline"] == p["deadline"] for x, p in zip(gl, pred)), n),
-        "coverage": (sum(not p["abstain"] for p in pred), n),
+        "coverage": (sum(not p["abstain"] and not p["safety_flag"] for p in pred), n),
     }
 
 

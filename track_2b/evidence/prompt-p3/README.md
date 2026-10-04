@@ -41,14 +41,14 @@ p3 `b4b4071128da69fc`. `INBREV_PROMPT=p2` restores the old prompt.
 | Dev (not a test) | 39/60 | 51/60 | 12 / 0 | 0.0005 | 0/20 → 11/20 | 7/9 → 7/9 |
 
 Pooled over the four test sets: route 259/292 → 273/292. No message lost its clinical exclusion
-(0 discordant pairs on every set). Gold macro-F1 0.839 → 0.943 (both runs from this session); coverage 173/180 → 177/180.
+(0 discordant pairs on every set). Gold macro-F1 0.839 → 0.943 (both runs from this session); coverage (neither abstained nor flagged, i.e. no person needed) 146/180 → 151/180.
 
 **Noise floor** (`noise-p2-rerun.md`): the stored p2 run from 2026-10-03 against the fresh p2 run
 changes the route of 3 of 180 gold messages (Nemotron 0/42, GraSCCo 0/40); p3 changes 14 of 180.
 
 **70B** (`compare-70b.md`, `run-70b.log`; p3 run once, compared with the stored p2 70B runs from
 2026-10-03/04, no fresh p2 70B run): gold route 163/180 → 172/180 (9 / 0, p = 0.0039), `other`
-5/16 → 14/16, clinical exclusion 15/16 → 15/16, coverage 169/180 → 176/180; Nemotron route
+5/16 → 14/16, clinical exclusion 15/16 → 15/16, coverage 143/180 → 147/180; Nemotron route
 38/42 → 37/42 (0 / 1, p = 1), clinical 8/8 → 8/8.
 
 **Apertus vs. keyword rules with p3** (`rules-vs-apertus-*.md`): gold 32 wins / 5 losses

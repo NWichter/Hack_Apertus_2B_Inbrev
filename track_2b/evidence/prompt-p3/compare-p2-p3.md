@@ -11,7 +11,7 @@
 | gold | Clinical exclusion precision | 13/28 [0.30, 0.64] | 13/28 [0.30, 0.64] |
 | gold | Today recall | 44/50 [0.76, 0.94] | 44/50 [0.76, 0.94] |
 | gold | Deadline accuracy | 148/180 [0.76, 0.87] | 151/180 [0.78, 0.89] |
-| gold | Coverage | 173/180 [0.92, 0.98] | 177/180 [0.95, 0.99] |
+| gold | Coverage | 146/180 [0.75, 0.86] | 151/180 [0.78, 0.89] |
 | swiss | Route accuracy | 23/30 [0.59, 0.88] | 24/30 [0.63, 0.90] |
 | swiss | Recall of route other | 1/6 [0.03, 0.56] | 1/6 [0.03, 0.56] |
 | swiss | Precision of route other | 1/1 [0.21, 1.00] | 1/1 [0.21, 1.00] |
@@ -19,7 +19,7 @@
 | swiss | Clinical exclusion precision | 4/4 [0.51, 1.00] | 4/4 [0.51, 1.00] |
 | swiss | Today recall | 5/5 [0.57, 1.00] | 5/5 [0.57, 1.00] |
 | swiss | Deadline accuracy | 14/30 [0.30, 0.64] | 14/30 [0.30, 0.64] |
-| swiss | Coverage | 29/30 [0.83, 0.99] | 28/30 [0.79, 0.98] |
+| swiss | Coverage | 25/30 [0.66, 0.93] | 25/30 [0.66, 0.93] |
 | nemotron | Route accuracy | 38/42 [0.78, 0.96] | 39/42 [0.81, 0.98] |
 | nemotron | Recall of route other | 0/3 [0.00, 0.56] | 0/3 [0.00, 0.56] |
 | nemotron | Precision of route other | 0/1 [0.00, 0.79] | – |
@@ -27,7 +27,7 @@
 | nemotron | Clinical exclusion precision | 8/9 [0.57, 0.98] | 8/10 [0.49, 0.94] |
 | nemotron | Today recall | 17/18 [0.74, 0.99] | 17/18 [0.74, 0.99] |
 | nemotron | Deadline accuracy | 38/42 [0.78, 0.96] | 37/42 [0.75, 0.95] |
-| nemotron | Coverage | 41/42 [0.88, 1.00] | 42/42 [0.92, 1.00] |
+| nemotron | Coverage | 32/42 [0.61, 0.87] | 32/42 [0.61, 0.87] |
 | grascco | Route accuracy | 40/40 [0.91, 1.00] | 40/40 [0.91, 1.00] |
 | grascco | Recall of route other | – | – |
 | grascco | Precision of route other | – | – |
@@ -35,7 +35,7 @@
 | grascco | Clinical exclusion precision | 0/7 [0.00, 0.35] | 0/7 [0.00, 0.35] |
 | grascco | Today recall | 40/40 [0.91, 1.00] | 40/40 [0.91, 1.00] |
 | grascco | Deadline accuracy | 40/40 [0.91, 1.00] | 40/40 [0.91, 1.00] |
-| grascco | Coverage | 40/40 [0.91, 1.00] | 40/40 [0.91, 1.00] |
+| grascco | Coverage | 33/40 [0.68, 0.91] | 33/40 [0.68, 0.91] |
 | dev | Route accuracy | 39/60 [0.52, 0.76] | 51/60 [0.74, 0.92] |
 | dev | Recall of route other | 0/20 [0.00, 0.16] | 11/20 [0.34, 0.74] |
 | dev | Precision of route other | 0/1 [0.00, 0.79] | 11/11 [0.74, 1.00] |
@@ -43,7 +43,7 @@
 | dev | Clinical exclusion precision | 7/9 [0.45, 0.94] | 7/9 [0.45, 0.94] |
 | dev | Today recall | 17/19 [0.69, 0.97] | 17/19 [0.69, 0.97] |
 | dev | Deadline accuracy | 50/60 [0.72, 0.91] | 49/60 [0.70, 0.89] |
-| dev | Coverage | 59/60 [0.91, 1.00] | 59/60 [0.91, 1.00] |
+| dev | Coverage | 51/60 [0.74, 0.92] | 51/60 [0.74, 0.92] |
 
 Paired per message (exact two-sided McNemar test on the discordant pairs):
 

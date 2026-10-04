@@ -5,24 +5,24 @@ Gold: `swiss_practice_inbox.jsonl`, n = 30
 | Setup | Route acc | Route macro-F1 | Safety recall | Safety precision | Today recall | Today precision | Deadline acc | Coverage | Route acc (covered) | Field F1 | Tokens in/out | Latency s |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | majority | 0.200 | 0.037 | 0.000 | – | 0.000 | – | 0.533 | 1.000 | 0.200 | 0.000 | – | – |
-| keywords | 0.833 | 0.786 | 1.000 | 1.000 | 1.000 | 0.833 | 0.533 | 1.000 | 0.833 | 0.000 | – | – |
+| keywords | 0.833 | 0.786 | 1.000 | 1.000 | 1.000 | 0.833 | 0.533 | 0.867 | 0.846 | 0.000 | – | – |
 | tfidf_logreg | 0.200 | 0.037 | 0.000 | – | 0.000 | – | 0.400 | 1.000 | 0.200 | 0.000 | – | – |
-| swiss-p2-8b | 0.767 | 0.757 | 1.000 | 1.000 | 1.000 | 1.000 | 0.467 | 0.967 | 0.759 | 0.762 | 1335/625 | 1.543 |
-| swiss-p3-8b | 0.800 | 0.787 | 1.000 | 1.000 | 1.000 | 1.000 | 0.467 | 0.933 | 0.821 | 0.681 | 1537/575 | 1.402 |
+| swiss-p2-8b | 0.767 | 0.757 | 1.000 | 1.000 | 1.000 | 1.000 | 0.467 | 0.833 | 0.880 | 0.762 | 1335/625 | 1.543 |
+| swiss-p3-8b | 0.800 | 0.787 | 1.000 | 1.000 | 1.000 | 1.000 | 0.467 | 0.833 | 0.920 | 0.681 | 1537/575 | 1.402 |
 
 95 % Wilson intervals (k/n [low, high]):
 
 | Setup | Route acc | Safety recall | Safety precision | Today recall | Deadline acc | Coverage |
 | --- | --- | --- | --- | --- | --- | --- |
 | majority | 6/30 [0.10, 0.37] | 0/4 [0.00, 0.49] | – | 0/5 [0.00, 0.43] | 16/30 [0.36, 0.70] | 30/30 [0.89, 1.00] |
-| keywords | 25/30 [0.66, 0.93] | 4/4 [0.51, 1.00] | 4/4 [0.51, 1.00] | 5/5 [0.57, 1.00] | 16/30 [0.36, 0.70] | 30/30 [0.89, 1.00] |
+| keywords | 25/30 [0.66, 0.93] | 4/4 [0.51, 1.00] | 4/4 [0.51, 1.00] | 5/5 [0.57, 1.00] | 16/30 [0.36, 0.70] | 26/30 [0.70, 0.95] |
 | tfidf_logreg | 6/30 [0.10, 0.37] | 0/4 [0.00, 0.49] | – | 0/5 [0.00, 0.43] | 12/30 [0.25, 0.58] | 30/30 [0.89, 1.00] |
-| swiss-p2-8b | 23/30 [0.59, 0.88] | 4/4 [0.51, 1.00] | 4/4 [0.51, 1.00] | 5/5 [0.57, 1.00] | 14/30 [0.30, 0.64] | 29/30 [0.83, 0.99] |
-| swiss-p3-8b | 24/30 [0.63, 0.90] | 4/4 [0.51, 1.00] | 4/4 [0.51, 1.00] | 5/5 [0.57, 1.00] | 14/30 [0.30, 0.64] | 28/30 [0.79, 0.98] |
+| swiss-p2-8b | 23/30 [0.59, 0.88] | 4/4 [0.51, 1.00] | 4/4 [0.51, 1.00] | 5/5 [0.57, 1.00] | 14/30 [0.30, 0.64] | 25/30 [0.66, 0.93] |
+| swiss-p3-8b | 24/30 [0.63, 0.90] | 4/4 [0.51, 1.00] | 4/4 [0.51, 1.00] | 5/5 [0.57, 1.00] | 14/30 [0.30, 0.64] | 25/30 [0.66, 0.93] |
 
 ## swiss-p2-8b
 
-Safety missed: none · abstain on gold-ambiguous: 1/2 · all-correct on covered: 0.276
+Safety missed: none · abstain on gold-ambiguous: 1/2 · all-correct on covered: 0.320
 
 Ops: `{"errors": 0, "invalid_samples": 0, "samples": 90, "sample_error_kinds": [], "prompt_tokens_mean": 1334.8666666666666, "completion_tokens_mean": 625.1333333333333, "latency_mean_s": 1.5428333333333333, "latency_p95_s": 2.09, "quote_status": {"route:exact": 87, "dropped": 35, "exact": 288, "fuzzy": 3, "normalized": 4, "route:normalized": 3}, "lexical_only_safety": 0}`
 
@@ -36,16 +36,16 @@ Coverage curve: ≥1.00: cov 1.00 acc 0.767
 
 | group | n | route acc [95 % CI] | deadline acc | safety recall [95 % CI] | coverage |
 | --- | --- | --- | --- | --- | --- |
-| de | 13 | 9/13 [0.42, 0.87] | 0.462 | 2/2 [0.34, 1.00] | 0.923 |
-| fr | 8 | 6/8 [0.41, 0.93] | 0.375 | 1/1 [0.21, 1.00] | 1.000 |
-| it | 7 | 6/7 [0.49, 0.97] | 0.429 | 1/1 [0.21, 1.00] | 1.000 |
+| de | 13 | 9/13 [0.42, 0.87] | 0.462 | 2/2 [0.34, 1.00] | 0.769 |
+| fr | 8 | 6/8 [0.41, 0.93] | 0.375 | 1/1 [0.21, 1.00] | 0.875 |
+| it | 7 | 6/7 [0.49, 0.97] | 0.429 | 1/1 [0.21, 1.00] | 0.857 |
 | en | 2 | 2/2 [0.34, 1.00] | 1.000 | – | 1.000 |
 
 **By channel**
 
 | group | n | route acc [95 % CI] | deadline acc | safety recall [95 % CI] | coverage |
 | --- | --- | --- | --- | --- | --- |
-| email | 25 | 18/25 [0.52, 0.86] | 0.480 | 4/4 [0.51, 1.00] | 0.960 |
+| email | 25 | 18/25 [0.52, 0.86] | 0.480 | 4/4 [0.51, 1.00] | 0.800 |
 | fax | 3 | 3/3 [0.44, 1.00] | 0.333 | – | 1.000 |
 | web_form | 2 | 2/2 [0.34, 1.00] | 0.500 | – | 1.000 |
 
@@ -106,7 +106,7 @@ Coverage curve: ≥1.00: cov 1.00 acc 0.767
 
 ## swiss-p3-8b
 
-Safety missed: none · abstain on gold-ambiguous: 1/2 · all-correct on covered: 0.286
+Safety missed: none · abstain on gold-ambiguous: 1/2 · all-correct on covered: 0.320
 
 Ops: `{"errors": 0, "invalid_samples": 1, "samples": 90, "sample_error_kinds": [["json: Unterminated string starting at", 1]], "prompt_tokens_mean": 1536.8666666666666, "completion_tokens_mean": 574.9333333333333, "latency_mean_s": 1.4017666666666666, "latency_p95_s": 2.071, "quote_status": {"route:exact": 88, "dropped": 39, "exact": 237, "fuzzy": 2, "normalized": 3, "route:normalized": 1}, "lexical_only_safety": 0}`
 
@@ -120,16 +120,16 @@ Coverage curve: ≥0.67: cov 1.00 acc 0.800, ≥1.00: cov 0.97 acc 0.828
 
 | group | n | route acc [95 % CI] | deadline acc | safety recall [95 % CI] | coverage |
 | --- | --- | --- | --- | --- | --- |
-| de | 13 | 9/13 [0.42, 0.87] | 0.462 | 2/2 [0.34, 1.00] | 0.923 |
+| de | 13 | 9/13 [0.42, 0.87] | 0.462 | 2/2 [0.34, 1.00] | 0.769 |
 | fr | 8 | 7/8 [0.53, 0.98] | 0.375 | 1/1 [0.21, 1.00] | 0.875 |
-| it | 7 | 6/7 [0.49, 0.97] | 0.429 | 1/1 [0.21, 1.00] | 1.000 |
+| it | 7 | 6/7 [0.49, 0.97] | 0.429 | 1/1 [0.21, 1.00] | 0.857 |
 | en | 2 | 2/2 [0.34, 1.00] | 1.000 | – | 1.000 |
 
 **By channel**
 
 | group | n | route acc [95 % CI] | deadline acc | safety recall [95 % CI] | coverage |
 | --- | --- | --- | --- | --- | --- |
-| email | 25 | 19/25 [0.57, 0.89] | 0.480 | 4/4 [0.51, 1.00] | 0.920 |
+| email | 25 | 19/25 [0.57, 0.89] | 0.480 | 4/4 [0.51, 1.00] | 0.800 |
 | fax | 3 | 3/3 [0.44, 1.00] | 0.333 | – | 1.000 |
 | web_form | 2 | 2/2 [0.34, 1.00] | 0.500 | – | 1.000 |
 

@@ -11,7 +11,7 @@
 | gold | Clinical exclusion precision | 13/28 [0.30, 0.64] | 13/28 [0.30, 0.64] |
 | gold | Today recall | 43/50 [0.74, 0.93] | 44/50 [0.76, 0.94] |
 | gold | Deadline accuracy | 147/180 [0.75, 0.87] | 148/180 [0.76, 0.87] |
-| gold | Coverage | 172/180 [0.91, 0.98] | 173/180 [0.92, 0.98] |
+| gold | Coverage | 145/180 [0.74, 0.86] | 146/180 [0.75, 0.86] |
 | nemotron | Route accuracy | 38/42 [0.78, 0.96] | 38/42 [0.78, 0.96] |
 | nemotron | Recall of route other | 0/3 [0.00, 0.56] | 0/3 [0.00, 0.56] |
 | nemotron | Precision of route other | 0/1 [0.00, 0.79] | 0/1 [0.00, 0.79] |
@@ -19,7 +19,7 @@
 | nemotron | Clinical exclusion precision | 8/9 [0.57, 0.98] | 8/9 [0.57, 0.98] |
 | nemotron | Today recall | 17/18 [0.74, 0.99] | 17/18 [0.74, 0.99] |
 | nemotron | Deadline accuracy | 37/42 [0.75, 0.95] | 38/42 [0.78, 0.96] |
-| nemotron | Coverage | 42/42 [0.92, 1.00] | 41/42 [0.88, 1.00] |
+| nemotron | Coverage | 33/42 [0.64, 0.88] | 32/42 [0.61, 0.87] |
 | grascco | Route accuracy | 40/40 [0.91, 1.00] | 40/40 [0.91, 1.00] |
 | grascco | Recall of route other | – | – |
 | grascco | Precision of route other | – | – |
@@ -27,7 +27,7 @@
 | grascco | Clinical exclusion precision | 0/7 [0.00, 0.35] | 0/7 [0.00, 0.35] |
 | grascco | Today recall | 40/40 [0.91, 1.00] | 40/40 [0.91, 1.00] |
 | grascco | Deadline accuracy | 40/40 [0.91, 1.00] | 40/40 [0.91, 1.00] |
-| grascco | Coverage | 40/40 [0.91, 1.00] | 40/40 [0.91, 1.00] |
+| grascco | Coverage | 33/40 [0.68, 0.91] | 33/40 [0.68, 0.91] |
 
 Paired per message (exact two-sided McNemar test on the discordant pairs):
 

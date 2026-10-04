@@ -40,6 +40,11 @@ def wilson(k: int, n: int, z: float = 1.959964) -> tuple[float, float] | None:
     return (max(0.0, c - h), min(1.0, c + h))
 
 
+def automatic(p: dict) -> bool:
+    """Handled without a person: no abstention and no safety flag (both go to "a person decides")."""
+    return not p.get("abstain") and not p.get("safety_flag")
+
+
 def binary(gold: list[bool], pred: list[bool]) -> dict:
     tp = sum(g and p for g, p in zip(gold, pred))
     fp = sum((not g) and p for g, p in zip(gold, pred))
@@ -133,7 +138,7 @@ def score(gold: list[dict], pred: list[dict], traces: list[dict] | None = None) 
     routes = taxonomy.routes()
     groute, proute = [x["route"] for x in gl], [p["route"] for p in pred]
     mf1, per_route = macro_f1(groute, proute, routes)
-    covered = [i for i, p in enumerate(pred) if not p.get("abstain")]
+    covered = [i for i, p in enumerate(pred) if automatic(p)]
     safety = binary([x["safety_flag"] for x in gl], [p["safety_flag"] for p in pred])
     today = binary(
         [x["deadline"] == "today" for x in gl], [p["deadline"] == "today" for p in pred]
@@ -257,7 +262,7 @@ def breakdown(gold: list[dict], pred: list[dict], key) -> dict:
             )
             / len(idx),
             "safety_recall": s["recall"],
-            "coverage": sum(not p.get("abstain") for p in ps) / len(idx),
+            "coverage": sum(automatic(p) for p in ps) / len(idx),
             "route_ok": sum(g["label"]["route"] == p["route"] for g, p in zip(gs, ps)),
             "safety_tp": s["tp"],
             "safety_pos": s["tp"] + s["fn"],

@@ -32,24 +32,25 @@ message. It never assesses clinical content: a message that may contain
 symptoms is excluded from automation and handed to a person, in the same
 queue as messages the model is unsure about, without any ranking by
 severity. Headline result on 180 synthetic messages (labels not yet
-reviewed by a person): with Apertus 8B, Inbrev excludes 13 of 16
-messages with clinical content from automation (clinical exclusion
-recall, also called safety-net recall, 0.81, 95 % CI 0.57--0.93; keyword
-rules 7 of 16) and finds 43 of 50 "today" deadlines (0.86) while 96 % of
-the messages run without a person; route macro-F1 is 0.85. A single
-Apertus answer without the checks finds 9 of 16. Apertus 70B finds 15 of
-\16. Inbrev uses about 1,400 input and 640 output tokens per message
-with 8B. Three checks against our own bias: on 42 messages written by an
-open-weights model (Nemotron) the results hold (route 38 of 42, clinical
-exclusion 8 of 8); a rules-first hybrid saves 48 % of the model calls
-but loses 3 of the 13 clinical cases, because 5 of 16 clinical messages
-look like plain administration to keyword rules; on 40 German clinical
-letters from GraSCCo the route is right 40 of 40. Run fully offline
-(llama.cpp, Q4 GGUF, CPU only, Docker network without internet access),
-Inbrev matches the endpoint on the same 30 messages (same route on 28,
-same clinical flag on 29) at 192 s per message on a 28-W laptop CPU,
-which is about CHF 12 per 1,000 messages on a mini PC at 60 messages a
-day.
+reviewed by a person), Apertus 8B with the current prompt p3: Inbrev
+excludes 13 of 16 messages with clinical content from automation
+(clinical exclusion recall, also called safety-net recall, 0.81, 95 % CI
+0.57--0.93; keyword rules 7 of 16), finds 44 of 50 "today" deadlines
+(0.88) and routes 170 of 180 correctly (macro-F1 0.94), while 84 % of
+the messages (at most 91 %) run without a person. A single Apertus
+answer without the checks finds 9 of 16. Apertus 70B finds 15 of 16.
+Inbrev uses about 1,400 input and 640 output tokens per message with 8B.
+Three checks against our own bias: on 42 messages written by an
+open-weights model (Nemotron) the results hold (route 39 of 42 with p3,
+clinical exclusion 8 of 8); a rules-first hybrid saves 48 % of the model
+calls but loses 3 of the 13 clinical cases, because 5 of 16 clinical
+messages look like plain administration to keyword rules; on 40 German
+clinical letters from GraSCCo the route is right 40 of 40. Run fully
+offline (llama.cpp, Q4 GGUF, CPU only, Docker network without internet
+access), Inbrev matches the endpoint on the same 30 messages (same route
+on 28, same clinical flag on 29) at 192 s per message on a 28-W laptop
+CPU, which is about CHF 12 per 1,000 messages on a mini PC at 60
+messages a day.
 
 = 2. Architecture
 <architecture>
@@ -249,16 +250,16 @@ generator.
 
 Results on the synthetic set v0 (n = 180; 16 safety cases, 50 "today"
 deadlines; labels not yet reviewed by a person). Baselines without a
-language model; TF-IDF with five-fold cross-validation. Both Apertus
-rows run the full pipeline (schema, three samples at T = 0.7, checks,
-vote), prompt p2, on the Hack Apertus endpoint on 3 October 2026.
-Coverage is the share of messages Inbrev handles without "a person
-decides", i.e.~neither abstained nor flagged for clinical content; at
-most 164 of 180 (0.91) here, because the 16 clinical messages must go to
-a person. The row "one sample, no checks" needs no new model call: it
-scores the first of the three stored 8B samples as the model wrote it,
-without quote checks, lexical net, vote or abstention
-(`scripts/ablation_first_sample.py`).
+language model; TF-IDF with five-fold cross-validation. The Inbrev rows
+run the full pipeline (schema, three samples at T = 0.7, checks, vote)
+on the Hack Apertus endpoint, p2 on 3 October 2026, p3 (default) on 4
+October. Coverage is the share of messages Inbrev handles without "a
+person decides", i.e.~neither abstained nor flagged for clinical
+content; at most 164 of 180 (0.91) here, because the 16 clinical
+messages must go to a person. The row "one sample, no checks" needs no
+new model call: it scores the first of the three stored 8B samples as
+the model wrote it, without quote checks, lexical net, vote or
+abstention (`scripts/ablation_first_sample.py`).
 
 #figure(
   align(center)[#table(
@@ -275,18 +276,22 @@ without quote checks, lexical net, vote or abstention
     regression], [0.83], [0.82], [0.13], [1.00], [0.66], [0.68], [0.99],
     [8B, one sample, no
     checks], [0.87], [0.84], [0.56], [1.00], [0.70], [0.67], [0.95],
-    [#strong[Inbrev 8B] (schema, checks,
+    [Inbrev 8B, p2 (schema, checks,
     vote)], [0.88], [0.85], [0.81], [0.46], [0.86], [0.82], [0.81],
-    [Inbrev
-    70B], [0.91], [0.89], [0.94], [0.50], [0.94], [0.85], [0.79],
+    [Inbrev 70B,
+    p2], [0.91], [0.89], [0.94], [0.50], [0.94], [0.85], [0.79],
+    [#strong[Inbrev 8B, p3]
+    (default)], [0.94], [0.94], [0.81], [0.46], [0.88], [0.84], [0.84],
+    [Inbrev 70B,
+    p3], [0.96], [0.96], [0.94], [0.50], [0.94], [0.87], [0.82],
   )]
   , kind: table
   )
 
-With 95 % Wilson intervals: safety recall 13/16 = 0.81 \[0.57, 0.93\]
-for 8B and 15/16 = 0.94 \[0.72, 0.99\] for 70B, against 9/16 = 0.56
-\[0.33, 0.77\] for a single 8B answer without checks and 7/16 = 0.44
-\[0.23, 0.67\] for the keyword rules; route accuracy 159/180 = 0.88
+With 95 % Wilson intervals (p2): safety recall 13/16 = 0.81 \[0.57,
+0.93\] for 8B and 15/16 = 0.94 \[0.72, 0.99\] for 70B, against 9/16 =
+0.56 \[0.33, 0.77\] for a single 8B answer without checks and 7/16 =
+0.44 \[0.23, 0.67\] for the keyword rules; route accuracy 159/180 = 0.88
 \[0.83, 0.92\] for 8B, 163/180 = 0.91 \[0.85, 0.94\] for 70B and 143/180
 \= 0.79 \[0.73, 0.85\] for the keyword rules. With 16 cases the
 intervals are wide, and the 8B--70B difference is not significant (exact
@@ -331,9 +336,9 @@ on every message (`scripts/compare_hybrid.py`).
   align(center)[#table(
     columns: (16.67%, 16.67%, 16.67%, 16.67%, 16.67%, 16.67%),
     align: (auto,auto,auto,auto,auto,auto,),
-    table.header([Further sets (Inbrev 8B, full pipeline)], [n], [Route
-      acc.], [Clinical excl.], [Today rec.], [Keyword rules route /
-      clinical],),
+    table.header([Further sets (Inbrev 8B, p2, full
+      pipeline)], [n], [Route acc.], [Clinical excl.], [Today
+      rec.], [Keyword rules route / clinical],),
     table.hline(),
     [Open generator (Nemotron)], [42], [38/42 \[0.78, 0.96\]], [8/8
     \[0.68, 1.00\]], [17/18], [32/42 / 6/8],
@@ -353,13 +358,12 @@ anyway.
 (copy or transfer of records, referral elsewhere, symptoms only:
 "other"). It was developed on a separate dev set (60 new Nemotron
 messages, 20 "other"\; p2 0/20, p3 11/20), frozen after one dev run,
-then run once on every test set next to a fresh p2 run: gold route
-158/180 → 170/180 \[0.90, 0.97\] (13 vs 1 discordant, McNemar p = 0.002;
-two p2 runs differ on 3 routes), "other" 2/16 → 13/16 (rules 9/16),
-clinical exclusion 13/16 with no discordant pair, coverage 146 →
-151/180; Swiss 23 → 24/30, Nemotron 38 → 39/42, GraSCCo 40/40; 70B gold
-163 → 172/180. Against the rules, p3 8B wins 32 to 5
-(`evidence/prompt-p3/`). The tables keep the p2 runs.
+then run once on every test set next to a fresh p2 run (p3 rows above):
+gold route 158 → 170/180 \[0.90, 0.97\] (McNemar p = 0.002; two p2 runs
+differ on 3 routes), "other" 2/16 → 13/16 (rules 9/16), no clinical
+exclusion lost; Swiss 23 → 24/30, Nemotron 38 → 39/42. Against the
+rules, p3 8B wins 32 to 5 (`evidence/prompt-p3/`). Other numbers below
+use p2 unless noted.
 
 #strong[One sample is nearly as good as three.] Replaying the stored 8B
 run with only the first sample, but with checks, lexical net and

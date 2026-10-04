@@ -1050,7 +1050,7 @@
         </div>
         <div>
           <div class="claim">
-            The practice inbox that never leaves the practice.
+            Run locally, the practice inbox never leaves the practice.
           </div>
           <div class="sub">
             Inbrev sorts the inbox of a Swiss GP practice by handling path and
@@ -1063,9 +1063,8 @@
             <a class="btn primary" href="../#video"
               >&#9654;&nbsp;Watch the 2-min demo</a
             >
-            <a class="btn ghost" href="#"
-              >Code on GitHub
-              <span class="tbd" style="font-size: 22px">[TBD link]</span></a
+            <a class="btn ghost" href="https://github.com/NWichter/Hack_Apertus_2B_Inbrev"
+              >Code on GitHub</a
             >
           </div>
           <div class="team">solo builder · fictional data only</div>
@@ -1125,10 +1124,11 @@
         <div class="cards">
           <div class="card">
             <div class="k">01 · READ</div>
-            <h3>Every channel</h3>
+            <h3>Mail, forms, faxes</h3>
             <p>
-              E-mail, HIN mail, web forms and scanned faxes (OCR). German,
-              French, Italian and English.
+              E-mail files and IMAP (tested on a local test server), web
+              forms, fax PDFs via OCR (not yet measured); HIN link planned.
+              German, French, Italian and English.
             </p>
           </div>
           <div class="card">
@@ -1252,7 +1252,7 @@
             <span class="p">Offline run, measured</span><br />network practice
             <b>internal: true</b><br />egress dns / tcp / https:
             <b>FAILED</b><br />weights sha256 a037df8d… = HF<br />30 messages,
-            Q4 on a 28-W laptop CPU<br />route 24/30 · same as endpoint 28/30<br />192 s / message ·
+            Q4 on a 28-W laptop CPU<br />route 24/30 · endpoint 23/30<br />192 s / message ·
             RAM 6.2 GiB
           </div>
         </div>
@@ -1287,48 +1287,45 @@
                   <td>0.76</td>
                   <td>0.44 (7/16)</td>
                   <td>0.76</td>
-                  <td>100 %</td>
+                  <td>88 %</td>
                 </tr>
                 <tr>
                   <td>TF-IDF + log. regression</td>
                   <td>0.82</td>
                   <td>0.13 (2/16)</td>
                   <td>0.66</td>
-                  <td>100 %</td>
+                  <td>99 %</td>
                 </tr>
                 <tr>
                   <td>Apertus 8B, one answer, no checks</td>
                   <td>0.84</td>
                   <td>0.56 (9/16)</td>
                   <td>0.70</td>
-                  <td>100 %</td>
+                  <td>95 %</td>
                 </tr>
                 <tr>
                   <td>Inbrev with Apertus 70B</td>
-                  <td>0.89</td>
+                  <td>0.96</td>
                   <td>0.94 (15/16)</td>
                   <td>0.94</td>
-                  <td>94 %</td>
+                  <td>82 %</td>
                 </tr>
                 <tr class="ours">
                   <td>Inbrev (8B + checks + abstain)</td>
-                  <td>0.85</td>
+                  <td>0.94</td>
                   <td>0.81 (13/16)</td>
-                  <td>0.86</td>
-                  <td>96 %</td>
+                  <td>0.88</td>
+                  <td>84 %</td>
                 </tr>
               </tbody>
             </table>
             <div class="foot" style="margin-top: 22px">
-              Honest read: the keyword rules already route 79 % correctly and
-              run without a model; on 30 extra Swiss-style messages they even
-              route better than 8B (25 vs 23 of 30). The model earns its place
-              on clinical exclusion (7 → 13 of 16) and on fields (F1 0.73 with
-              8B, 0.83 with 70B). About half of the flags are false alarms from
-              the lexical net. A rules-first hybrid would skip the model on
-              half the mail but miss 3 more clinical cases. On 42 messages
-              written by an open model (Nemotron): 38/42 routes, 8/8 clinical.
-              Not measured: fax OCR.
+              Inbrev: prompt p3, built on a separate dev set. Runs
+              automatically = neither unsure nor flagged (max. 91 %: clinical
+              mail always goes to a person). Rules route 79 % without a model
+              and match 8B on 30 Swiss-style messages (25 vs 24); paired on the
+              180, 8B wins 32 to 5 (p = 7·10⁻⁶). Half the flags are false
+              alarms. Nemotron set: 39/42, 8/8 clinical. Fax OCR not measured.
             </div>
           </div>
           <div class="side">
@@ -1347,7 +1344,7 @@
                 Review tool for a blind relabelling by a person (κ) is
                 ready; planned: handwritten messages and scanned faxes
               </li>
-              <li>Open data, CDLA-Permissive-2.0.</li>
+              <li>Seed and Swiss sets in the repo (CDLA-Permissive-2.0); the 180 follow after human review.</li>
             </ul>
           </div>
         </div>
@@ -1359,13 +1356,13 @@
         <h1>Swiss francs per 1,000 messages, on hardware the practice owns.</h1>
         <div class="costs">
           <div class="cost hl">
-            <div class="k">On-prem, CPU only · measured</div>
+            <div class="k">On-prem, CPU only · model calculation</div>
             <h3>Apertus 8B Q4 · mini PC</h3>
             <div class="big">≈ CHF 12</div>
             <div class="unit">per 1,000 messages at 60 a day (box, power)</div>
             <div class="rows">
-              192 s / message offline, 1 sample<br />Up to 450 messages a day;
-              energy alone CHF 0.52
+              Measured: 192 s / message offline, 1 sample. Assumed: box CHF 700
+              over 3 years. Up to 450 messages a day; energy alone CHF 0.52
             </div>
           </div>
           <div class="cost">
@@ -1386,7 +1383,7 @@
               per 1,000 messages at the listed Apertus 70B price
             </div>
             <div class="rows">
-              Tokens measured: 1,398 in, 644 out (8B)<br />CHF 0.70 / 2.50 per
+              Tokens measured: 1,398 in, 644 out (8B, p2)<br />CHF 0.70 / 2.50 per
               million tokens (Infomaniak)
             </div>
             <div class="note">
@@ -1424,15 +1421,15 @@
               <li>Rank messages by clinical severity</li>
               <li>Assess symptoms or suggest care</li>
               <li>Make a decision a person has not seen</li>
-              <li>Send patient data out of the practice</li>
+              <li>Send patient data out of the practice (local mode)</li>
             </ul>
           </div>
         </div>
         <div class="law">
           <b>Two modes:</b> the default triage with a safety net (all reported
           numbers) and an optional clinical mode, off by default and not in the
-          web inbox: a keyword hint on urgency for research, not validated, not a
-          medical device, not certified.<br /><b>Why the line sits here:</b> MDCG 2019-11 Rev.1 (2025) treats
+          web inbox: a keyword hint on urgency for research, not validated and
+          not certified; it would need classification before any clinical use.<br /><b>Why the line sits here:</b> MDCG 2019-11 Rev.1 (2025) treats
           software that automatically reprioritises by clinical criticality
           based on patient data as medical device software; software that only
           stores, communicates or searches is not. Switzerland classifies via
@@ -1468,15 +1465,16 @@
             </dd>
             <dt>Later</dt>
             <dd>
-              Germany and Austria: same logic, same secrecy duty (§ 203 StGB)
+              Germany and Austria: same workflow, after checking their secrecy
+              and AI Act rules
             </dd>
           </dl>
           <div class="timeline">
             <div class="tl now">
               <div class="when">OCT 2026 · HACK APERTUS</div>
               <div class="what">
-                Open gold set, full evaluation, offline proof, CHF per 1,000
-                messages
+                Full evaluation, offline proof, CHF per 1,000 messages; gold set
+                published after human review
               </div>
             </div>
             <div class="tl">
@@ -1529,7 +1527,7 @@
         <div class="close-grid">
           <div>
             <div class="claim">
-              The practice inbox that never leaves the practice.
+              Run locally, the practice inbox never leaves the practice.
             </div>
             <div class="ask">
               We are looking for one Swiss group practice to pilot Inbrev on its
@@ -1555,15 +1553,11 @@
           >
           <span
             ><b>Code</b
-            ><span class="tbd" style="font-size: 22px"
-              >[TBD GitHub link]</span
-            ></span
+            ><a style="color: inherit" href="https://github.com/NWichter/Hack_Apertus_2B_Inbrev">github.com/NWichter/Hack_Apertus_2B_Inbrev</a></span
           >
           <span
             ><b>Data</b
-            ><span class="tbd" style="font-size: 22px"
-              >[TBD Hugging Face link]</span
-            ></span
+            ><span>seed and Swiss sets in track_2b/data; gold set after review</span></span
           >
         </div>
       </section>

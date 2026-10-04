@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <title>Inbrev · The practice inbox that never leaves the practice</title>
+    <title>Inbrev · Run locally, the practice inbox never leaves the practice</title>
     <meta
       name="description"
       content="Inbrev sorts the inbox of a Swiss medical practice locally with Apertus: by handling route and administrative deadline, with a verbatim source for every decision."
@@ -12,7 +12,7 @@
     <meta property="og:title" content="Inbrev" />
     <meta
       property="og:description"
-      content="The practice inbox that never leaves the practice. Built on Apertus for Hack Apertus 2026."
+      content="Run locally, the practice inbox never leaves the practice. Built on Apertus for Hack Apertus 2026."
     />
     <link rel="canonical" href="https://inbrev.apertool.ch/" />
     <meta property="og:url" content="https://inbrev.apertool.ch/" />
@@ -44,9 +44,9 @@
         <div class="wrap hero-inner">
           <div class="hero-text">
             <p class="eyebrow">Hack Apertus 2026 · Track 2B · Team Apertool</p>
-            <h1>The practice inbox that never leaves the practice.</h1>
+            <h1>Run locally, the practice inbox never leaves the practice.</h1>
             <p class="lead">
-              Inbrev sorts the incoming mail, HIN mail and faxes of a Swiss
+              Inbrev sorts the incoming e-mail, web forms and faxes of a Swiss
               general practice with Apertus, built to run on a box inside the practice. Every
               message gets a handling route, an administrative deadline and a
               person in charge, and every decision points to the words in the
@@ -115,8 +115,9 @@
           </p>
           <ol class="steps">
             <li>
-              <b>Read.</b> E-mail, HIN mail, fax (OCR) and web forms become
-              text. Apertus answers in an enforced JSON schema, three times per
+              <b>Read.</b> E-mail (files or IMAP, tested on a local test
+              server), web forms and fax PDFs (OCR, not yet measured) become
+              text; a HIN connection is planned. Apertus answers in an enforced JSON schema, three times per
               message.
             </li>
             <li>
@@ -179,7 +180,7 @@
           <h2>Runs where the mail arrives</h2>
           <div class="flow" aria-label="Pipeline">
             <div class="flow-box">
-              Inbox<small>e-mail · HIN · fax · form</small>
+              Inbox<small>e-mail · fax · form</small>
             </div>
             <div class="flow-arrow" aria-hidden="true">→</div>
             <div class="flow-box strong">
@@ -255,8 +256,10 @@
                   Measured on the 180 messages: Inbrev with Apertus 8B takes 13
                   of 16 messages with clinical content out of automation
                   (clinical exclusion recall 0.81, 95 % CI 0.57–0.93) and
-                  handles 96 % of all messages without a person; route
-                  macro-F1 0.85. Apertus 70B: 15 of 16
+                  handles 84 % of all messages without a person (at most
+                  91 %, because clinical mail always goes to a person); route
+                  macro-F1 0.94 with prompt p3, which was built on a separate
+                  development set. Apertus 70B: 15 of 16
                 </li>
                 <li class="done">
                   Baselines without a language model: keyword rules route 79 %
@@ -266,7 +269,7 @@
                 </li>
                 <li class="done">
                   Control set written by an open model (Nemotron), 42
-                  messages: Apertus 8B routes 38 and takes all 8 messages with
+                  messages: Apertus 8B routes 39 and takes all 8 messages with
                   clinical content out of automation; keyword rules 32 and 6
                 </li>
                 <li class="done">
@@ -291,8 +294,9 @@
                   at 192 s per message on a 28-W laptop CPU
                 </li>
                 <li class="done">
-                  Cost: about CHF 12 per 1,000 messages on a mini PC at 60
-                  messages a day; CHF 2.39 on a Swiss cloud VM billed while
+                  Cost (model calculation from the measured time and an
+                  assumed box price): about CHF 12 per 1,000 messages on a mini
+                  PC at 60 messages a day; CHF 2.39 on a Swiss cloud VM billed while
                   sorting
                 </li>
               </ul>

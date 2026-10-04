@@ -1029,8 +1029,8 @@
           </div>
           <div class="sub">
             Inbrev sorts the inbox of a Swiss GP practice by handling path and
-            deadline, with Apertus running on a box in the practice. Every field
-            it extracts quotes its source.
+            deadline, with Apertus, built to run on a box in the practice. Every
+            field it extracts quotes its source.
           </div>
         </div>
         <div class="row">
@@ -1126,10 +1126,11 @@
           </div>
         </div>
         <div class="band">
-          <b>Safety net</b
+          <b>Clinical content</b
           ><span
-            >A message that may describe acute symptoms skips all automation and
-            goes straight to a person. Inbrev does not judge it.</span
+            >A message that may contain symptoms is excluded from automation and
+            goes to a person, like any message Inbrev is unsure about. Inbrev
+            does not judge it and does not rank it.</span
           >
         </div>
         <div class="foot">
@@ -1144,8 +1145,8 @@
       <section class="slide">
         <div class="eyebrow">Demo</div>
         <h1 style="font-size: 64px">
-          One click. The possible emergency on top, the rest by path and
-          deadline.
+          One click. Sorted by path and deadline; what needs a person goes to a
+          person.
         </h1>
         <div class="app">
           <div class="list">
@@ -1153,10 +1154,18 @@
               <span>Inbox · sorted</span><span>8 of 30 shown</span>
             </div>
             <div class="item">
-              <span class="tag t-safe">Human now</span>
+              <span class="tag t-human">You decide</span>
+              <div>
+                <div class="who">Peter Huber</div>
+                <div class="subj">Two topics in one message – not sure</div>
+              </div>
+              <span class="as">MPA</span>
+            </div>
+            <div class="item">
+              <span class="tag t-human">Clinical content</span>
               <div>
                 <div class="who">Heidi Zimmermann</div>
-                <div class="subj">„Dringend“ – Schmerzen in der Brust</div>
+                <div class="subj">Rezept – und seit heute Druck auf der Brust</div>
               </div>
               <span class="as">person</span>
             </div>
@@ -1197,14 +1206,6 @@
               <div>
                 <div class="who">Dr. P. Bernasconi · IT</div>
                 <div class="subj">Referral · Invio paziente</div>
-              </div>
-              <span class="as">MPA</span>
-            </div>
-            <div class="item">
-              <span class="tag t-human">You decide</span>
-              <div>
-                <div class="who">Peter Huber</div>
-                <div class="subj">Two topics in one message – not sure</div>
               </div>
               <span class="as">MPA</span>
             </div>
@@ -1317,11 +1318,11 @@
           </div>
           <div class="term">
             <span class="p">$</span> docker run --rm
-            <b>--network none</b> \<br />&nbsp;&nbsp;&nbsp;&nbsp;-v
-            ./inbox:/inbox inbrev triage /inbox<br /><span
+            <b>--network none</b> \<br />&nbsp;&nbsp;&nbsp;&nbsp;inbrev
+            python -m pytest -q<br />18 passed<br /><span
               class="tbd"
               style="font-size: 20px"
-              >[TBD: paste real output of the offline run]</span
+              >Full triage on local GGUF weights: not run yet</span
             ><br /><br /><span class="c"
               ># downloaded at build time only:<br /># weights (SHA-256),
               images, OCR data</span
@@ -1334,11 +1335,12 @@
       <section class="slide">
         <div class="eyebrow">Evaluation · Technical rigour</div>
         <h1 style="font-size: 70px">
-          Recall first: no acute message may slip through.
+          Measured: what leaves automation, and what still runs by itself.
         </h1>
         <div class="lead" style="margin-top: 18px">
-          Target: recall ≥ 0.95 for “safety” and “today”, with the share of
-          messages handed to a person disclosed.
+          180 synthetic messages, labels not yet reviewed by a person. Target
+          0.95 for clinical exclusion recall and “today” recall; 8B does not
+          reach it yet (13 of 16, 95 % CI 0.57–0.93).
         </div>
         <div class="split">
           <div>
@@ -1347,76 +1349,72 @@
                 <tr>
                   <th>Setup</th>
                   <th>Macro-F1<br />9 paths</th>
-                  <th>Recall<br />safety</th>
+                  <th>Clinical<br />exclusion recall</th>
                   <th>Recall<br />“today”</th>
                   <th>Runs<br />automatically</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Keyword rules</td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
+                  <td>Keyword rules + lexical net</td>
+                  <td>0.76</td>
+                  <td>0.44 (7/16)</td>
+                  <td>0.76</td>
                   <td>100 %</td>
                 </tr>
                 <tr>
                   <td>TF-IDF + log. regression</td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
+                  <td>0.82</td>
+                  <td>0.13 (2/16)</td>
+                  <td>0.66</td>
                   <td>100 %</td>
                 </tr>
                 <tr>
-                  <td>Other open 7–8B model</td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
+                  <td>Apertus 8B, one answer, no checks</td>
+                  <td>0.84</td>
+                  <td>0.56 (9/16)</td>
+                  <td>0.70</td>
                   <td>100 %</td>
                 </tr>
                 <tr>
-                  <td>Apertus 8B, plain prompt</td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td>100 %</td>
-                </tr>
-                <tr>
-                  <td>Apertus 70B (CSCS)</td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td>100 %</td>
+                  <td>Inbrev with Apertus 70B</td>
+                  <td>0.89</td>
+                  <td>0.94 (15/16)</td>
+                  <td>0.94</td>
+                  <td>94 %</td>
                 </tr>
                 <tr class="ours">
                   <td>Inbrev (8B + checks + abstain)</td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
-                  <td><span class="tbd">TBD</span></td>
+                  <td>0.85</td>
+                  <td>0.81 (13/16)</td>
+                  <td>0.86</td>
+                  <td>96 %</td>
                 </tr>
               </tbody>
             </table>
             <div class="foot" style="margin-top: 22px">
-              Also reported: field F1, share of fields with a valid quote, and
-              every metric split by language (DE / FR / IT) and writing level
-              (clean / typos / non-native) and by channel (text / fax OCR).
+              Honest read: the keyword rules already route 79 % correctly and
+              run without a model; on 30 extra Swiss-style messages they even
+              route better than 8B (25 vs 23 of 30). The model earns its place
+              on clinical exclusion (7 → 13 of 16) and on fields (F1 0.73 with
+              8B, 0.83 with 70B). About half of the flags are false alarms from
+              the lexical net. Not measured: other open models, fax OCR.
             </div>
           </div>
           <div class="side">
-            <h3>Gold set: ~300 fictional messages</h3>
+            <h3>Test set v0: 180 fictional messages</h3>
             <ul>
               <li>Labels are fixed before any text is written.</li>
               <li>
-                Text by two other model families, by hand, and as scanned faxes.
+                Text by two other model families (Claude, GPT-5.5), 90 each.
                 Apertus never writes or labels test data.
               </li>
               <li>
                 Fictional people; AHV numbers with an invalid check digit.
               </li>
               <li>
-                ≥ 60 messages labelled twice, 48 h apart, blind:
-                <span class="nowrap">κ <span class="tbd">TBD</span></span>
+                Planned: handwritten messages, scanned faxes and a blind
+                relabelling by a person (κ)
               </li>
               <li>Open data, CDLA-Permissive-2.0.</li>
             </ul>
@@ -1457,8 +1455,8 @@
               per 1,000 requests of 3,000 input + 500 output tokens
             </div>
             <div class="rows">
-              Inbrev tokens / message: <span class="tbd">TBD</span><br />Up to 3
-              runs per message
+              Inbrev tokens / message (8B, measured): 1,398 in, 644 out<br />3
+              samples in one request
             </div>
             <div class="note">
               From CHF 0.00335 per request, blog estimate (Pupel, devs-group,
@@ -1485,7 +1483,7 @@
             <ul>
               <li>Sort by handling path and administrative deadline</li>
               <li>Extract patient and case fields, each with its quote</li>
-              <li>Hand anything that may be acute to a person, unranked</li>
+              <li>Hand clinical content to a person, unassessed and unranked</li>
               <li>Say “you decide” when it is unsure</li>
             </ul>
           </div>

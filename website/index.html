@@ -46,7 +46,7 @@
             <h1>The practice inbox that never leaves the practice.</h1>
             <p class="lead">
               Inbrev sorts the incoming mail, HIN mail and faxes of a Swiss
-              general practice with Apertus, on a box inside the practice. Every
+              general practice with Apertus, built to run on a box inside the practice. Every
               message gets a handling route, an administrative deadline and a
               person in charge, and every decision points to the words in the
               message that support it.
@@ -132,10 +132,10 @@
             <article class="note safety">
               <h3>Routes, never triages</h3>
               <p>
-                Inbrev does not judge how urgent a medical complaint is. A
-                message that may describe acute symptoms goes to the top and to
-                a person, without any ranking by severity. That keeps the tool
-                administrative.
+                Inbrev does not assess clinical content. A message that may
+                contain symptoms is excluded from automation and lands with the
+                messages a person decides, in order of arrival and without any
+                ranking by severity. That keeps the tool administrative.
               </p>
             </article>
             <article class="note human">
@@ -203,8 +203,9 @@
         <div class="wrap">
           <h2>Status</h2>
           <p class="section-lead">
-            What is built and what is still being measured. Numbers appear here
-            only once they are measured.
+            What is built, what is measured and what is still open. Every
+            number comes from a real run on synthetic, fictional messages whose
+            labels no person has reviewed yet.
           </p>
           <div class="grid two">
             <article class="status-col">
@@ -222,13 +223,22 @@
                   <code>--network none</code>
                 </li>
                 <li class="done">
-                  Taxonomy of nine routes, 12 handwritten seed messages and a
-                  synthetic test set of 180 messages in four languages, all
-                  fictional
+                  Taxonomy of nine routes, 12 seed messages written by Claude
+                  (not by hand) and a synthetic test set of 180 messages in four
+                  languages written by Claude and GPT-5.5, all fictional
                 </li>
                 <li class="done">
-                  Baselines without a language model: keyword rules catch 44 %
-                  of the safety cases, a TF-IDF classifier 13 %
+                  Measured on the 180 messages: Inbrev with Apertus 8B takes 13
+                  of 16 messages with clinical content out of automation
+                  (clinical exclusion recall 0.81, 95 % CI 0.57–0.93) and
+                  handles 96 % of all messages without a person; route
+                  macro-F1 0.85. Apertus 70B: 15 of 16
+                </li>
+                <li class="done">
+                  Baselines without a language model: keyword rules route 79 %
+                  correctly but catch only 7 of 16 messages with clinical
+                  content, a TF-IDF classifier 2 of 16; a single Apertus 8B
+                  answer without the checks catches 9 of 16
                 </li>
               </ul>
             </article>
@@ -236,8 +246,8 @@
               <h3>In progress</h3>
               <ul class="checklist">
                 <li class="todo">
-                  Apertus results: safety recall, "today" recall, coverage,
-                  route F1
+                  Review of the labels by a person; so far all labels come from
+                  the generating models
                 </li>
                 <li class="todo">Full run on local weights without network</li>
                 <li class="todo">Handwritten and faxed test messages</li>
@@ -279,9 +289,9 @@
           <a class="card-link" href="report.pdf">
             <span class="pdf-badge">PDF</span>
             <span
-              ><b>Technical report</b> Draft: architecture, use of Apertus,
-              data, evaluation plan and limitations. Unmeasured values are
-              marked [TBD].</span
+              ><b>Technical report</b> Architecture, use of Apertus, data,
+              measured results with intervals, and limitations. Five
+              pages.</span
             >
           </a>
         </div>

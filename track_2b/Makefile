@@ -1,12 +1,15 @@
-.PHONY: run run-local build test offline-check eval triage-seed stop
+.PHONY: run run-local offline-eval build test offline-check eval triage-seed stop
 
 IMAGE ?= inbrev:latest
 
 run:
 	docker compose up --build app
 
-run-local:
-	LLM_BASE_URL=http://llm:8080/v1 docker compose --profile local up --build
+run-local: build
+	docker compose --profile local up llm app-local gateway
+
+offline-eval: build
+	bash scripts/run_offline_eval.sh
 
 build:
 	docker compose build app

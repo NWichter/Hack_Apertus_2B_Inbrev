@@ -23,6 +23,7 @@ class Completion:
     retries: int = 0
     raw_model: str = ""
     errors: list[str] = field(default_factory=list)
+    split: bool = False
 
 
 class LLMError(RuntimeError):
@@ -44,11 +45,44 @@ class LLMClient:
             timeout=cfg.timeout,
         )
         self._sem = asyncio.Semaphore(cfg.concurrency)
+        self.split_samples = {"on": True, "off": False}.get(cfg.split_samples)
+
+    async def chat(self, messages: list[dict], *, n: int = 1, **kw) -> Completion:
+        """n samples in one request; servers without `n` (llama.cpp) get n single requests."""
+        if n > 1 and self.split_samples is not True:
+            try:
+                comp = await self._chat(messages, n=n, **kw)
+            except LLMError as e:
+                if self.split_samples is False or "HTTP 400" not in str(e):
+                    raise
+                self.split_samples = True
+            else:
+                if len(comp.contents) >= n or self.split_samples is False:
+                    return comp
+                self.split_samples = True
+        if n == 1 or not self.split_samples:
+            return await self._chat(messages, n=n, **kw)
+        parts = []
+        for i in range(n):
+            extra = dict(kw.pop("extra", None) or {})
+            extra.setdefault("seed", 1000 + i)
+            parts.append(await self._chat(messages, n=1, extra=extra, **kw))
+            kw["extra"] = {k: v for k, v in extra.items() if k != "seed"} or None
+        return Completion(
+            contents=[c for p in parts for c in p.contents],
+            finish_reasons=[f for p in parts for f in p.finish_reasons],
+            prompt_tokens=sum(p.prompt_tokens for p in parts),
+            completion_tokens=sum(p.completion_tokens for p in parts),
+            latency_s=sum(p.latency_s for p in parts),
+            retries=sum(p.retries for p in parts),
+            raw_model=parts[0].raw_model,
+            split=True,
+        )
 
     async def aclose(self) -> None:
         await self._client.aclose()
 
-    async def chat(
+    async def _chat(
         self,
         messages: list[dict],
         *,

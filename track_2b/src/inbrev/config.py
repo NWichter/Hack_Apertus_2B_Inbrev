@@ -47,6 +47,9 @@ class Settings:
     concurrency: int = field(
         default_factory=lambda: int(os.getenv("INBREV_CONCURRENCY", "3"))
     )
+    split_samples: str = field(
+        default_factory=lambda: os.getenv("INBREV_SPLIT_SAMPLES", "auto").lower()
+    )
     timeout: float = field(
         default_factory=lambda: float(os.getenv("INBREV_TIMEOUT", "180"))
     )

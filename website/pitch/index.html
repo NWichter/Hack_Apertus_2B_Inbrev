@@ -335,6 +335,8 @@
         color: var(--safety);
       }
 
+      .shots2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 26px; }
+      .shots2 img { width: 100%; border-radius: 14px; border: 1px solid rgba(0,0,0,.12); box-shadow: 0 10px 30px rgba(0,0,0,.12); }
       /* demo mock-up */
       .app {
         margin-top: 40px;
@@ -1135,7 +1137,7 @@
         </div>
         <div class="foot">
           Apertus reads free text in four languages. Everything code can check
-          (AHV numbers, dates, insurer names, quotes) is checked by code. Small
+          (AHV numbers, dates, quotes) is checked by code. Small
           local models do best on narrowly cut tasks (Xu et al.,
           <i>JMIR</i> 2026, CHUV).
         </div>
@@ -1148,108 +1150,15 @@
           One click. Sorted by path and deadline; what needs a person goes to a
           person.
         </h1>
-        <div class="app">
-          <div class="list">
-            <div class="lh">
-              <span>Inbox · sorted</span><span>8 of 30 shown</span>
-            </div>
-            <div class="item">
-              <span class="tag t-human">You decide</span>
-              <div>
-                <div class="who">Peter Huber</div>
-                <div class="subj">Two topics in one message – not sure</div>
-              </div>
-              <span class="as">MPA</span>
-            </div>
-            <div class="item">
-              <span class="tag t-human">Clinical content</span>
-              <div>
-                <div class="who">Heidi Zimmermann</div>
-                <div class="subj">Rezept – und seit heute Druck auf der Brust</div>
-              </div>
-              <span class="as">person</span>
-            </div>
-            <div class="item">
-              <span class="tag t-today">Today</span>
-              <div>
-                <div class="who">Labor Rheintal AG</div>
-                <div class="subj">Report received · Lukas Weber</div>
-              </div>
-              <span class="as">doctor</span>
-            </div>
-            <div class="item sel">
-              <span class="tag t-week">This week</span>
-              <div>
-                <div class="who">Fax · KV Beispiel AG (fict.)</div>
-                <div class="subj">Insurer · Kostengutsprache Physio</div>
-              </div>
-              <span class="as">admin</span>
-            </div>
-            <div class="item">
-              <span class="tag t-week">This week</span>
-              <div>
-                <div class="who">Marc Rochat · FR</div>
-                <div class="subj">Refill · Renouvellement ordonnance</div>
-              </div>
-              <span class="as">MPA</span>
-            </div>
-            <div class="item">
-              <span class="tag t-week">This week</span>
-              <div>
-                <div class="who">Tobias Frei · web form</div>
-                <div class="subj">Certificate · Arbeitsunfähigkeit</div>
-              </div>
-              <span class="as">MPA</span>
-            </div>
-            <div class="item">
-              <span class="tag t-none">No deadline</span>
-              <div>
-                <div class="who">Dr. P. Bernasconi · IT</div>
-                <div class="subj">Referral · Invio paziente</div>
-              </div>
-              <span class="as">MPA</span>
-            </div>
-            <div class="item">
-              <span class="tag t-none">Archived</span>
-              <div>
-                <div class="who">Pharma newsletter</div>
-                <div class="subj">Marketing · Webinar Diabetes</div>
-              </div>
-              <span class="as">–</span>
-            </div>
-          </div>
-          <div class="detail">
-            <div class="meta">
-              Fax · OCR · German · route <b>insurer</b> → admin · deadline
-              <b>08.10.2026</b>
-            </div>
-            <div class="fax">
-              <mark>KOSTENGUTSPRACHE</mark> – RÜCKFRAGE<br />Versicherte Person:
-              <mark>Anna Meier</mark>, <mark>22.08.1979</mark>,<br />AHV
-              <mark>756.1234.9876.14</mark><br />Wir benötigen
-              <mark>bis 08.10.2026</mark> die ärztliche Verordnung für 9
-              Sitzungen Physiotherapie. Referenz <mark>KG-2026-55813</mark>.
-            </div>
-            <dl class="fields">
-              <dt>Patient</dt>
-              <dd>Anna Meier<q>Anna Meier</q></dd>
-              <dt>Date of birth</dt>
-              <dd>1979-08-22<q>22.08.1979</q></dd>
-              <dt>AHV no.</dt>
-              <dd>756.1234.9876.14<q>format check: code</q></dd>
-              <dt>Deadline</dt>
-              <dd>2026-10-08<q>bis 08.10.2026</q></dd>
-              <dt>Insurer ref.</dt>
-              <dd>KG-2026-55813<q>Referenz KG-2026-55813</q></dd>
-            </dl>
-          </div>
+        <div class="shots2">
+          <img src="../assets/app-detail-admin.webp" alt="Inbrev web inbox: prescription request routed to the assistant with quoted medication and a fixed reply template" />
+          <img src="../assets/app-detail.webp" alt="Inbrev web inbox: appointment request mentioning shortness of breath is not processed and goes to a person" />
         </div>
         <div class="foot" style="margin-top: 18px">
-          Mock-up with messages from the fictional seed set; no real patient
-          data anywhere.
-          <span class="tbd"
-            >[TBD: replace with screenshot of the real app]</span
-          >
+          Screenshots of the running app with stored Apertus 8B results on
+          fictional test messages. Left: handled automatically, every value
+          with its quote. Right: shortness of breath mentioned in passing, so
+          a person reads it; no ranking.
         </div>
       </section>
 
@@ -1274,7 +1183,7 @@
             <div class="arrow">&rsaquo;</div>
             <div class="step">
               <div class="h">Rule extractors</div>
-              <div class="d">AHV no., dates, phone, insurer list</div>
+              <div class="d">AHV no., dates, received time</div>
             </div>
             <div class="arrow">&rsaquo;</div>
             <div class="step ai">
@@ -1398,7 +1307,10 @@
               route better than 8B (25 vs 23 of 30). The model earns its place
               on clinical exclusion (7 → 13 of 16) and on fields (F1 0.73 with
               8B, 0.83 with 70B). About half of the flags are false alarms from
-              the lexical net. Not measured: other open models, fax OCR.
+              the lexical net. A rules-first hybrid would skip the model on
+              half the mail but miss 3 more clinical cases. On 42 messages
+              written by an open model (Nemotron): 38/42 routes, 8/8 clinical.
+              Not measured: fax OCR.
             </div>
           </div>
           <div class="side">
@@ -1406,15 +1318,16 @@
             <ul>
               <li>Labels are fixed before any text is written.</li>
               <li>
-                Text by two other model families (Claude, GPT-5.5), 90 each.
-                Apertus never writes or labels test data.
+                Text by two other model families (Claude, GPT-5.5), 90 each,
+                plus 42 by an open model (Nemotron) as a control. Apertus
+                never writes or labels test data.
               </li>
               <li>
                 Fictional people; AHV numbers with an invalid check digit.
               </li>
               <li>
-                Planned: handwritten messages, scanned faxes and a blind
-                relabelling by a person (κ)
+                Review tool for a blind relabelling by a person (κ) is
+                ready; planned: handwritten messages and scanned faxes
               </li>
               <li>Open data, CDLA-Permissive-2.0.</li>
             </ul>
@@ -1599,7 +1512,7 @@
           <div class="ask">
             We are looking for one Swiss group practice to pilot Inbrev on its
             own hardware in Q1 2027.<small
-              >Contact: niklaswichter@gmail.com</small
+              >Contact: hello@apertool.ch</small
             >
           </div>
         </div>

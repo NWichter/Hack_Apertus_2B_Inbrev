@@ -29,6 +29,17 @@ def _ratio(a: int, b: int) -> float | None:
     return a / b if b else None
 
 
+def wilson(k: int, n: int, z: float = 1.959964) -> tuple[float, float] | None:
+    """95 % Wilson score interval for k successes out of n."""
+    if not n:
+        return None
+    p = k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * ((p * (1 - p) / n + z * z / (4 * n * n)) ** 0.5) / d
+    return (max(0.0, c - h), min(1.0, c + h))
+
+
 def binary(gold: list[bool], pred: list[bool]) -> dict:
     tp = sum(g and p for g, p in zip(gold, pred))
     fp = sum((not g) and p for g, p in zip(gold, pred))
@@ -39,6 +50,8 @@ def binary(gold: list[bool], pred: list[bool]) -> dict:
         "fn": fn,
         "recall": _ratio(tp, tp + fn),
         "precision": _ratio(tp, tp + fp),
+        "recall_ci": wilson(tp, tp + fn),
+        "precision_ci": wilson(tp, tp + fp),
     }
 
 
@@ -128,8 +141,14 @@ def score(gold: list[dict], pred: list[dict], traces: list[dict] | None = None) 
     abst = binary(
         [bool(x.get("abstain")) for x in gl], [bool(p.get("abstain")) for p in pred]
     )
+    n = len(gold)
+    route_ok = sum(a == b for a, b in zip(groute, proute))
+    deadline_ok = sum(x["deadline"] == p["deadline"] for x, p in zip(gl, pred))
     out = {
-        "n": len(gold),
+        "n": n,
+        "route_accuracy_ci": wilson(route_ok, n),
+        "deadline_accuracy_ci": wilson(deadline_ok, n),
+        "coverage_ci": wilson(len(covered), n),
         "route_accuracy": sum(a == b for a, b in zip(groute, proute)) / len(gold),
         "route_macro_f1": mf1,
         "route_f1": per_route,
@@ -239,6 +258,9 @@ def breakdown(gold: list[dict], pred: list[dict], key) -> dict:
             / len(idx),
             "safety_recall": s["recall"],
             "coverage": sum(not p.get("abstain") for p in ps) / len(idx),
+            "route_ok": sum(g["label"]["route"] == p["route"] for g, p in zip(gs, ps)),
+            "safety_tp": s["tp"],
+            "safety_pos": s["tp"] + s["fn"],
         }
     return out
 
@@ -290,6 +312,11 @@ def _fmt(v) -> str:
     return str(v)
 
 
+def _ci(k: int, n: int) -> str:
+    w = wilson(k, n)
+    return f"{k}/{n} [{w[0]:.2f}, {w[1]:.2f}]" if w else "–"
+
+
 def render_report(
     gold_path: Path, results: dict[str, dict], details: dict[str, tuple]
 ) -> str:
@@ -314,6 +341,21 @@ def render_report(
             f"| {name} | {_fmt(s['route_accuracy'])} | {_fmt(s['route_macro_f1'])} | {_fmt(s['safety']['recall'])} | {_fmt(s['safety']['precision'])} "
             f"| {_fmt(s['today']['recall'])} | {_fmt(s['today']['precision'])} | {_fmt(s['deadline_accuracy'])} | {_fmt(s['coverage'])} "
             f"| {_fmt(s['route_accuracy_covered'])} | {_fmt(s['fields']['ALL']['f1'])} | {tok} | {_fmt(ops.get('latency_mean_s'))} |"
+        )
+    lines += [
+        "",
+        "95 % Wilson intervals (k/n [low, high]):",
+        "",
+        "| Setup | Route acc | Safety recall | Safety precision | Today recall | Deadline acc | Coverage |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for name, s in results.items():
+        n = s["n"]
+        sf, td = s["safety"], s["today"]
+        lines.append(
+            f"| {name} | {_ci(round(s['route_accuracy'] * n), n)} | {_ci(sf['tp'], sf['tp'] + sf['fn'])} "
+            f"| {_ci(sf['tp'], sf['tp'] + sf['fp'])} | {_ci(td['tp'], td['tp'] + td['fn'])} "
+            f"| {_ci(round(s['deadline_accuracy'] * n), n)} | {_ci(round(s['coverage'] * n), n)} |"
         )
     for name, s in results.items():
         gold, pred, traces = details[name]
@@ -352,11 +394,11 @@ def render_report(
             lines += [
                 f"**By {bname}**",
                 "",
-                "| group | n | route acc | deadline acc | safety recall | coverage |",
+                "| group | n | route acc [95 % CI] | deadline acc | safety recall [95 % CI] | coverage |",
                 "| --- | --- | --- | --- | --- | --- |",
             ]
             lines += [
-                f"| {k} | {v['n']} | {_fmt(v['route_accuracy'])} | {_fmt(v['deadline_accuracy'])} | {_fmt(v['safety_recall'])} | {_fmt(v['coverage'])} |"
+                f"| {k} | {v['n']} | {_ci(v['route_ok'], v['n'])} | {_fmt(v['deadline_accuracy'])} | {_ci(v['safety_tp'], v['safety_pos'])} | {_fmt(v['coverage'])} |"
                 for k, v in b.items()
             ]
             lines.append("")

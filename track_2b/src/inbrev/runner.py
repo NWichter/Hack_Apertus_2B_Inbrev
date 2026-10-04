@@ -40,6 +40,17 @@ async def run_batch(
     lock = asyncio.Lock()
     t0 = time.time()
     finished = 0
+    order = [m["message_id"] for m in messages]
+
+    def flush() -> None:
+        out.write_text(
+            "".join(
+                json.dumps(done[i], ensure_ascii=False) + "\n"
+                for i in order
+                if i in done
+            ),
+            encoding="utf-8",
+        )
 
     async def one(m: dict) -> None:
         nonlocal finished
@@ -48,6 +59,7 @@ async def run_batch(
         async with lock:
             done[m["message_id"]] = row
             finished += 1
+            flush()
             if finished % 10 == 0 or finished == len(todo):
                 print(
                     f"  {finished}/{len(todo)} in {time.time() - t0:.0f}s",
@@ -58,10 +70,5 @@ async def run_batch(
         await asyncio.gather(*(one(m) for m in todo))
     finally:
         await client.aclose()
-        order = [m["message_id"] for m in messages]
-        rows = [done[i] for i in order if i in done]
-        out.write_text(
-            "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows),
-            encoding="utf-8",
-        )
-    return rows
+        flush()
+    return [done[i] for i in order if i in done]

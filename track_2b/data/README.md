@@ -112,6 +112,7 @@ table above and the Licence section below.
 | Seed (`seed/`) | Claude `claude-opus-5-5`, 2026-10-01; labels by the same session | 12 | yes | Development set for prompt and checks | Seed row in the report (8B, prompt p1) |
 | Synthetic v0 (`$DATA_DIR/gold-set/merged.v0.jsonl`) | Grid `make_grid.py --seed 2026`; text by Claude `claude-opus-5-5` (90) and Codex `gpt-5.5` (90), 2026-10-01, prompt v0.1 | 180 | no (outside, `DATA_DIR`) | Main evaluation set; labels fixed before text | Main table (8B, 70B, baselines) |
 | Swiss practice set (`ood/`) | Antigravity (Gemini `gemini-3.8-flash`) session, 2026-10-03; edited by Codex `gpt-6.1-sol` (2026-10-03) and `scripts/annotate_swiss_set.py` (2026-10-04); per-row `provenance` | 30 | yes | Small extra check with practice-style mail | Swiss row in the report (8B, 70B, keywords) |
+| GraSCCo report set (`grascco/`) | GraSCCo v1.1 (Zenodo, doi:10.5281/zenodo.18874981, CC BY 4.0, Modersohn et al. 2022), 40 of 63 letters verbatim (5 shortened) plus template cover text by `scripts/build_grascco_set.py` (seed 2026), 2026-10-04; rule labels, per-row `provenance`; see `grascco/README.md` | 40 | yes (CC BY 4.0, not CDLA) | Realistic long `report_received` messages; safety-flag false alarms on clinical letters | Not used in any run yet |
 | `sweatSmile/medical-symptom-triage` (https://huggingface.co/datasets/sweatSmile/medical-symptom-triage), split `validation` | Third party | 278 downloaded | no, local only | English symptom texts with urgency labels as an out-of-domain safety stress test | 10 cases sent to Apertus 8B on 2026-10-02 (local `runs/ood_eval_10`, plus one test call); no reported number |
 | `ale-dp/german-english-email-ticket-classification` (https://huggingface.co/datasets/ale-dp/german-english-email-ticket-classification) | Third party | 699 downloaded | no, local only | German support tickets for administrative wording | Baselines only; no reported number |
 | `PortalPal-AI/Portal-Messaging-Topics` (https://huggingface.co/datasets/PortalPal-AI/Portal-Messaging-Topics) | Third party | topic list | no, local only | Compare the route taxonomy with patient-portal topics | Not used in any run |
@@ -121,7 +122,7 @@ The four third-party files were downloaded on 2026-10-02 (about 21:00 CEST) from
 revision via `resolve/main` or the Hugging Face datasets-server rows API; no commit hash was
 recorded, so a new download may differ. A copy of `jonas-is-coding/german-emails` (2,576 rows) was
 downloaded at the same time; no script reads it and no number uses it. GraSCCo (Zenodo) was
-considered as a template source for `report_received` but has not been downloaded or used.
+downloaded on 2026-10-04 and is used verbatim for the `grascco/` report set (see `grascco/README.md`).
 Closed models (Claude, GPT-5.5/Codex, Gemini/Antigravity) were used only to write or edit test
 data and code during development; Inbrev itself calls only Apertus.
 

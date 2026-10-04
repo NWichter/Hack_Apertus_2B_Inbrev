@@ -15,10 +15,32 @@ make run                    # web app on http://127.0.0.1:8000
 | Target               | What it does                                                                                               |
 | -------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `make run`           | Builds the image and starts the web app against `LLM_BASE_URL`                                             |
-| `make run-local`     | Also starts `llama.cpp` with a local Apertus GGUF from `./models/` on an internal network without internet |
+| `make run-local`     | Starts `llama.cpp` with a local Apertus GGUF and Inbrev on an internal network without internet; a small nginx gateway is the only container that also sits on the host network, so the UI is reachable at http://127.0.0.1:8000 |
+| `make offline-eval`  | Full triage with the local GGUF on the internal network, egress test, SHA-256 of the weights, `docker inspect`, memory samples, evaluation (`scripts/run_offline_eval.sh`) |
 | `make test`          | Unit tests inside the image with `--network none`                                                          |
 | `make offline-check` | Tests plus the non-LLM baselines with `--network none`                                                     |
 | `make triage-seed`   | Triages the 12 seed messages against the configured endpoint                                               |
+
+## Offline run with local weights
+
+```bash
+mkdir -p models
+curl -L -o models/apertus-v1.5-8b-text-Q4_K_M.gguf   https://huggingface.co/Colby/apertus-v1.5-8b-text-Q4_K_M-GGUF/resolve/248ec68a63e219e3f061e4c946fc8a20d63b9975/apertus-v1.5-8b-text-q4_k_m.gguf
+sha256sum models/*.gguf    # a037df8d87ff6caacee794ee85f55342f2152e0d359b7389033300c3bee5f299
+make offline-eval          # seed set; GOLD=path/to/messages.jsonl for another file
+```
+
+The GGUF is a community Q4_K_M quantisation of the text weights of `swiss-ai/Apertus-v1.5-8B`
+(Apache-2.0; Track 2 allows community GGUF builds). llama.cpp accepts only one completion per request, so Inbrev
+sends the three samples as three requests (`INBREV_SPLIT_SAMPLES`, automatic on HTTP 400).
+On Docker Desktop for Windows, reading the weights from a bind mount is very slow; copy them once
+into a volume and set `MODELS_SRC=models`:
+
+```bash
+docker volume create inbrev-models
+docker run --rm -v "$PWD/models:/src:ro" -v inbrev-models:/models alpine cp /src/apertus-v1.5-8b-text-Q4_K_M.gguf /models/
+MODELS_SRC=models make offline-eval
+```
 
 ## Pipeline
 
@@ -75,4 +97,5 @@ latency, with breakdowns by language, writing level, channel and generator.
 | `INBREV_SAFETY_MODE`   | `or`                 | `llm`, `lexical` or `or`                            |
 | `INBREV_ABSTAIN_BELOW` | `0.99`               | Route agreement needed to run without a person      |
 | `INBREV_CONCURRENCY`   | `3`                  | Parallel requests                                   |
+| `INBREV_SPLIT_SAMPLES` | `auto`               | `on`: one request per sample; `auto`: switch on HTTP 400 for `n` > 1 |
 | `INBREV_PRECOMPUTED`   | –                    | JSONL of stored predictions to show without a model |

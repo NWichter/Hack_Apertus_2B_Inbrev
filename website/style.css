@@ -521,3 +521,8 @@ h3 {
 .notfound .lead {
   margin-inline: auto;
 }
+
+.shots { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+.shots figure { margin: 0; }
+.shots img { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid var(--line, #d5e3df); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08); }
+.shots figcaption { margin-top: 10px; font-size: 0.92rem; opacity: 0.85; }

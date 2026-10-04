@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inbrev Label Review</title>
+<style>
+:root {
+  --bg: #f6f6f3; --panel: #ffffff; --text: #1c1c1a; --muted: #67675f; --border: #d9d9d2;
+  --accent: #2456c4; --accent-text: #ffffff; --chip: #eceff5; --warn-bg: #fff3d1; --warn-text: #5f4300;
+  --bad: #b42318; --bad-bg: #fde4e1; --good: #18794e; --good-bg: #dff3e7; --focus: #f0a400;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141513; --panel: #1e1f1c; --text: #e9e9e4; --muted: #a2a299; --border: #3a3b36;
+    --accent: #7aa2ff; --accent-text: #0d1424; --chip: #2a2d33; --warn-bg: #3d3110; --warn-text: #f4dc95;
+    --bad: #ff8a7a; --bad-bg: #4a1f1a; --good: #6fd39c; --good-bg: #183a28; --focus: #f0b429;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141513; --panel: #1e1f1c; --text: #e9e9e4; --muted: #a2a299; --border: #3a3b36;
+  --accent: #7aa2ff; --accent-text: #0d1424; --chip: #2a2d33; --warn-bg: #3d3110; --warn-text: #f4dc95;
+  --bad: #ff8a7a; --bad-bg: #4a1f1a; --good: #6fd39c; --good-bg: #183a28; --focus: #f0b429;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; overflow-x: hidden; }
+header { background: var(--panel); border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+header h1 { font-size: 17px; margin: 0 8px 0 0; }
+main { max-width: 1200px; margin: 0 auto; padding: 16px; }
+label.file { display: inline-flex; align-items: center; gap: 6px; }
+input[type=file] { max-width: 180px; font-size: 13px; }
+input[type=text], select, textarea { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; }
+textarea { width: 100%; min-height: 56px; resize: vertical; }
+button { font: inherit; color: var(--text); background: var(--chip); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; cursor: pointer; }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+button:disabled { opacity: .5; cursor: default; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.spacer { flex: 1; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; align-items: center; }
+.banner { padding: 8px 12px; border-radius: 6px; margin-bottom: 12px; background: var(--warn-bg); color: var(--warn-text); }
+.banner.error { background: var(--bad-bg); color: var(--bad); }
+.grid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 16px; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; min-width: 0; }
+.card h2 { font-size: 16px; margin: 0 0 6px; overflow-wrap: anywhere; }
+.card h3 { font-size: 14px; margin: 12px 0 6px; }
+.meta { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 2px 10px; font-size: 13px; margin-bottom: 10px; }
+.meta dt { color: var(--muted); }
+.meta dd { margin: 0; overflow-wrap: anywhere; }
+.body { white-space: pre-wrap; overflow-wrap: anywhere; border-top: 1px solid var(--border); padding-top: 10px; }
+.field { margin-bottom: 12px; }
+.field > .lbl { display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { padding: 4px 10px; }
+kbd { font: 12px ui-monospace, Consolas, monospace; background: var(--chip); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; }
+.navbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 12px; }
+.progress { height: 6px; background: var(--chip); border-radius: 3px; overflow: hidden; margin: 6px 0 12px; }
+.progress > div { height: 100%; background: var(--accent); width: 0; }
+.diff { background: var(--bad-bg); color: var(--bad); border-radius: 4px; padding: 0 4px; }
+.ok { color: var(--good); }
+.gold dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 2px 10px; margin: 0; font-size: 13px; }
+.gold dt { color: var(--muted); }
+.gold dd { margin: 0; overflow-wrap: anywhere; }
+.evidence { font-size: 13px; margin: 6px 0 0; padding-left: 18px; }
+.evidence li { overflow-wrap: anywhere; }
+.status { font-size: 13px; margin-top: 8px; }
+.scroll { overflow-x: auto; max-width: 100%; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+a.jump { color: var(--accent); cursor: pointer; text-decoration: underline; }
+details summary { cursor: pointer; }
+.list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.list button { font-size: 12px; padding: 1px 6px; }
+.list button.done { background: var(--good-bg); color: var(--good); }
+.list button.current { outline: 2px solid var(--accent); }
+.hidden { display: none !important; }
+@media (max-width: 760px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  header h1 { width: 100%; }
+  input[type=file] { max-width: 100%; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Inbrev label review</h1>
+  <label class="file small">Gold JSONL <input type="file" id="goldFile" accept=".jsonl,.json,.txt"></label>
+  <label class="file small">Resume log <input type="file" id="logFile" accept=".jsonl,.json,.txt"></label>
+  <label class="small">Reviewer <input type="text" id="reviewer" size="10" placeholder="initials"></label>
+  <span class="spacer"></span>
+  <button id="exportBtn" disabled>Export review_log.jsonl</button>
+  <button id="themeBtn" title="Theme">Theme: auto</button>
+</header>
+<main>
+  <div id="msg" class="banner hidden"></div>
+  <div id="empty" class="card">
+    <h2>Start</h2>
+    <p>Choose the gold-set JSONL file (for example <code>merged.v0.jsonl</code>). To continue earlier work, also choose a <code>review_log.jsonl</code> you exported before. Progress is also kept in this browser's local storage, keyed by the file's SHA-256.</p>
+    <p class="muted small">Nothing leaves this page. The file is read locally; the export is a download.</p>
+  </div>
+  <div id="app" class="hidden">
+    <div class="tabs">
+      <button data-view="p1" aria-pressed="true">Pass 1</button>
+      <button data-view="p2" aria-pressed="false">Pass 2</button>
+      <button data-view="stats" aria-pressed="false">Statistics</button>
+      <button data-view="help" aria-pressed="false">Help</button>
+      <span class="spacer"></span>
+      <span id="modeBox" class="small">Mode
+        <button id="modeBlind" aria-pressed="true">blind</button>
+        <button id="modeCheck" aria-pressed="false">check</button>
+      </span>
+    </div>
+    <div id="labelView">
+      <div id="p2warn" class="banner hidden"></div>
+      <div class="small"><span id="progressText"></span></div>
+      <div class="progress"><div id="progressBar"></div></div>
+      <div class="grid">
+        <div class="card" id="messageCard">
+          <h2 id="mSubject"></h2>
+          <dl class="meta" id="mMeta"></dl>
+          <div class="body" id="mBody"></div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="field">
+              <label class="lbl" for="fRoute">Route <span class="muted">(<kbd>1</kbd>–<kbd>9</kbd>)</span></label>
+              <select id="fRoute"></select>
+            </div>
+            <div class="field">
+              <span class="lbl">Deadline <span class="muted">(<kbd>T</kbd> <kbd>W</kbd> <kbd>N</kbd>)</span></span>
+              <div class="seg" id="fDeadline"></div>
+            </div>
+            <div class="field">
+              <span class="lbl">Safety flag: clinical content – a person must read it <span class="muted">(<kbd>S</kbd>)</span></span>
+              <div class="seg" id="fSafety"></div>
+            </div>
+            <div class="field">
+              <span class="lbl">Abstain / ambiguous <span class="muted">(<kbd>A</kbd>)</span></span>
+              <div class="seg" id="fAbstain"></div>
+            </div>
+            <div class="field">
+              <label class="lbl" for="fNote">Note <span class="muted">(<kbd>/</kbd> to focus, <kbd>Esc</kbd> to leave)</span></label>
+              <textarea id="fNote"></textarea>
+            </div>
+            <div class="navbar">
+              <button class="primary" id="saveBtn">Save &amp; next (Enter)</button>
+              <button id="confirmBtn" class="hidden">Confirm gold (C)</button>
+            </div>
+            <div class="navbar">
+              <button id="prevBtn">← Prev</button>
+              <button id="nextBtn">Next →</button>
+              <button id="nextOpenBtn">Next open (U)</button>
+            </div>
+            <div class="status" id="status"></div>
+          </div>
+          <div class="card gold hidden" id="goldCard" style="margin-top:16px">
+            <h3 style="margin-top:0">Gold label (generator)</h3>
+            <dl id="goldList"></dl>
+            <ul class="evidence" id="goldEvidence"></ul>
+          </div>
+        </div>
+      </div>
+      <details class="card" style="margin-top:16px">
+        <summary class="small">All messages in this pass</summary>
+        <div class="list" id="msgList"></div>
+      </details>
+    </div>
+    <div id="statsView" class="hidden"></div>
+    <div id="helpView" class="card hidden">
+      <h2>How it works</h2>
+      <p><b>Pass 1</b> covers every message. In <b>blind</b> mode (default) the gold label is hidden and the form starts empty. In <b>check</b> mode the gold label is shown and prefilled; confirm it or correct it. Each save appends one decision to the log; the latest decision per message and pass counts.</p>
+      <p><b>Pass 2</b> is a blind second labelling of 60 messages (seed 2026; all gold <code>safety_flag=true</code> messages if there are at most 60, the rest drawn at random) in a shuffled order. Neither gold nor your pass-1 labels are shown. Start it at least 48 hours after pass 1, so that you do not remember your answers.</p>
+      <p><b>Statistics</b> gives Cohen's κ with a 95% confidence interval (κ ± 1.96·SE, SE = √(p<sub>o</sub>(1−p<sub>o</sub>) / (n(1−p<sub>e</sub>)²))) for pass 1 vs pass 2 (intra-rater) and for pass 1 vs gold. <code>kappa.py</code> computes the same numbers from the exported log.</p>
+      <h3>Keys</h3>
+      <table>
+        <tr><td><kbd>1</kbd>–<kbd>9</kbd></td><td>route</td></tr>
+        <tr><td><kbd>T</kbd> <kbd>W</kbd> <kbd>N</kbd></td><td>deadline today / this_week / none</td></tr>
+        <tr><td><kbd>S</kbd> / <kbd>A</kbd></td><td>toggle safety flag / abstain</td></tr>
+        <tr><td><kbd>/</kbd></td><td>write a note (<kbd>Esc</kbd> leaves the field, <kbd>Ctrl</kbd>+<kbd>Enter</kbd> saves)</td></tr>
+        <tr><td><kbd>Enter</kbd></td><td>save and go to the next message</td></tr>
+        <tr><td><kbd>C</kbd></td><td>check mode: confirm the gold label as it is</td></tr>
+        <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>previous / next message</td></tr>
+        <tr><td><kbd>U</kbd></td><td>next message without a label in this pass</td></tr>
+      </table>
+    </div>
+  </div>
+</main>
+<script>
+"use strict";
+const ROUTES = ["report_received", "appointment", "prescription_request", "insurer", "referral_in",
+  "certificate_request", "billing", "spam_marketing", "other"];
+const DEADLINES = ["today", "this_week", "none"];
+const PASS2_SIZE = 60, PASS2_SEED = 2026, MIN_GAP_MS = 48 * 3600 * 1000;
+const STORE_PREFIX = "inbrev-review:";
+
+const S = { file: null, log: [], pendingLog: null, view: "p1", mode: "blind", idx: { 1: 0, 2: 0 }, p2order: [], form: null };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function store(op, key, value) {
+  try {
+    if (op === "get") return localStorage.getItem(key);
+    localStorage.setItem(key, value);
+  } catch (e) { return null; }
+}
+
+function showMsg(text, isError) {
+  const el = $("msg");
+  el.textContent = text;
+  el.classList.toggle("error", !!isError);
+  el.classList.toggle("hidden", !text);
+}
+
+// mulberry32; kappa.py implements the same generator so the pass-2 sample can be checked offline
+function mulberry32(seed) {
+  let a = seed | 0;
+  return function () {
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function shuffle(arr, rng) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+function selectPass2(rows) {
+  const rng = mulberry32(PASS2_SEED);
+  const ids = rows.map((r) => r.message_id).sort();
+  const byId = Object.fromEntries(rows.map((r) => [r.message_id, r]));
+  const safety = ids.filter((id) => byId[id].label && byId[id].label.safety_flag === true);
+  const rest = ids.filter((id) => !(byId[id].label && byId[id].label.safety_flag === true));
+  let chosen;
+  if (safety.length > PASS2_SIZE) chosen = shuffle(safety, rng).slice(0, PASS2_SIZE);
+  else chosen = safety.concat(shuffle(rest, rng).slice(0, PASS2_SIZE - safety.length));
+  return shuffle(chosen, rng);
+}
+
+function sha256Fallback(bytes) {
+  const K = [], H = [];
+  const isPrime = (p) => { for (let i = 2; i * i <= p; i++) if (p % i === 0) return false; return true; };
+  const frac = (x) => ((x - Math.floor(x)) * 4294967296) >>> 0;
+  for (let n = 2, c = 0; c < 64; n++) if (isPrime(n)) { if (c < 8) H[c] = frac(Math.sqrt(n)); K[c++] = frac(Math.cbrt(n)); }
+  const len = bytes.length, padLen = ((len + 9 + 63) >> 6) << 6;
+  const m = new Uint8Array(padLen);
+  m.set(bytes); m[len] = 0x80;
+  const dv = new DataView(m.buffer);
+  dv.setUint32(padLen - 8, Math.floor(len / 0x20000000));
+  dv.setUint32(padLen - 4, (len << 3) >>> 0);
+  const w = new Uint32Array(64);
+  const rot = (x, n) => (x >>> n) | (x << (32 - n));
+  for (let off = 0; off < padLen; off += 64) {
+    for (let i = 0; i < 16; i++) w[i] = dv.getUint32(off + i * 4);
+    for (let i = 16; i < 64; i++) {
+      const s0 = rot(w[i - 15], 7) ^ rot(w[i - 15], 18) ^ (w[i - 15] >>> 3);
+      const s1 = rot(w[i - 2], 17) ^ rot(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+      w[i] = (w[i - 16] + s0 + w[i - 7] + s1) >>> 0;
+    }
+    let [a, b, c, d, e, f, g, h] = H;
+    for (let i = 0; i < 64; i++) {
+      const t1 = (h + (rot(e, 6) ^ rot(e, 11) ^ rot(e, 25)) + ((e & f) ^ (~e & g)) + K[i] + w[i]) >>> 0;
+      const t2 = ((rot(a, 2) ^ rot(a, 13) ^ rot(a, 22)) + ((a & b) ^ (a & c) ^ (b & c))) >>> 0;
+      h = g; g = f; f = e; e = (d + t1) >>> 0; d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+    }
+    [a, b, c, d, e, f, g, h].forEach((v, i) => { H[i] = (H[i] + v) >>> 0; });
+  }
+  return H.map((x) => x.toString(16).padStart(8, "0")).join("");
+}
+async function sha256Hex(buffer) {
+  try {
+    if (window.crypto && crypto.subtle) {
+      const d = await crypto.subtle.digest("SHA-256", buffer);
+      return [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, "0")).join("");
+    }
+  } catch (e) { /* file:// in some browsers has no subtle crypto */ }
+  return sha256Fallback(new Uint8Array(buffer));
+}
+
+function parseJsonl(text) {
+  const rows = [], errors = [];
+  text.replace(/^﻿/, "").split(/\r?\n/).forEach((line, i) => {
+    if (!line.trim()) return;
+    try { rows.push(JSON.parse(line)); } catch (e) { errors.push(i + 1); }
+  });
+  return { rows, errors };
+}
+
+function entryKey(e) { return `${e.message_id}|${e.pass}|${e.labelled_at}`; }
+function mergeLogs(a, b) {
+  const seen = new Set(), out = [];
+  for (const e of a.concat(b)) {
+    const k = entryKey(e);
+    if (!seen.has(k)) { seen.add(k); out.push(e); }
+  }
+  return out.map((e, i) => [e, i]).sort((x, y) => (x[0].labelled_at < y[0].labelled_at ? -1 : x[0].labelled_at > y[0].labelled_at ? 1 : x[1] - y[1])).map((x) => x[0]);
+}
+
+function persist() {
+  if (!S.file) return;
+  store("set", STORE_PREFIX + S.file.sha, JSON.stringify({ log: S.log, mode: S.mode, idx: S.idx }));
+  store("set", STORE_PREFIX + "reviewer", $("reviewer").value);
+}
+
+function applyPendingLog() {
+  if (!S.file || !S.pendingLog) return;
+  const other = new Set(S.pendingLog.map((e) => e.source_file_sha256).filter((x) => x && x !== S.file.sha));
+  const unknown = S.pendingLog.filter((e) => !S.file.byId[e.message_id]).length;
+  S.log = mergeLogs(S.log, S.pendingLog);
+  S.pendingLog = null;
+  const warn = [];
+  if (other.size) warn.push("The resumed log was made against a different gold file (SHA-256 differs).");
+  if (unknown) warn.push(`${unknown} log entries refer to messages not in this gold file.`);
+  showMsg(warn.join(" "), false);
+  persist();
+}
+
+$("goldFile").addEventListener("change", async (ev) => {
+  const f = ev.target.files[0];
+  if (!f) return;
+  const buf = await f.arrayBuffer();
+  const sha = await sha256Hex(buf);
+  const { rows, errors } = parseJsonl(new TextDecoder("utf-8").decode(buf));
+  const valid = rows.filter((r) => r && r.message_id && r.label);
+  if (!valid.length) { showMsg("No messages with message_id and label found in this file.", true); return; }
+  const byId = Object.fromEntries(valid.map((r) => [r.message_id, r]));
+  S.file = { name: f.name, sha, rows: valid, byId };
+  S.p2order = selectPass2(valid);
+  S.log = []; S.idx = { 1: 0, 2: 0 };
+  const saved = store("get", STORE_PREFIX + sha);
+  if (saved) {
+    try {
+      const st = JSON.parse(saved);
+      S.log = st.log || []; S.mode = st.mode || "blind"; S.idx = Object.assign({ 1: 0, 2: 0 }, st.idx);
+    } catch (e) { /* ignore broken storage */ }
+  }
+  showMsg(errors.length ? `Skipped unreadable lines: ${errors.slice(0, 10).join(", ")}` : "", errors.length > 0);
+  applyPendingLog();
+  $("empty").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  $("exportBtn").disabled = false;
+  render();
+});
+
+$("logFile").addEventListener("change", async (ev) => {
+  const f = ev.target.files[0];
+  if (!f) return;
+  const { rows, errors } = parseJsonl(await f.text());
+  const entries = rows.filter((e) => e && e.message_id && (e.pass === 1 || e.pass === 2));
+  if (errors.length) showMsg(`Skipped unreadable log lines: ${errors.slice(0, 10).join(", ")}`, true);
+  S.pendingLog = (S.pendingLog || []).concat(entries);
+  if (S.file) { applyPendingLog(); render(); }
+  else showMsg(`Loaded ${entries.length} log entries. Now choose the gold file.`, false);
+});
+
+$("reviewer").value = store("get", STORE_PREFIX + "reviewer") || "";
+$("reviewer").addEventListener("input", persist);
+
+$("exportBtn").addEventListener("click", () => {
+  const text = S.log.map((e) => JSON.stringify(e)).join("\n") + (S.log.length ? "\n" : "");
+  const url = URL.createObjectURL(new Blob([text], { type: "application/x-ndjson" }));
+  const a = document.createElement("a");
+  a.href = url; a.download = "review_log.jsonl";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+
+const THEMES = ["auto", "light", "dark"];
+function applyTheme(t) {
+  if (t === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", t);
+  $("themeBtn").textContent = "Theme: " + t;
+}
+let theme = store("get", STORE_PREFIX + "theme") || "auto";
+applyTheme(theme);
+$("themeBtn").addEventListener("click", () => {
+  theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
+  store("set", STORE_PREFIX + "theme", theme);
+  applyTheme(theme);
+});
+
+function latestMap(pass) {
+  const m = new Map();
+  for (const e of S.log) if (e.pass === pass) m.set(e.message_id, e);
+  return m;
+}
+function passIds(pass) { return pass === 1 ? S.file.rows.map((r) => r.message_id) : S.p2order; }
+function currentPass() { return S.view === "p2" ? 2 : 1; }
+function currentId() { const ids = passIds(currentPass()); return ids[Math.min(S.idx[currentPass()], ids.length - 1)]; }
+
+function buildForm() {
+  $("fRoute").innerHTML = `<option value="">– choose –</option>` + ROUTES.map((r, i) => `<option value="${r}">${i + 1} ${r}</option>`).join("");
+  $("fDeadline").innerHTML = DEADLINES.map((d) => `<button type="button" data-v="${d}">${d}</button>`).join("");
+  $("fSafety").innerHTML = `<button type="button" data-v="true">yes</button><button type="button" data-v="false">no</button>`;
+  $("fAbstain").innerHTML = `<button type="button" data-v="true">yes</button><button type="button" data-v="false">no</button>`;
+  $("fRoute").addEventListener("change", () => { S.form.route = $("fRoute").value; $("fRoute").blur(); syncForm(); });
+  $("fDeadline").addEventListener("click", (e) => { if (e.target.dataset.v) { S.form.deadline = e.target.dataset.v; syncForm(); } });
+  $("fSafety").addEventListener("click", (e) => { if (e.target.dataset.v) { S.form.safety_flag = e.target.dataset.v === "true"; syncForm(); } });
+  $("fAbstain").addEventListener("click", (e) => { if (e.target.dataset.v) { S.form.abstain = e.target.dataset.v === "true"; syncForm(); } });
+  $("fNote").addEventListener("input", () => { S.form.note = $("fNote").value; });
+}
+
+function goldOf(id) {
+  const l = S.file.byId[id].label || {};
+  return { route: l.route ?? null, deadline: l.deadline ?? null, safety_flag: l.safety_flag === true, abstain: l.abstain === true };
+}
+
+function loadForm() {
+  const pass = currentPass(), id = currentId();
+  const prev = latestMap(pass).get(id);
+  if (prev) S.form = { route: prev.route, deadline: prev.deadline, safety_flag: prev.safety_flag, abstain: prev.abstain, note: prev.note || "" };
+  else if (pass === 1 && S.mode === "check") S.form = Object.assign(goldOf(id), { note: "" });
+  else S.form = { route: "", deadline: "", safety_flag: false, abstain: false, note: "" };
+  $("fNote").value = S.form.note;
+  syncForm();
+}
+
+function syncForm() {
+  const f = S.form, check = currentPass() === 1 && S.mode === "check";
+  const gold = check ? goldOf(currentId()) : null;
+  $("fRoute").value = f.route || "";
+  $("fRoute").classList.toggle("diff", !!gold && f.route !== gold.route);
+  const mark = (box, val, goldVal) => box.querySelectorAll("button").forEach((b) => {
+    b.setAttribute("aria-pressed", String(b.dataset.v === String(val)));
+    b.classList.toggle("diff", !!gold && b.dataset.v === String(val) && String(val) !== String(goldVal));
+  });
+  mark($("fDeadline"), f.deadline, gold && gold.deadline);
+  mark($("fSafety"), f.safety_flag, gold && gold.safety_flag);
+  mark($("fAbstain"), f.abstain, gold && gold.abstain);
+}
+
+function fmtTime(iso) {
+  const d = new Date(iso);
+  return isNaN(d) ? iso : d.toLocaleString();
+}
+
+function renderMessage() {
+  const id = currentId(), r = S.file.byId[id], pass = currentPass();
+  $("mSubject").textContent = r.subject || "(no subject)";
+  const meta = [["From", r.sender], ["Received", r.received_at], ["Channel", r.channel], ["Language", r.language], ["ID", r.message_id]];
+  $("mMeta").innerHTML = meta.filter((m) => m[1]).map((m) => `<dt>${m[0]}</dt><dd>${esc(m[1])}</dd>`).join("");
+  $("mBody").textContent = r.body || "";
+
+  const check = pass === 1 && S.mode === "check";
+  $("goldCard").classList.toggle("hidden", !check);
+  $("confirmBtn").classList.toggle("hidden", !check);
+  if (check) {
+    const l = r.label || {};
+    const gen = r.generator || (r.provenance && r.provenance.generator) || "unknown";
+    const rows = [["route", l.route], ["deadline", l.deadline], ["deadline_date", l.deadline_date], ["assignee", l.assignee],
+      ["safety_flag", String(l.safety_flag === true)], ["abstain", String(l.abstain === true)], ["generator", gen]];
+    if (r.review_flag) rows.push(["review_flag", r.review_reason ? `${r.review_flag}: ${r.review_reason}` : String(r.review_flag)]);
+    $("goldList").innerHTML = rows.filter((x) => x[1] !== undefined && x[1] !== null).map((x) => `<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join("");
+    $("goldEvidence").innerHTML = (l.evidence || []).map((e) => `<li><b>${esc(e.field)}</b>: “${esc(e.quote)}”</li>`).join("");
+  }
+
+  const ids = passIds(pass), done = latestMap(pass);
+  const n = ids.filter((x) => done.has(x)).length;
+  $("progressText").textContent = `Pass ${pass} · message ${S.idx[pass] + 1} of ${ids.length} · ${n} labelled` + (pass === 1 ? ` · mode ${S.mode}` : " · blind");
+  $("progressBar").style.width = (ids.length ? (100 * n) / ids.length : 0) + "%";
+  const prev = done.get(id);
+  $("status").innerHTML = prev ? `<span class="ok">Labelled</span> in this pass at ${esc(fmtTime(prev.labelled_at))} (${esc(prev.mode)}). Saving again replaces it.` : `<span class="muted">Not labelled in this pass yet.</span>`;
+  $("msgList").innerHTML = ids.map((x, i) => `<button type="button" data-i="${i}" class="${done.has(x) ? "done" : ""} ${i === S.idx[pass] ? "current" : ""}">${pass === 1 ? esc(x) : i + 1}</button>`).join("");
+  renderPass2Warning();
+}
+
+function renderPass2Warning() {
+  const box = $("p2warn");
+  if (currentPass() !== 2) { box.classList.add("hidden"); return; }
+  const p1 = latestMap(1), now = Date.now(), notes = [];
+  const p1times = S.log.filter((e) => e.pass === 1).map((e) => Date.parse(e.labelled_at)).filter((t) => !isNaN(t));
+  const sample = S.p2order;
+  const missing = sample.filter((id) => !p1.has(id)).length;
+  if (!p1times.length) notes.push("Pass 1 has no labels yet. Pass 2 should start at least 48 h after pass 1.");
+  else {
+    const last = Math.max(...p1times);
+    if (now - last < MIN_GAP_MS) {
+      const hrs = Math.ceil((MIN_GAP_MS - (now - last)) / 3600000);
+      notes.push(`Last pass-1 label was ${fmtTime(new Date(last).toISOString())}. Wait about ${hrs} h more before pass 2 (48 h rule; not enforced).`);
+    }
+  }
+  if (missing) notes.push(`${missing} of the ${sample.length} pass-2 messages have no pass-1 label yet.`);
+  const e1 = p1.get(currentId());
+  if (e1 && now - Date.parse(e1.labelled_at) < MIN_GAP_MS) notes.push("This message was labelled in pass 1 less than 48 h ago.");
+  const safetyN = sample.filter((id) => goldOf(id).safety_flag).length;
+  notes.push(`Sample: ${sample.length} messages (seed ${PASS2_SEED}), ${safetyN} with gold safety_flag=true.`);
+  box.innerHTML = notes.map(esc).join("<br>");
+  box.classList.remove("hidden");
+}
+
+function render() {
+  if (!S.file) return;
+  document.querySelectorAll(".tabs [data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === S.view)));
+  $("modeBlind").setAttribute("aria-pressed", String(S.mode === "blind"));
+  $("modeCheck").setAttribute("aria-pressed", String(S.mode === "check"));
+  $("modeBox").classList.toggle("hidden", S.view !== "p1");
+  const labelling = S.view === "p1" || S.view === "p2";
+  $("labelView").classList.toggle("hidden", !labelling);
+  $("statsView").classList.toggle("hidden", S.view !== "stats");
+  $("helpView").classList.toggle("hidden", S.view !== "help");
+  if (labelling) { renderMessage(); loadForm(); }
+  if (S.view === "stats") renderStats();
+}
+
+function go(delta) {
+  const pass = currentPass(), n = passIds(pass).length;
+  S.idx[pass] = Math.max(0, Math.min(n - 1, S.idx[pass] + delta));
+  persist(); render();
+}
+function goNextOpen() {
+  const pass = currentPass(), ids = passIds(pass), done = latestMap(pass);
+  for (let k = 1; k <= ids.length; k++) {
+    const i = (S.idx[pass] + k) % ids.length;
+    if (!done.has(ids[i])) { S.idx[pass] = i; persist(); render(); return; }
+  }
+  showMsg(`All messages in pass ${pass} are labelled.`, false);
+}
+
+function save() {
+  const reviewer = $("reviewer").value.trim();
+  if (!reviewer) { showMsg("Enter your reviewer initials first.", true); $("reviewer").focus(); return; }
+  S.form.note = $("fNote").value;
+  if (!S.form.route || !S.form.deadline) { showMsg("Choose a route and a deadline before saving.", true); return; }
+  showMsg("", false);
+  const pass = currentPass(), id = currentId(), gold = goldOf(id);
+  S.log.push({
+    message_id: id, pass, mode: pass === 1 ? S.mode : "blind",
+    route: S.form.route, deadline: S.form.deadline, safety_flag: !!S.form.safety_flag, abstain: !!S.form.abstain,
+    note: S.form.note.trim(), reviewer, labelled_at: new Date().toISOString(),
+    gold_route: gold.route, gold_deadline: gold.deadline, gold_safety_flag: gold.safety_flag, gold_abstain: gold.abstain,
+    source_file_sha256: S.file.sha,
+  });
+  const n = passIds(pass).length;
+  if (S.idx[pass] < n - 1) S.idx[pass]++;
+  persist(); render();
+}
+
+document.querySelectorAll(".tabs [data-view]").forEach((b) => b.addEventListener("click", () => { S.view = b.dataset.view; render(); }));
+$("modeBlind").addEventListener("click", () => { S.mode = "blind"; persist(); render(); });
+$("modeCheck").addEventListener("click", () => { S.mode = "check"; persist(); render(); });
+$("saveBtn").addEventListener("click", save);
+$("confirmBtn").addEventListener("click", () => { S.form = Object.assign(goldOf(currentId()), { note: $("fNote").value }); save(); });
+$("prevBtn").addEventListener("click", () => go(-1));
+$("nextBtn").addEventListener("click", () => go(1));
+$("nextOpenBtn").addEventListener("click", goNextOpen);
+$("msgList").addEventListener("click", (e) => { if (e.target.dataset.i) { S.idx[currentPass()] = +e.target.dataset.i; persist(); render(); } });
+
+document.addEventListener("keydown", (e) => {
+  if (!S.file || (S.view !== "p1" && S.view !== "p2")) return;
+  const t = e.target, typing = t.tagName === "TEXTAREA" || t.tagName === "SELECT" || (t.tagName === "INPUT" && t.type === "text");
+  if (typing) {
+    if (e.key === "Escape") t.blur();
+    else if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && t.id === "fNote") { e.preventDefault(); save(); }
+    return;
+  }
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  let handled = true;
+  if (/^[1-9]$/.test(k)) S.form.route = ROUTES[+k - 1];
+  else if (k === "t") S.form.deadline = "today";
+  else if (k === "w") S.form.deadline = "this_week";
+  else if (k === "n") S.form.deadline = "none";
+  else if (k === "s") S.form.safety_flag = !S.form.safety_flag;
+  else if (k === "a") S.form.abstain = !S.form.abstain;
+  else if (k === "/") { e.preventDefault(); $("fNote").focus(); return; }
+  else if (k === "enter") { e.preventDefault(); save(); return; }
+  else if (k === "c" && currentPass() === 1 && S.mode === "check") { $("confirmBtn").click(); return; }
+  else if (k === "arrowleft") { go(-1); return; }
+  else if (k === "arrowright") { go(1); return; }
+  else if (k === "u") { goNextOpen(); return; }
+  else handled = false;
+  if (handled) { e.preventDefault(); syncForm(); }
+});
+
+// Statistics. kappa.py mirrors these functions; keep both in step.
+function cohenKappa(pairs) {
+  const n = pairs.length;
+  if (!n) return { n: 0, po: null, kappa: null, lo: null, hi: null };
+  const cats = [...new Set(pairs.flat())].sort();
+  let agree = 0;
+  const ca = {}, cb = {};
+  for (const [a, b] of pairs) { if (a === b) agree++; ca[a] = (ca[a] || 0) + 1; cb[b] = (cb[b] || 0) + 1; }
+  const po = agree / n;
+  let pe = 0;
+  for (const c of cats) pe += ((ca[c] || 0) / n) * ((cb[c] || 0) / n);
+  if (pe >= 1) return { n, po, kappa: null, lo: null, hi: null };
+  const kappa = (po - pe) / (1 - pe);
+  const se = Math.sqrt((po * (1 - po)) / (n * (1 - pe) * (1 - pe)));
+  return { n, po, kappa, lo: Math.max(-1, kappa - 1.96 * se), hi: Math.min(1, kappa + 1.96 * se) };
+}
+const FIELDS = [["route", "route", "gold_route"], ["deadline", "deadline", "gold_deadline"], ["safety_flag", "safety_flag", "gold_safety_flag"]];
+const CHANGE_FIELDS = FIELDS.concat([["abstain", "abstain", "gold_abstain"]]);
+const val = (v) => (v === null || v === undefined ? "null" : String(v));
+
+function computeStats(log) {
+  const p1 = new Map(), p2 = new Map();
+  for (const e of log) (e.pass === 1 ? p1 : e.pass === 2 ? p2 : new Map()).set(e.message_id, e);
+  const both = [...p2.keys()].filter((id) => p1.has(id)).sort();
+  const p1list = [...p1.values()].sort((a, b) => (a.message_id < b.message_id ? -1 : 1));
+  const blind = p1list.filter((e) => e.mode === "blind");
+  const res = { intra: {}, gold: {}, goldBlind: {}, nIntra: both.length, nP1: p1list.length, nBlind: blind.length, nCheck: p1list.length - blind.length, nP2: p2.size };
+  for (const [name, h, g] of FIELDS) {
+    res.intra[name] = cohenKappa(both.map((id) => [val(p1.get(id)[h]), val(p2.get(id)[h])]));
+    res.gold[name] = cohenKappa(p1list.map((e) => [val(e[g]), val(e[h])]));
+    res.goldBlind[name] = cohenKappa(blind.map((e) => [val(e[g]), val(e[h])]));
+  }
+  res.changedPerField = {};
+  res.goldDiffs = [];
+  for (const e of p1list) {
+    const diffs = CHANGE_FIELDS.filter(([, h, g]) => val(e[h]) !== val(e[g])).map(([name, h, g]) => ({ field: name, gold: val(e[g]), human: val(e[h]) }));
+    for (const d of diffs) res.changedPerField[d.field] = (res.changedPerField[d.field] || 0) + 1;
+    if (diffs.length) res.goldDiffs.push({ id: e.message_id, mode: e.mode, note: e.note, diffs });
+  }
+  res.changed = res.goldDiffs.length;
+  res.intraDiffs = [];
+  res.shortGap = 0;
+  for (const id of both) {
+    const a = p1.get(id), b = p2.get(id);
+    if (Date.parse(b.labelled_at) - Date.parse(a.labelled_at) < MIN_GAP_MS) res.shortGap++;
+    const diffs = CHANGE_FIELDS.filter(([, h]) => val(a[h]) !== val(b[h])).map(([name, h]) => ({ field: name, p1: val(a[h]), p2: val(b[h]) }));
+    if (diffs.length) res.intraDiffs.push({ id, diffs });
+  }
+  return res;
+}
+
+const f3 = (x) => (x === null || x === undefined ? "n/a" : x.toFixed(3));
+function kappaTable(title, block) {
+  const rows = FIELDS.map(([name]) => {
+    const k = block[name];
+    return `<tr><td>${name}</td><td class="num">${k.n}</td><td class="num">${f3(k.po)}</td><td class="num">${f3(k.kappa)}</td><td class="num">${k.kappa === null ? "n/a" : `[${f3(k.lo)}, ${f3(k.hi)}]`}</td></tr>`;
+  }).join("");
+  return `<h3>${esc(title)}</h3><div class="scroll"><table><tr><th>field</th><th class="num">n</th><th class="num">agreement</th><th class="num">κ</th><th class="num">95% CI</th></tr>${rows}</table></div>`;
+}
+
+function renderStats() {
+  const r = computeStats(S.log);
+  const jump = (id) => `<a class="jump" data-id="${esc(id)}">${esc(id)}</a>`;
+  const perField = CHANGE_FIELDS.map(([n]) => `${n}: ${r.changedPerField[n] || 0}`).join(" · ");
+  let html = `<div class="card"><h2>Statistics</h2>
+    <p class="small muted">Latest decision per message and pass. Pass 1: ${r.nP1} labelled (${r.nBlind} blind, ${r.nCheck} check). Pass 2: ${r.nP2} labelled, ${r.nIntra} with a pass-1 pair. CI: κ ± 1.96·SE (SE approximation), clipped to [−1, 1].</p>
+    ${kappaTable("Intra-rater: pass 1 vs pass 2", r.intra)}
+    ${r.shortGap ? `<p class="banner">${r.shortGap} pass-2 labels were made less than 48 h after the pass-1 label of the same message.</p>` : ""}
+    ${kappaTable("Human pass 1 vs gold (generator label), all modes", r.gold)}
+    ${r.nCheck && r.nBlind ? kappaTable("Human pass 1 vs gold, blind mode only", r.goldBlind) : ""}
+    <h3>Changed gold labels</h3>
+    <p>${r.changed} of ${r.nP1} pass-1 messages differ from gold in at least one of route, deadline, safety_flag, abstain. <span class="muted small">${perField}</span></p></div>`;
+  html += `<div class="card" style="margin-top:16px"><h3 style="margin-top:0">Pass 1 vs gold: differences (${r.goldDiffs.length})</h3><div class="scroll"><table><tr><th>message</th><th>mode</th><th>field: gold → human</th><th>note</th></tr>` +
+    r.goldDiffs.map((d) => `<tr><td>${jump(d.id)}</td><td>${esc(d.mode)}</td><td>${d.diffs.map((x) => `${esc(x.field)}: ${esc(x.gold)} → <b>${esc(x.human)}</b>`).join("<br>")}</td><td>${esc(d.note)}</td></tr>`).join("") +
+    `</table></div></div>`;
+  html += `<div class="card" style="margin-top:16px"><h3 style="margin-top:0">Pass 1 vs pass 2: differences (${r.intraDiffs.length})</h3><div class="scroll"><table><tr><th>message</th><th>field: pass 1 → pass 2</th></tr>` +
+    r.intraDiffs.map((d) => `<tr><td>${jump(d.id)}</td><td>${d.diffs.map((x) => `${esc(x.field)}: ${esc(x.p1)} → <b>${esc(x.p2)}</b>`).join("<br>")}</td></tr>`).join("") +
+    `</table></div></div>`;
+  $("statsView").innerHTML = html;
+}
+$("statsView").addEventListener("click", (e) => {
+  const id = e.target.dataset && e.target.dataset.id;
+  if (!id) return;
+  const i = S.file.rows.findIndex((r) => r.message_id === id);
+  if (i >= 0) { S.idx[1] = i; S.view = "p1"; persist(); render(); }
+});
+
+buildForm();
+</script>
+</body>
+</html>

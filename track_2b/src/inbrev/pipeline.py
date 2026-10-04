@@ -152,6 +152,7 @@ async def triage(message: dict, client: LLMClient, opts: Options) -> dict:
             completion_tokens=comp.completion_tokens,
             latency_s=round(comp.latency_s, 3),
             retries=comp.retries,
+            split_samples=comp.split,
         )
     except LLMError as e:
         raw, finish = [], []

@@ -30,6 +30,7 @@
         >
         <nav>
           <a href="#approach">Approach</a>
+          <a href="#app">App</a>
           <a href="#status">Status</a>
           <a href="#video">Video</a>
           <a href="pitch/">Pitch</a>
@@ -150,6 +151,29 @@
         </div>
       </section>
 
+      <section class="section" id="app">
+        <div class="wrap">
+          <h2>The app</h2>
+          <p class="section-lead">
+            Screenshots of the running web inbox with stored Apertus 8B results
+            on fictional test messages. Highlighted words are the quotes the
+            decision rests on.
+          </p>
+          <div class="shots">
+            <figure>
+              <img src="assets/app-detail-admin.webp" width="1440" height="900" loading="lazy"
+                alt="Inbrev inbox: a prescription request routed to the assistant, deadline this week, medication quoted from the message, fixed reply template" />
+              <figcaption>Prescription request: route, assignee and deadline, each value with its quote; reply from a fixed template.</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/app-detail.webp" width="1440" height="900" loading="lazy"
+                alt="Inbrev inbox: an appointment request that mentions shortness of breath is not processed and goes to a person" />
+              <figcaption>Appointment request that mentions shortness of breath in passing: not processed, a person reads it. No ranking.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="architecture">
         <div class="wrap">
           <h2>Runs where the mail arrives</h2>
@@ -240,6 +264,26 @@
                   content, a TF-IDF classifier 2 of 16; a single Apertus 8B
                   answer without the checks catches 9 of 16
                 </li>
+                <li class="done">
+                  Control set written by an open model (Nemotron), 42
+                  messages: Apertus 8B routes 38 and takes all 8 messages with
+                  clinical content out of automation; keyword rules 32 and 6
+                </li>
+                <li class="done">
+                  A rules-first hybrid would skip the model on half the mail
+                  but miss 3 more of the 16 clinical messages, so Apertus reads
+                  every message
+                </li>
+                <li class="done">
+                  40 German clinical letters from GraSCCo (CC BY 4.0): all 40
+                  routed as reports; 7 false clinical flags, 6 of them from the
+                  keyword net
+                </li>
+                <li class="done">
+                  Offline review tool for a blind relabelling by a person,
+                  with Cohen's κ
+                </li>
+                <!--OFFLINE_STATUS-->
               </ul>
             </article>
             <article class="status-col">
@@ -249,9 +293,8 @@
                   Review of the labels by a person; so far all labels come from
                   the generating models
                 </li>
-                <li class="todo">Full run on local weights without network</li>
                 <li class="todo">Handwritten and faxed test messages</li>
-                <li class="todo">Cost per 1,000 messages on GPU and CPU</li>
+                <li class="todo">Latency on a GPU in the practice</li>
                 <li class="todo">Demo video</li>
               </ul>
             </article>

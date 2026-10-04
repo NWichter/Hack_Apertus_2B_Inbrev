@@ -43,6 +43,7 @@ docker image inspect inbrev:latest >/dev/null 2>&1 || docker build -t inbrev:lat
   "${P[@]}" run -d --no-deps --name "${RUN}" -u 0 -v "${GOLD_DIR}:/gold:ro" -v "${OUT_M}:/out" app-local sleep infinity >/dev/null
   docker inspect "${RUN}" "$("${P[@]}" ps -q llm)" > "${OUT}/docker-inspect.json"
   docker network inspect inbrev-offline_practice > "${OUT}/docker-network-practice.json"
+  sed -i -E 's#"[^"]*[\/]+track_2b#"<repo>/track_2b#g; s#"[^"]*[\/]+Hack_Apertus_2B_Inbrev#"<repo>#g' "${OUT}/docker-inspect.json" "${OUT}/docker-network-practice.json"
   echo "network inbrev-offline_practice internal: $(docker network inspect -f '{{.Internal}}' inbrev-offline_practice)"
   echo "run container networks: $(docker inspect -f '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}' "${RUN}")"
   echo "llm container networks: $(docker inspect -f '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}' "$("${P[@]}" ps -q llm)")"

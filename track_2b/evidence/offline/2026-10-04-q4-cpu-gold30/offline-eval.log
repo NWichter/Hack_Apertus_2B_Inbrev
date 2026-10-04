@@ -1,0 +1,64 @@
+Inbrev offline evaluation: Apertus GGUF in llama.cpp, internal Docker network
+date: 2026-10-04 12:05:30 UTC
+git: 7321885 (dirty)
+docker: Docker version 28.3.3, build 980b856
+host: Docker Desktop, 16 CPUs, 16062279680 bytes RAM for Docker
+input: runs/offline/gold-subset30.jsonl (30 messages)
+samples per message: 1
+weights: apertus-v1.5-8b-text-Q4_K_M.gguf from models
+
+--- 1. start llama.cpp (network: practice, internal) ---
+time="2026-10-04T14:05:37+02:00" level=warning msg="volume \"inbrev-models\" already exists but was not created by Docker Compose. Use `external: true` to use an existing volume"
+ Container inbrev-offline-llm-1  Running
+--- 2. sha256 of the weights the server loads ---
+a037df8d87ff6caacee794ee85f55342f2152e0d359b7389033300c3bee5f299  /models/apertus-v1.5-8b-text-Q4_K_M.gguf
+--- 3. start the Inbrev run container (network: practice only) ---
+time="2026-10-04T14:07:21+02:00" level=warning msg="volume \"inbrev-models\" already exists but was not created by Docker Compose. Use `external: true` to use an existing volume"
+network inbrev-offline_practice internal: true
+run container networks: inbrev-offline_practice 
+llm container networks: inbrev-offline_practice 
+--- 4. egress test from the run container (must fail) ---
+egress dns huggingface.co: FAILED (gaierror: [Errno -3] Temporary failure in name resolution)
+egress tcp 1.1.1.1:443: FAILED (OSError: [Errno 101] Network is unreachable)
+egress https huggingface.co: FAILED (ConnectError)
+egress verdict: BLOCKED (no internet)
+--- 5. control: same test on the default bridge network (should succeed) ---
+egress dns huggingface.co: 52.222.136.38
+egress tcp 1.1.1.1:443: connected
+egress https huggingface.co: HTTP 200
+egress verdict: REACHABLE
+--- 6. wait until the model is loaded ---
+{"models":[{"name":"/models/apertus-v1.5-8b-text-Q4_K_M.gguf","model":"/models/apertus-v1.5-8b-text-Q4_K_M.gguf","modified_at":"","size":"","digest":"","type":"model","description":"","tags":[""],"capabilities":["completion"],"parameters":"","details":{"parent_model":"","format":"gguf","family":"","families":[""],"parameter_size":"","quantization_level":""}}],"object":"list","data":[{"id":"/models/apertus-v1.5-8b-text-Q4_K_M.gguf","aliases":["/models/apertus-v1.5-8b-text-Q4_K_M.gguf"],"tags":[],"object":"model","created":1791115701,"owned_by":"llamacpp","meta":{"vocab_type":2,"n_vocab":131272,
+model ready after 3 s
+--- 7. triage (1 sample(s) per message, one request per sample; llama.cpp rejects n > 1) ---
+  10/30 in 1916s
+  20/30 in 4366s
+  30/30 in 5758s
+{"written": 30, "errors": 0, "out": "/out/predictions.jsonl"}
+triage wall time: 5765 s
+--- 8. evaluation ---
+# Inbrev evaluation
+
+Gold: `gold-subset30.jsonl`, n = 30
+
+| Setup | Route acc | Route macro-F1 | Safety recall | Safety precision | Today recall | Today precision | Deadline acc | Coverage | Route acc (covered) | Field F1 | Tokens in/out | Latency s |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| majority | 0.233 | 0.042 | 0.000 | – | 1.000 | 0.567 | 0.567 | 1.000 | 0.233 | 0.000 | – | – |
+| keywords | 0.767 | 0.725 | 0.438 | 0.700 | 0.529 | 0.750 | 0.500 | 1.000 | 0.767 | 0.000 | – | – |
+| tfidf_logreg | 0.233 | 0.042 | 0.750 | 0.750 | 0.882 | 0.750 | 0.767 | 1.000 | 0.233 | 0.000 | – | – |
+| predictions | 0.800 | 0.814 | 0.688 | 0.786 | 0.765 | 0.812 | 0.700 | 1.000 | 0.800 | 0.651 | 1382/267 | 191.897 |
+
+95 % Wilson intervals (k/n [low, high]):
+
+| Setup | Route acc | Safety recall | Safety precision | Today recall | Deadline acc | Coverage |
+| --- | --- | --- | --- | --- | --- | --- |
+| majority | 7/30 [0.12, 0.41] | 0/16 [0.00, 0.19] | – | 17/17 [0.82, 1.00] | 17/30 [0.39, 0.73] | 30/30 [0.89, 1.00] |
+| keywords | 23/30 [0.59, 0.88] | 7/16 [0.23, 0.67] | 7/10 [0.40, 0.89] | 9/17 [0.31, 0.74] | 15/30 [0.33, 0.67] | 30/30 [0.89, 1.00] |
+| tfidf_logreg | 7/30 [0.12, 0.41] | 12/16 [0.51, 0.90] | 12/16 [0.51, 0.90] | 15/17 [0.66, 0.97] | 23/30 [0.59, 0.88] | 30/30 [0.89, 1.00] |
+| predictions | 24/30 [0.63, 0.90] | 11/16 [0.44, 0.86] | 11/14 [0.52, 0.92] | 13/17 [0.53, 0.90] | 21/30 [0.52, 0.83] | 30/30 [0.89, 1.00] |
+
+--- 9. peak memory (docker stats, every 15 s) ---
+inbrev-offline-run peak 167 MiB
+inbrev-offline-llm-1 peak 6159 MiB
+ Container inbrev-offline-llm-1  Stopping
+ Container inbrev-offline-llm-1  Stopped

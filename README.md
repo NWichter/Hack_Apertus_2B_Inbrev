@@ -70,3 +70,5 @@ Inbrev follows § 6 of these terms:
 Third-party material keeps its own licence and is not relicensed:
 
 - External datasets used only for local checks (`sweatSmile/medical-symptom-triage`, `ale-dp/german-english-email-ticket-classification`, `PortalPal-AI/Portal-Messaging-Topics`, `lavita/ChatDoctor-HealthCareMagic-100k`) are not in the repository and keep the licences stated on their dataset cards (see `track_2b/data/README.md`). They are not covered by CDLA-Permissive-2.0.
+- The GraSCCo report set (`track_2b/data/grascco/`) contains letters from GraSCCo v1.1 (Modersohn et al. 2022, doi:10.5281/zenodo.18874981), licensed CC BY 4.0 on Zenodo; it keeps that licence (attribution and list of changes in `track_2b/data/grascco/README.md`).
+- The offline run uses the community GGUF `Colby/apertus-v1.5-8b-text-Q4_K_M-GGUF` (Apache-2.0); the weights are downloaded, not stored in the repository (`track_2b/docs/RUNNING.md`).

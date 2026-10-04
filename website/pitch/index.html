@@ -1211,7 +1211,7 @@
           <div class="tiers">
             <div class="tier">
               <b>On-prem box</b
-              ><span>Mini PC with GPU in a group practice</span>
+              ><span>Mini PC in the practice; CPU is enough</span>
             </div>
             <div class="tier">
               <b>Air-gapped</b
@@ -1222,20 +1222,15 @@
               ><span>Option for single practices, Swiss hosting</span>
             </div>
             <div class="tier">
-              <b>CPU only</b><span>GGUF Q4 for judges without a GPU</span>
+              <b>CPU only</b><span>GGUF Q4, measured offline: 19 messages / hour</span>
             </div>
           </div>
           <div class="term">
-            <span class="p">$</span> docker run --rm
-            <b>--network none</b> \<br />&nbsp;&nbsp;&nbsp;&nbsp;inbrev
-            python -m pytest -q<br />18 passed<br /><span
-              class="tbd"
-              style="font-size: 20px"
-              >Full triage on local GGUF weights: not run yet</span
-            ><br /><br /><span class="c"
-              ># downloaded at build time only:<br /># weights (SHA-256),
-              images, OCR data</span
-            >
+            <span class="p">$</span> make offline-eval<br />network practice
+            <b>internal: true</b><br />egress dns / tcp / https:
+            <b>FAILED</b><br />weights sha256 a037df8d… = HF<br />30 messages,
+            Q4 on a 28-W laptop CPU<br />same route as the endpoint: 28/30<br />192 s / message ·
+            RAM 6.2 GiB
           </div>
         </div>
       </section>
@@ -1341,39 +1336,39 @@
         <h1>Swiss francs per 1,000 messages, on hardware the practice owns.</h1>
         <div class="costs">
           <div class="cost hl">
-            <div class="k">On-prem GPU</div>
-            <h3>Apertus 8B · RTX 5070 Ti</h3>
-            <div class="big">CHF <span class="tbd">TBD</span></div>
-            <div class="unit">per 1,000 messages (power + depreciation)</div>
+            <div class="k">On-prem, CPU only · measured</div>
+            <h3>Apertus 8B Q4 · mini PC</h3>
+            <div class="big">≈ CHF 12</div>
+            <div class="unit">per 1,000 messages at 60 a day (box, power)</div>
             <div class="rows">
-              Latency: <span class="tbd">TBD</span> s / message<br />Energy:
-              <span class="tbd">TBD</span> Wh / message
+              192 s / message offline, 1 sample<br />Up to 450 messages a day;
+              energy alone CHF 0.52
             </div>
           </div>
           <div class="cost">
-            <div class="k">CPU only</div>
-            <h3>GGUF Q4, no GPU</h3>
-            <div class="big">CHF <span class="tbd">TBD</span></div>
-            <div class="unit">per 1,000 messages</div>
+            <div class="k">Swiss cloud VM</div>
+            <h3>8 vCPU, Swiss provider</h3>
+            <div class="big">CHF 2.39</div>
+            <div class="unit">per 1,000 messages, billed while sorting</div>
             <div class="rows">
-              Latency: <span class="tbd">TBD</span> s / message<br />Fine for an
-              overnight batch? <span class="tbd">TBD</span>
+              CHF 0.0448 / h (Infomaniak list price)<br />CHF 32 / month if
+              always on · other CPU, not measured
             </div>
           </div>
           <div class="cost">
             <div class="k">Reference</div>
-            <h3>Swiss cloud API</h3>
-            <div class="big">≈ CHF 3.35</div>
+            <h3>Swiss token API</h3>
+            <div class="big">CHF 2.59</div>
             <div class="unit">
-              per 1,000 requests of 3,000 input + 500 output tokens
+              per 1,000 messages at the listed Apertus 70B price
             </div>
             <div class="rows">
-              Inbrev tokens / message (8B, measured): 1,398 in, 644 out<br />3
-              samples in one request
+              Tokens measured: 1,398 in, 644 out (8B)<br />CHF 0.70 / 2.50 per
+              million tokens (Infomaniak)
             </div>
             <div class="note">
-              From CHF 0.00335 per request, blog estimate (Pupel, devs-group,
-              2026).
+              Prices excl. VAT, 4 Oct 2026. Power: mini PC with the same CPU,
+              38–39 W (ServeTheHome); ElCom 2026 median.
             </div>
           </div>
         </div>

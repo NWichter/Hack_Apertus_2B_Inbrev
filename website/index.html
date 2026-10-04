@@ -202,7 +202,7 @@
             <article>
               <h3>On-premise</h3>
               <p>
-                A small box with a GPU in a group practice or physician network.
+                A mini PC in the practice; a CPU is enough for 60 messages a day (measured), a GPU makes it faster.
               </p>
             </article>
             <article>
@@ -283,7 +283,18 @@
                   Offline review tool for a blind relabelling by a person,
                   with Cohen's κ
                 </li>
-                <!--OFFLINE_STATUS-->
+                <li class="done">
+                  Full run without internet: Apertus 8B (Q4 weights, checksum
+                  logged) in llama.cpp and Inbrev on a Docker network with no
+                  route outside; an egress test fails as it should. On 30
+                  messages it gives the same route as the hosted model on 28,
+                  at 192 s per message on a 28-W laptop CPU
+                </li>
+                <li class="done">
+                  Cost: about CHF 12 per 1,000 messages on a mini PC at 60
+                  messages a day; CHF 2.39 on a Swiss cloud VM billed while
+                  sorting
+                </li>
               </ul>
             </article>
             <article class="status-col">

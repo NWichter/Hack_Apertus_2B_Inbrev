@@ -1,0 +1,584 @@
+[
+    {
+        "Id": "a768ff16eb56064031d45f25fde9e424243061627d6f2e22595d539733b28725",
+        "Created": "2026-10-04T12:07:21.921833604Z",
+        "Path": "sleep",
+        "Args": [
+            "infinity"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 64430,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-04T12:07:22.994379208Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:d851a7695def58962d11b544d68a571b604fb15d58a6e1c15080f0ed3952aafd",
+        "ResolvConfPath": "/var/lib/docker/containers/a768ff16eb56064031d45f25fde9e424243061627d6f2e22595d539733b28725/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/a768ff16eb56064031d45f25fde9e424243061627d6f2e22595d539733b28725/hostname",
+        "HostsPath": "/var/lib/docker/containers/a768ff16eb56064031d45f25fde9e424243061627d6f2e22595d539733b28725/hosts",
+        "LogPath": "/var/lib/docker/containers/a768ff16eb56064031d45f25fde9e424243061627d6f2e22595d539733b28725/a768ff16eb56064031d45f25fde9e424243061627d6f2e22595d539733b28725-json.log",
+        "Name": "/inbrev-offline-run",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "inbrev-offline_runs:/app/runs:rw",
+                "<repo>/track_2b/runs/offline:/gold:ro",
+                "<repo>/track_2b/runs/offline/gold30-k1:/out:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "inbrev-offline_practice",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": null,
+            "Name": "overlayfs"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "<repo>/track_2b/runs/offline",
+                "Destination": "/gold",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "<repo>/track_2b/runs/offline/gold30-k1",
+                "Destination": "/out",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "volume",
+                "Name": "inbrev-offline_runs",
+                "Source": "/var/lib/docker/volumes/inbrev-offline_runs/_data",
+                "Destination": "/app/runs",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "a768ff16eb56",
+            "Domainname": "",
+            "User": "0",
+            "AttachStdin": true,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "8000/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": true,
+            "StdinOnce": true,
+            "Env": [
+                "INBREV_CONCURRENCY=1",
+                "INBREV_AUDIT_LOG=/app/runs/audit.jsonl",
+                "LLM_API_KEY=none",
+                "INBREV_PRECOMPUTED=",
+                "LLM_BASE_URL=http://llm:8080/v1",
+                "INBREV_TIMEOUT=900",
+                "INBREV_SAMPLES=1",
+                "LLM_NAME=apertus-v1.5-8b-q4_k_m",
+                "INBREV_SPLIT_SAMPLES=on",
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.15",
+                "PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONUNBUFFERED=1",
+                "PIP_NO_CACHE_DIR=1",
+                "PIP_DISABLE_PIP_VERSION_CHECK=1",
+                "INBREV_HOME=/app"
+            ],
+            "Cmd": [
+                "sleep",
+                "infinity"
+            ],
+            "Image": "inbrev:latest",
+            "Volumes": null,
+            "WorkingDir": "/app",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "7b9591cd08c49f6087061722b1d0e0df68aec6a1232d3ec36fb10e4379d807e7",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:d851a7695def58962d11b544d68a571b604fb15d58a6e1c15080f0ed3952aafd",
+                "com.docker.compose.oneoff": "True",
+                "com.docker.compose.project": "inbrev-offline",
+                "com.docker.compose.project.config_files": "<repo>/track_2b\\docker-compose.yml",
+                "com.docker.compose.project.working_dir": "<repo>/track_2b",
+                "com.docker.compose.service": "app-local",
+                "com.docker.compose.slug": "1f077de1c7bb5f4c36d7e280d02c5b52e2211c761076c8ad63bce1b806981ba4",
+                "com.docker.compose.version": "2.39.2"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "c6ac43bded1d9beeded7ce4f8887b9a5b37d94084e048e73f18d3ec738f70788",
+            "SandboxKey": "/var/run/docker/netns/c6ac43bded1d",
+            "Ports": {},
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "inbrev-offline_practice": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "inbrev-offline-run"
+                    ],
+                    "MacAddress": "52:7b:72:e1:3a:7c",
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "e9af33fa8bc35ddabea37d166a174483eddfdd516356d7caa9df77d550fa2556",
+                    "EndpointID": "761fd80c7a1eacb783ed4e47c269131da0555d15d1599975a297efcc514fc006",
+                    "Gateway": "",
+                    "IPAddress": "172.22.0.3",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "inbrev-offline-run",
+                        "a768ff16eb56"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:c299a3c5c025175b657a5488f42f09fd1ffe62397423b5097791a1826ae01f27",
+            "size": 2767,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    },
+    {
+        "Id": "e77921910d22d9efbb6b0976040a0038ded5bc8affb699ffbcb5385f7786d8e2",
+        "Created": "2026-10-04T10:51:31.760116301Z",
+        "Path": "/app/llama-server",
+        "Args": [
+            "-m",
+            "/models/apertus-v1.5-8b-text-Q4_K_M.gguf",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8080",
+            "-c",
+            "8192",
+            "--parallel",
+            "1",
+            "--jinja",
+            "--load-mode",
+            "none"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 42903,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-04T10:51:33.170877548Z",
+            "FinishedAt": "0001-01-01T00:00:00Z",
+            "Health": {
+                "Status": "healthy",
+                "FailingStreak": 0,
+                "Log": [
+                    {
+                        "Start": "2026-10-04T12:05:20.140998806Z",
+                        "End": "2026-10-04T12:05:20.496696313Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   3290 {\"status\":\"ok\"}     0 --:--:-- --:--:-- --:--:--  3750\n"
+                    },
+                    {
+                        "Start": "2026-10-04T12:05:50.4949072Z",
+                        "End": "2026-10-04T12:05:50.658316473Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   6765      0 --:--:-- --:--:-- --:--:--  7500\n{\"status\":\"ok\"}"
+                    },
+                    {
+                        "Start": "2026-10-04T12:06:20.655037368Z",
+                        "End": "2026-10-04T12:06:21.003146569Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   6459      0 --:--:-- --:--:-- --:--:--  7500\n{\"status\":\"ok\"}"
+                    },
+                    {
+                        "Start": "2026-10-04T12:06:51.003449344Z",
+                        "End": "2026-10-04T12:06:51.178735655Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   9079      0 --:--:-- --:--:-- --:--:-- 15000\n{\"status\":\"ok\"}"
+                    },
+                    {
+                        "Start": "2026-10-04T12:07:21.176655253Z",
+                        "End": "2026-10-04T12:07:21.397534272Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   8143      0 --:--:-- --:--:-- --:--:-- 15000\n{\"status\":\"ok\"}"
+                    }
+                ]
+            }
+        },
+        "Image": "sha256:559ac229adefe0f7e2d4e32f5222f26927b6bb8ba44b9db08e2544afebf41984",
+        "ResolvConfPath": "/var/lib/docker/containers/e77921910d22d9efbb6b0976040a0038ded5bc8affb699ffbcb5385f7786d8e2/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/e77921910d22d9efbb6b0976040a0038ded5bc8affb699ffbcb5385f7786d8e2/hostname",
+        "HostsPath": "/var/lib/docker/containers/e77921910d22d9efbb6b0976040a0038ded5bc8affb699ffbcb5385f7786d8e2/hosts",
+        "LogPath": "/var/lib/docker/containers/e77921910d22d9efbb6b0976040a0038ded5bc8affb699ffbcb5385f7786d8e2/e77921910d22d9efbb6b0976040a0038ded5bc8affb699ffbcb5385f7786d8e2-json.log",
+        "Name": "/inbrev-offline-llm-1",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "inbrev-models:/models:ro"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "inbrev-offline_practice",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": null,
+            "Name": "overlayfs"
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "inbrev-models",
+                "Source": "/var/lib/docker/volumes/inbrev-models/_data",
+                "Destination": "/models",
+                "Driver": "local",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "e77921910d22",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LLAMA_ARG_HOST=0.0.0.0"
+            ],
+            "Cmd": [
+                "-m",
+                "/models/apertus-v1.5-8b-text-Q4_K_M.gguf",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8080",
+                "-c",
+                "8192",
+                "--parallel",
+                "1",
+                "--jinja",
+                "--load-mode",
+                "none"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "curl",
+                    "-f",
+                    "http://localhost:8080/health"
+                ]
+            },
+            "Image": "ghcr.io/ggml-org/llama.cpp:server@sha256:559ac229adefe0f7e2d4e32f5222f26927b6bb8ba44b9db08e2544afebf41984",
+            "Volumes": null,
+            "WorkingDir": "/app",
+            "Entrypoint": [
+                "/app/llama-server"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "0f23bfb4b183969fb762d4c0d9032f5194b37eeb07e9f86e618dc0cde179b4e8",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:559ac229adefe0f7e2d4e32f5222f26927b6bb8ba44b9db08e2544afebf41984",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "inbrev-offline",
+                "com.docker.compose.project.config_files": "<repo>/track_2b\\docker-compose.yml",
+                "com.docker.compose.project.working_dir": "<repo>/track_2b",
+                "com.docker.compose.service": "llm",
+                "com.docker.compose.version": "2.39.2",
+                "org.opencontainers.image.created": "2026-10-04T05:59:43Z",
+                "org.opencontainers.image.description": "LLM inference in C/C++",
+                "org.opencontainers.image.revision": "11fe02151f79c41d0d4af7da708755d73b9c0da6",
+                "org.opencontainers.image.source": "https://github.com/ggml-org/llama.cpp",
+                "org.opencontainers.image.title": "llama.cpp",
+                "org.opencontainers.image.url": "https://github.com/ggml-org/llama.cpp",
+                "org.opencontainers.image.version": "b11382"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "67df6cb71d64c596ed4ffb0492e82e50f95b0fdf14a9e39bfe77ad150c76dffd",
+            "SandboxKey": "/var/run/docker/netns/67df6cb71d64",
+            "Ports": {},
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "inbrev-offline_practice": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "inbrev-offline-llm-1",
+                        "llm"
+                    ],
+                    "MacAddress": "da:ed:10:e0:44:74",
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "e9af33fa8bc35ddabea37d166a174483eddfdd516356d7caa9df77d550fa2556",
+                    "EndpointID": "da22c1532d4a6000282051888450c2e850bb0e3586783d21b9c12cb6fda5369d",
+                    "Gateway": "",
+                    "IPAddress": "172.22.0.2",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "inbrev-offline-llm-1",
+                        "llm",
+                        "e77921910d22"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:1cdfea0828170c34d56a8a6d9fc5a0898e8bca3762e5ec6be0c01032f7f7bde8",
+            "size": 1746,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]

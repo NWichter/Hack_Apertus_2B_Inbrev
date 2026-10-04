@@ -1,0 +1,54 @@
+[
+    {
+        "Name": "inbrev-offline_practice",
+        "Id": "e9af33fa8bc35ddabea37d166a174483eddfdd516356d7caa9df77d550fa2556",
+        "Created": "2026-10-04T10:51:28.71529626Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.22.0.0/16",
+                    "Gateway": "172.22.0.1"
+                }
+            ]
+        },
+        "Internal": true,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "a768ff16eb56064031d45f25fde9e424243061627d6f2e22595d539733b28725": {
+                "Name": "inbrev-offline-run",
+                "EndpointID": "761fd80c7a1eacb783ed4e47c269131da0555d15d1599975a297efcc514fc006",
+                "MacAddress": "52:7b:72:e1:3a:7c",
+                "IPv4Address": "172.22.0.3/16",
+                "IPv6Address": ""
+            },
+            "e77921910d22d9efbb6b0976040a0038ded5bc8affb699ffbcb5385f7786d8e2": {
+                "Name": "inbrev-offline-llm-1",
+                "EndpointID": "da22c1532d4a6000282051888450c2e850bb0e3586783d21b9c12cb6fda5369d",
+                "MacAddress": "da:ed:10:e0:44:74",
+                "IPv4Address": "172.22.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {
+            "com.docker.network.enable_ipv4": "true",
+            "com.docker.network.enable_ipv6": "false"
+        },
+        "Labels": {
+            "com.docker.compose.config-hash": "032a2d52b6c11aa2e3ca788cbb5b31248fe3e838ea7dadb2ec5eea7bb0cb5378",
+            "com.docker.compose.network": "practice",
+            "com.docker.compose.project": "inbrev-offline",
+            "com.docker.compose.version": "2.39.2"
+        }
+    }
+]

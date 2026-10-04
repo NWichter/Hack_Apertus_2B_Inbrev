@@ -29,6 +29,9 @@ NEUTRALISE = {
     "swiss-prx-0022": [
         ("Coop Vitality Apotheke am Bahnhof Bern", "Apotheke Beispiel am Bahnhof Bern")
     ],
+    "swiss-prx-0002": [("Bahnhof-Apotheke in Aarau", "Apotheke Beispiel in Aarau")],
+    "swiss-prx-0016": [("Farmacia San Nicolao di Lugano", "Farmacia Esempio di Lugano")],
+    "swiss-prx-0029": [("Farmacia Pedemonte di Bellinzona", "Farmacia Esempio di Bellinzona")],
 }
 
 # What the Codex session changed per row (diff of the unedited first version in the

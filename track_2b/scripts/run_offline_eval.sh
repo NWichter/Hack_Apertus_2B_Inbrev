@@ -30,7 +30,7 @@ docker image inspect inbrev:latest >/dev/null 2>&1 || docker build -t inbrev:lat
   echo "docker: $(docker --version)"
   echo "host: $(docker info --format '{{.OperatingSystem}}, {{.NCPU}} CPUs, {{.MemTotal}} bytes RAM for Docker')"
   echo "input: ${GOLD} ($(wc -l < "${GOLD}") messages)"
-  echo "samples per message: ${INBREV_SAMPLES:-3}"
+  echo "samples per message: ${LOCAL_INBREV_SAMPLES:-1}"
   echo "weights: ${GGUF_FILE} from ${MODELS_SRC:-./models}"
   echo
 
@@ -62,7 +62,7 @@ for _ in range(720):
     time.sleep(5)
 print(urllib.request.urlopen('http://llm:8080/v1/models', timeout=5).read().decode()[:600])"
   echo "model ready after $(( $(date +%s) - t0 )) s"
-  echo "--- 7. triage (${INBREV_SAMPLES:-3} sample(s) per message, one request per sample; llama.cpp rejects n > 1) ---"
+  echo "--- 7. triage (${LOCAL_INBREV_SAMPLES:-1} sample(s) per message, one request per sample; llama.cpp rejects n > 1) ---"
   ( while docker inspect "${RUN}" >/dev/null 2>&1; do
       docker stats --no-stream --format '{{.Name}} {{.CPUPerc}} {{.MemUsage}}' >> "${OUT}/docker-stats.txt" 2>/dev/null
       echo "--- $(date -u +%H:%M:%S)" >> "${OUT}/docker-stats.txt"; sleep 15; done ) &

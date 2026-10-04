@@ -123,6 +123,7 @@ latency, with breakdowns by language, writing level, channel and generator.
 | `LLM_BASE_URL`         | `http://llm:8080/v1` | OpenAI-compatible endpoint                          |
 | `LLM_API_KEY`          | `none`               | Key for the endpoint                                |
 | `INBREV_SAMPLES`       | `3`                  | Samples per message (self-consistency)              |
+| `LOCAL_INBREV_SAMPLES` | `1`                  | Samples per message in `make run-local` / `make offline-eval` (CPU; the one-sample ablation in the report) |
 | `INBREV_TEMPERATURE`   | `0.7`                | Sampling temperature when samples > 1               |
 | `INBREV_SAFETY_MODE`   | `or`                 | `llm`, `lexical` or `or`                            |
 | `INBREV_ABSTAIN_BELOW` | `0.99`               | Route agreement needed to run without a person      |

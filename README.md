@@ -58,3 +58,15 @@ LLM_API_KEY — your API key
 ## License
 
 All Hack Apertus projects are open-sourced. Please check our Terms & Conditions for specific licensing details (6. What you build is open source): https://hackapertus.ch/terms-and-conditions
+
+Inbrev follows § 6 of these terms:
+
+| Part | License | File |
+| --- | --- | --- |
+| Code (`track_2b/src`, `track_2b/scripts`, `track_2b/tests`, website) | Apache-2.0 | [`LICENSE`](LICENSE) |
+| Documentation and technical report (`README.md`, `track_2b/technical_report.md`, `track_2b/report/`, `track_2b/docs/`) | CC-BY-4.0 | [`LICENSE-docs`](LICENSE-docs) |
+| Submitted dataset (`track_2b/data/`: seed messages, Swiss practice set, taxonomy, schema) | CDLA-Permissive-2.0 | [`track_2b/data/LICENSE`](track_2b/data/LICENSE) |
+
+Third-party material keeps its own licence and is not relicensed:
+
+- External datasets used only for local checks (`sweatSmile/medical-symptom-triage`, `ale-dp/german-english-email-ticket-classification`, `PortalPal-AI/Portal-Messaging-Topics`, `lavita/ChatDoctor-HealthCareMagic-100k`) are not in the repository and keep the licences stated on their dataset cards (see `track_2b/data/README.md`). They are not covered by CDLA-Permissive-2.0.

@@ -98,3 +98,5 @@ Every `quote` must be a substring of `subject + "\n" + body`; the evaluation che
 ## Licence
 
 Data: CDLA-Permissive-2.0. Larger working files (scans, model outputs) are kept outside the repository and passed in via `DATA_DIR`.
+
+The full text is in [`LICENSE`](LICENSE). It covers the files of this folder that are in the repository. The external datasets above (`external/`, not in the repository) are not covered and keep the licences stated on their dataset cards.

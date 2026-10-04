@@ -108,6 +108,6 @@ A unit test covers the OCR failure path: when a fax is so degraded that no quote
 
 ## License
 
-Creative Commons Attribution 4.0 (CC-BY-4.0). All HackApertus projects are open-sourced.
+Creative Commons Attribution 4.0 (CC-BY-4.0). All HackApertus projects are open-sourced. Code: Apache-2.0. Data (seed and Swiss practice messages in `data/`): CDLA-Permissive-2.0. External datasets used only for local checks are not redistributed and keep their own licences.
 
 ## References

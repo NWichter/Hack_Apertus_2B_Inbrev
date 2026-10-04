@@ -6,10 +6,9 @@ what the numbers say.
 - #strong[Team:] Apertool --- Niklas Wichter
 - #strong[Demo:] \[TBD: link to video\]
 
-#emph[Draft of 4 October 2026. Values marked \[TBD\] are not measured
-yet; numbers without that mark are measured or cited. Measured numbers
-come from synthetic data whose labels have not yet been reviewed by a
-person.]
+#emph[Version of 4 October 2026. Every number is measured or cited; what
+is not measured yet is named as such. Measured numbers come from
+synthetic data whose labels have not yet been reviewed by a person.]
 
 = 1. Summary
 <summary>
@@ -29,14 +28,18 @@ Inbrev sorts the inbox of a Swiss practice locally with Apertus. It
 assigns each message to one of nine administrative routes, derives the
 administrative deadline and the person in charge, extracts patient and
 case fields, and backs every decision with a verbatim quote from the
-message. It never assesses clinical urgency: a message that may describe
-acute symptoms is flagged and handed to a person at once, and a message
-the model is unsure about goes to a person instead of being guessed.
-Headline result on 180 synthetic messages (labels not yet reviewed by a
-person): with Apertus 8B, Inbrev finds 13 of 16 safety cases (recall
-0.81, 95 % CI 0.57--0.93) and 43 of 50 "today" deadlines (0.86) while 96
-% of the messages run without a person; route macro-F1 is 0.85. Apertus
-70B finds 15 of 16 safety cases. \[TBD: CHF per 1,000 messages.\]
+message. It never assesses clinical content: a message that may contain
+symptoms is excluded from automation and handed to a person, in the same
+queue as messages the model is unsure about, without any ranking by
+severity. Headline result on 180 synthetic messages (labels not yet
+reviewed by a person): with Apertus 8B, Inbrev excludes 13 of 16
+messages with clinical content from automation (clinical exclusion
+recall, also called safety-net recall, 0.81, 95 % CI 0.57--0.93; keyword
+rules 7 of 16) and finds 43 of 50 "today" deadlines (0.86) while 96 % of
+the messages run without a person; route macro-F1 is 0.85. A single
+Apertus answer without the checks finds 9 of 16. Apertus 70B finds 15 of
+\16. Inbrev uses about 1,400 input and 640 output tokens per message
+with 8B.
 
 = 2. Architecture
 <architecture>
@@ -74,15 +77,14 @@ and point to the passage that supports a decision.
   disagree, the model marks the message as ambiguous, or no route
   evidence survives, Inbrev abstains: a person decides
   @wen2025abstention.
-+ #strong[Output.] A sorted inbox (web UI: safety first, then "a person
-  decides", then today, this week, no deadline), a JSON result per
-  message following `data/schema/triage_result.schema.json`, an API
-  under `/v1/`, and an audit log that stores a hash and the decision,
-  not the text. Reply drafts are fixed templates for administrative
-  routes only; no model-written text reaches patients.
-
-\[TBD: Figure 1, architecture diagram in `docs/` with the practice
-boundary.\]
++ #strong[Output.] A sorted inbox (web UI: "a person decides" for unsure
+  messages and messages with clinical content, by time of receipt and
+  without a ranking among them; then today, this week, no deadline), a
+  JSON result per message following
+  `data/schema/triage_result.schema.json`, an API under `/v1/`, and an
+  audit log that stores a hash and the decision, not the text. Reply
+  drafts are fixed templates for administrative routes only; no
+  model-written text reaches patients.
 
 == Target architecture (mandatory)
 <target-architecture-mandatory>
@@ -99,7 +101,7 @@ the model auditable @riedemann2024open@apertus2025.
 
 #figure(
   align(center)[#table(
-    columns: (7.63%, 92.37%),
+    columns: (13.57%, 86.43%),
     align: (auto,auto,),
     table.header([Phase], [Dependencies],),
     table.hline(),
@@ -115,8 +117,9 @@ the model auditable @riedemann2024open@apertus2025.
 The unit tests and the non-LLM baselines run in the image with
 `docker run --network none` (`scripts/run_offline_test.sh` or `.ps1`\;
 the log also records that the container cannot open an outbound
-connection). No language model is called in that check. \[TBD: log of a
-full triage run with local GGUF weights and no network.\] For variant
+connection). No language model is called in that check. Not done yet: a
+full triage run with local GGUF weights and no network; every Apertus
+number in this report comes from the Hack Apertus endpoint. For variant
 c), a blog calculation puts a Swiss API at CHF 0.00335 per request of
 3,000 input and 500 output tokens @pupel2026sovereign.
 
@@ -154,9 +157,10 @@ All messages, people, practices and identifiers are fictional; AHV
 numbers have a valid format and an invalid check digit. No real patient
 data is used. Licence: CDLA-Permissive-2.0.
 
-- #strong[Seed:] 12 messages (German, French, Italian; e-mail, fax,
-  web form) with gold labels, in the repository, written one by one by
-  Claude (`claude-opus-5-5`), not by a person; development set.
+- #strong[Seed:] 12 messages (German, French, Italian; e-mail, fax, web
+  form) with gold labels, in the repository. Claude (`claude-opus-5-5`)
+  wrote them one by one in an agent session, not a person; they served
+  as the development set for the prompt and the checks.
 - #strong[Synthetic part (v0):] 180 messages. Labels are fixed by a
   seeded grid #emph[before] any text exists (route, deadline, assignee,
   safety flag, abstain, language, channel, writing level, mixed topics,
@@ -164,19 +168,32 @@ data is used. Licence: CDLA-Permissive-2.0.
   documented prompt, 90 messages each (Claude and GPT-5.5). Apertus
   neither writes nor labels data, because models recognise and prefer
   their own text @panickssery2024selfpref. Distribution: German 99,
-  French 45, Italian 27, English 9; 16 safety cases (7 explicit, 9
-  mentioned in passing) and 14 traps that sound medical but are not
-  acute; 9 genuinely ambiguous messages. A validator checks schema,
-  verbatim quotes, date consistency, invalid AHV check digits,
-  fictitious domains and phone numbers, and near-duplicates.
-- #strong[Swiss practice set:] 30 messages (`data/ood/`) written by an
-  Antigravity (Gemini) session, edited by Codex (`gpt-6.1-sol`); labels
-  not reviewed. External Hugging Face datasets are used only for local
-  stress tests and give no reported number (`data/README.md`).
+  French 45, Italian 27, English 9; 16 messages with clinical content
+  that must leave automation (7 explicit, 9 mentioned in passing) and 14
+  traps that sound medical but need no clinical reading; 9 genuinely
+  ambiguous messages. A validator checks schema, verbatim quotes, date
+  consistency, invalid AHV check digits, fictitious domains and phone
+  numbers, and near-duplicates.
+- #strong[Swiss practice set:] 30 messages (`data/ood/`), text and
+  labels written by an Antigravity agent session (Gemini,
+  `gemini-3.8-flash`) on 3 October; Codex (`gpt-6.1-sol`) replaced real
+  e-mail domains and organisation names the same day, and on 4 October
+  the last four real organisation names were replaced by fictitious ones
+  (`scripts/annotate_swiss_set.py`). Every row now records generator,
+  model, date, edits and evidence in a `provenance` field; the
+  generation prompt was not recorded and no person has reviewed the
+  labels.
+- #strong[External datasets] (Hugging Face) were downloaded only for
+  local stress tests, are not redistributed and give no reported number;
+  `data/README.md` lists each source and why it is or is not used.
 - #strong[Planned:] about 60 handwritten, deliberately messy messages
   and about 60 fax pages rendered with skew, noise and stamps for the
   OCR path; at least 60 messages relabelled blind after 48 hours to
   report intra-rater κ @cohen1960kappa.
+
+Closed models (Claude, GPT-5.5 via Codex, Gemini via Antigravity) wrote
+or edited test data and code during development only; at runtime Inbrev
+calls only Apertus.
 
 Synthetic data can miss the distribution of real mail
 @long2024synthetic\; the gap between the generated and the handwritten
@@ -184,10 +201,12 @@ part is reported.
 
 = 5. Evaluation
 <evaluation>
-The main numbers are the recall of the safety flag and of the deadline
-"today", reported together with the share of messages that run without a
-person (coverage). Safety cases are rare, so recall and precision are
-reported instead of accuracy @saito2015precision, and the
+The main numbers are the clinical exclusion recall (share of messages
+with clinical content that the safety net takes out of automation;
+"safety" in the tables) and the recall of the deadline "today", reported
+together with the share of messages that run without a person
+(coverage). Messages with clinical content are rare, so recall and
+precision are reported instead of accuracy @saito2015precision, and the
 coverage--accuracy curve follows selective classification
 @geifman2017selective. Further metrics: route accuracy and macro-F1,
 deadline accuracy, field F1, evidence faithfulness (share of model
@@ -201,69 +220,82 @@ language model; TF-IDF with five-fold cross-validation. Both Apertus
 rows run the full pipeline (schema, three samples at T = 0.7, checks,
 vote), prompt p2, on the Hack Apertus endpoint on 3 October 2026.
 Coverage is the share of messages Inbrev handles without "a person
-decides".
+decides". The row "one sample, no checks" needs no new model call: it
+scores the first of the three stored 8B samples as the model wrote it,
+without quote checks, lexical net, vote or abstention
+(`scripts/ablation_first_sample.py`).
 
 #figure(
   align(center)[#table(
-    columns: (30.16%, 7.94%, 11.11%, 10.32%, 12.7%, 11.11%, 10.32%, 6.35%),
+    columns: (30%, 10%, 10%, 10%, 10%, 10%, 10%, 10%),
     align: (auto,auto,auto,auto,auto,auto,auto,auto,),
-    table.header([Setup], [Route acc.], [Route macro-F1], [Safety
-      recall], [Safety precision], ["Today" recall], [Deadline
-      acc.], [Coverage],),
+    table.header([Setup], [Route acc.], [Route F1], [Safety
+      rec.], [Safety prec.], [Today rec.], [Deadl. acc.], [Coverage],),
     table.hline(),
     [Majority
     class], [0.14], [0.03], [0.00], [--], [0.00], [0.37], [1.00],
-    [Keyword rules + lexical safety
+    [Keyword rules + lexical
     net], [0.79], [0.76], [0.44], [0.32], [0.76], [0.68], [1.00],
     [TF-IDF + logistic
     regression], [0.83], [0.82], [0.13], [1.00], [0.66], [0.68], [1.00],
-    [Apertus 8B, one sample, no
-    checks], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]], [\[TBD\]],
-    [#strong[Inbrev] (8B, schema, checks,
+    [8B, one sample, no
+    checks], [0.87], [0.84], [0.56], [1.00], [0.70], [0.67], [1.00],
+    [#strong[Inbrev 8B] (schema, checks,
     vote)], [0.88], [0.85], [0.81], [0.46], [0.86], [0.82], [0.96],
-    [Inbrev with Apertus
+    [Inbrev
     70B], [0.91], [0.89], [0.94], [0.50], [0.94], [0.85], [0.94],
   )]
   , kind: table
   )
 
 With 95 % Wilson intervals: safety recall 13/16 = 0.81 \[0.57, 0.93\]
-for 8B and 15/16 = 0.94 \[0.72, 0.99\] for 70B, against 7/16 = 0.44
+for 8B and 15/16 = 0.94 \[0.72, 0.99\] for 70B, against 9/16 = 0.56
+\[0.33, 0.77\] for a single 8B answer without checks and 7/16 = 0.44
 \[0.23, 0.67\] for the keyword rules; route accuracy 159/180 = 0.88
 \[0.83, 0.92\] for 8B, 163/180 = 0.91 \[0.85, 0.94\] for 70B and 143/180
-\= 0.79 \[0.73, 0.85\] for the keyword rules. With 16 safety cases the
-intervals are wide, and the 8B--70B difference is not significant. The
-safety net is tuned for recall: about half of the flags are false alarms
-(15 of 28 for 8B, 15 of 30 for 70B; all from the lexical net, none from
-the model), which costs a doctor a glance, not a missed case.
-Mean latency per message (three samples in one request) was 3.0 s for 8B
-and 10.7 s for 70B on the shared endpoint.
+\= 0.79 \[0.73, 0.85\] for the keyword rules. With 16 cases the
+intervals are wide, and the 8B--70B difference is not significant (exact
+McNemar p = 0.50). Of the gain over a single answer, three samples,
+where a flag from any one counts, add two cases (11/16 without the
+lexical net) and the lexical net two more. The net is tuned for recall:
+about half of the flags are false alarms (15 of 28 for 8B, 15 of 30 for
+70B; all of them come from the lexical net, none from the model), which
+costs a doctor a glance, not a missed case. Recall differs by generator
+(8B: 7 of 7 cases written by GPT-5.5, 6 of 9 written by Claude), so the
+set partly measures its authors. The target of 0.95 is not reached with
+8B. Field F1 is 0.73 for 8B and 0.83 for 70B (paired bootstrap p \<
+0.001), the only metric where 70B is clearly better; the checks drop 309
+of 2,086 values that 8B extracted (15 %). Mean latency per message
+(three samples in one request) was 3.0 s for 8B and 10.7 s for 70B on
+the shared endpoint.
 
 The baselines already route 79--83 % of the synthetic messages
 correctly, so the route alone does not justify a language model on this
-set. They fail where it matters: they find at most 44 % of the safety
-cases. For context only, not as a direct comparison: clinical emergency
-detection with a triage manual reached a sensitivity of 0.98
-@liu2025emergency, and a deployed acuity classifier ran at 0.63
+set. They fail where it matters: they find at most 44 % of the messages
+with clinical content. For context only, not as a direct comparison: a
+clinical triage model guided by a triage manual reached a sensitivity of
+0.98 @liu2025emergency, and a deployed acuity classifier ran at 0.63
 @yang2024prioritization.
 
 Two small sets are reported separately because they are too small to
-rank systems. On the 12 seed messages (1 safety case; prompt p1),
-Inbrev with 8B routes 10 of 12 correctly (0.83, macro-F1 0.82), the
-keyword rules 11 of 12. On 30 further synthetic Swiss practice messages
-(4 safety cases; `data/ood/`, labels not reviewed), 8B reaches route
-accuracy 0.77 (macro-F1 0.76), 70B 0.90, the keyword rules 0.83; all
-three find the 4 safety cases, and deadline accuracy is low for all
-(0.47--0.53).
+rank systems. On the 12 seed messages (1 case with clinical content;
+prompt p1, run on 1 October), Inbrev with 8B routes 10 of 12 correctly
+(0.83, macro-F1 0.82), the keyword rules 11 of 12. On the 30 Swiss
+practice messages (4 cases with clinical content; `data/ood/`, labels
+not reviewed; run again on 4 October after the names were neutralised,
+60 model calls), 8B routes 23 of 30 correctly (0.77 \[0.59, 0.88\],
+macro-F1 0.76), 70B 27 of 30 (0.90 \[0.74, 0.97\]; McNemar p = 0.125),
+the keyword rules 25 of 30 (0.83): on this set the keyword rules route
+better than 8B. All three take the 4 cases out of automation; 70B hands
+4 messages to a person, including both ambiguous ones, 8B none. Deadline
+accuracy is low for all (0.47 for both models, 0.53 for the keyword
+rules), partly because the rows carry no time of receipt.
 
 A unit test covers the OCR failure path: when a fax is so degraded that
 no quote can be found in the text, the checks drop every value and
-Inbrev abstains instead of filling fields. \[TBD: OCR measurement on
-rendered fax pages.\]
-
-\[TBD: Figure 2, coverage--accuracy curve; breakdown by language and
-writing level; operation and cost per message on GPU and CPU; time to
-sort 30 messages by hand vs.~with Inbrev (n = 1, self-experiment).\]
+Inbrev abstains instead of filling fields. Not measured yet: OCR on
+rendered fax pages, latency and cost on practice hardware (GPU and CPU),
+and the time to sort 30 messages by hand versus with Inbrev.
 
 = 6. Limitations
 <limitations>
@@ -278,13 +310,16 @@ sort 30 messages by hand vs.~with Inbrev (n = 1, self-experiment).\]
   classification follows Annex VIII of the EU MDR
   @schweiz2020mepv@eu2017mdr. Inbrev therefore never orders by severity
   in its default mode: the safety flag only takes a message out of
-  automation. The final classification depends on the written intended
-  purpose; this is not legal advice.
+  automation and puts it in the same "a person decides" queue as unsure
+  messages, ordered by time of receipt. Intended purpose: sorting
+  administrative mail; messages with clinical content are not processed
+  automatically. The final classification depends on the written
+  intended purpose; this is not legal advice.
 - #strong[Optional research mode.] `--mode clinical-triage` (off by
-  default) adds a keyword-based urgency hint in the style of the
-  Emergency Severity Index (levels 1--5) to flagged messages. It is a
-  research prototype, not a medical device and not certified; it has not
-  been validated. Any clinical use would require an MDR/MDSW conformity
+  default, not in the web inbox) adds a keyword-based hint in the style
+  of the Emergency Severity Index to flagged messages. It is an optional
+  research mode, not a medical device and not certified; it has not been
+  validated. Any clinical use would require an MDR/MDSW conformity
   assessment first. All numbers in this report use the default
   administrative mode.
 - Enforced formats can cost reasoning quality @tam2024format\; three
@@ -301,8 +336,11 @@ and `make offline-check` run the tests and the non-LLM evaluation with
 number: `replay` re-applies the deterministic checks to stored raw model
 output, so changes to the checks are measured without new model calls.
 The grid for the synthetic set is seeded (2026), cross-validation uses
-seed 2026. \[TBD: hardware, model revision (Hugging Face commit),
-quantisation, llama.cpp/vLLM version, git commit.\]
+seed 2026. Model runs: `apertus-v1.5-8b` and `apertus-v1.5-70b` as named
+by the Hack Apertus endpoint (3 October for the 180-message set, 4
+October for the Swiss set); the endpoint does not expose the Hugging
+Face revision. The 180-message set is not in the repository yet; it
+follows after human review.
 
 = 8. Next steps
 <next-steps>

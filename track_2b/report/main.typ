@@ -7,6 +7,8 @@
   authors: ((name: "Niklas Wichter"),),
 )
 
+#show figure.where(kind: table): set figure(placement: auto, scope: "parent")
+
 #include "body.typ"
 
 #bibliography("refs.bib", style: "apa")

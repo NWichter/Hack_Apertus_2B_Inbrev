@@ -1,0 +1,13 @@
+Re-check after fix: 2026-10-04 22:05:50 UTC, commit 621c3e9 fix(local): run-local nutzt eine Stichprobe und längere Timeouts
+untracked/modified: 0
+=== 3b. make run-local (from repo root), no .env ===
+health: {'model': 'apertus-v1.5-8b-q4_k_m', 'mode': 'admin', 'prompt_version': 'p3', 'endpoint_local': True, 'samples': 3}
+model loaded after 3 s
+triage time: 19 s
+done 22:06:14 UTC
+
+=== 3c. same stack, app-local recreated by make run-local on 621c3e9; llm container kept from step 3 (make stop did not stop the local profile, fixed afterwards) ===
+health: {'model': 'apertus-v1.5-8b-q4_k_m', 'mode': 'admin', 'prompt_version': 'p3', 'endpoint_local': True, 'samples': 1}
+triage seed-001 (local Q4, 1 sample): {'route': 'report_received', 'deadline': 'today', 'assignee': 'doctor', 'safety_flag': False, 'abstain': False, 'confidence': 1.0}
+triage time: 757 s
+done 22:19:58 UTC

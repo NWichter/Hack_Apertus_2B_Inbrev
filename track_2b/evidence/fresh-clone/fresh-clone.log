@@ -1,0 +1,35 @@
+ls: cannot access '/env.txt': No such file or directory
+Fresh-clone check: 2026-10-04 21:08:13 UTC
+commit: 0536ccd feat: IMAP-Import, beide Modi in App und README, run-local im Repo-Root
+host: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64; "Alpine Linux v3.21"; Docker version 27.5.1, build 9f9e405; Docker Compose version v2.33.0; GNU Make 4.4.1
+untracked files after clone: 0
+
+=== 1. make test (from repo root) ===
+22 passed, 1 warning in 4.94s
+
+=== 2. make run (from repo root), endpoint from track_2b/.env (cp .env.example .env, values set) ===
+health: {'model': 'apertus-v1.5-8b', 'mode': 'admin', 'prompt_version': 'p3', 'endpoint_local': False, 'samples': 3, 'mailbox': False}
+triage seed-001: {'route': 'report_received', 'deadline': 'today', 'assignee': 'doctor', 'safety_flag': False, 'abstain': False, 'confidence': 1.0}
+web UI: HTTP 200
+
+=== 3. make run-local (from repo root), no .env, weights copied to track_2b/models (as in RUNNING.md) ===
+sha256: a037df8d87ff6caacee794ee85f55342f2152e0d359b7389033300c3bee5f299
+gateway up after 184 s
+health: {'model': 'apertus-v1.5-8b-q4_k_m', 'mode': 'admin', 'prompt_version': 'p3', 'endpoint_local': True, 'samples': 3}
+app-local networks: track_2b_practice 
+network practice internal: true
+egress from app-local:
+egress dns huggingface.co: FAILED (gaierror: [Errno -3] Temporary failure in name resolution)
+egress tcp 1.1.1.1:443: FAILED (OSError: [Errno 101] Network is unreachable)
+egress https huggingface.co: FAILED (ConnectError)
+egress verdict: BLOCKED (no internet)
+model loaded after 1254 s
+<html>
+<head><title>504 Gateway Time-out</title></head>
+<body>
+<center><h1>504 Gateway Time-out</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+triage time: 901 s
+done 22:02:50 UTC

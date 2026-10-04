@@ -1,0 +1,125 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:04.914
+Every morning, a Swiss practice
+assistant opens one inbox.
+
+2
+00:00:05.482 --> 00:00:11.138
+Lab reports, refill requests,
+insurer forms, faxes, in four languages.
+
+3
+00:00:11.738 --> 00:00:15.040
+Almost all of it is protected
+by professional secrecy.
+
+4
+00:00:15.740 --> 00:00:20.750
+Swiss family doctors spend
+9.5 hours a week on administration.
+
+5
+00:00:21.250 --> 00:00:22.219
+Meet Inbrev.
+
+6
+00:00:22.616 --> 00:00:28.947
+It runs Apertus, the open Swiss model,
+on a small server inside the practice.
+
+7
+00:00:29.548 --> 00:00:31.710
+One click sorts 30 messages.
+
+8
+00:00:32.410 --> 00:00:35.155
+Inbrev never judges clinical content.
+
+9
+00:00:35.754 --> 00:00:41.455
+Any message that may need a clinician
+leaves automation and goes to a person –
+
+10
+00:00:41.455 --> 00:00:43.136
+no rank, no assessment.
+
+11
+00:00:43.736 --> 00:00:47.534
+Everything else is sorted
+by who handles it, and by when.
+
+12
+00:00:48.134 --> 00:00:53.590
+Open the insurer fax: every field
+carries the exact words it came from.
+
+13
+00:00:54.290 --> 00:00:57.455
+When Inbrev isn't sure, it doesn't guess.
+
+14
+00:00:57.657 --> 00:01:01.250
+It says: you decide.
+French and Italian work the same way.
+
+15
+00:01:01.950 --> 00:01:03.492
+Now pull the cable.
+
+16
+00:01:03.866 --> 00:01:08.923
+Apertus and Inbrev run on a network
+with no way out – we checked:
+
+17
+00:01:08.923 --> 00:01:12.190
+every attempt to reach the internet fails.
+
+18
+00:01:12.790 --> 00:01:14.410
+Inbrev keeps sorting.
+
+19
+00:01:15.110 --> 00:01:16.628
+No server in the practice?
+
+20
+00:01:17.228 --> 00:01:21.694
+The same container can run at a Swiss
+provider, in a Swiss data centre,
+
+21
+00:01:21.694 --> 00:01:26.097
+engaged by the practice as an auxiliary
+bound to professional secrecy.
+
+22
+00:01:26.797 --> 00:01:31.720
+On a first synthetic
+test set of 180 messages,
+
+23
+00:01:31.720 --> 00:01:37.713
+Inbrev routes 88 % correctly with 8B,
+and 91 % with 70B.
+
+24
+00:01:38.313 --> 00:01:40.481
+Keyword rules reach 79 %.
+
+25
+00:01:41.080 --> 00:01:48.597
+Of 16 messages with clinical content,
+13 leave automation with 8B, 15 with 70B.
+
+26
+00:01:49.297 --> 00:01:54.104
+Inbrev. Your practice inbox,
+sorted where it belongs:
+
+27
+00:01:54.104 --> 00:01:57.105
+in the practice, or in the Swiss cloud.

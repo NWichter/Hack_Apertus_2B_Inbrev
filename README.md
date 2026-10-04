@@ -55,6 +55,8 @@ LLM_API_KEY — your API key
 3. Read its `README.md` and fill in `technical_report.md`.
 4. Make `make run` work from the root of the project, on a clean checkout.
 
+The project website (`website/`) embeds the demo video (`website/media/video.mp4`, subtitles `website/media/video.vtt`).
+
 ## License
 
 All Hack Apertus projects are open-sourced. Please check our Terms & Conditions for specific licensing details (6. What you build is open source): https://hackapertus.ch/terms-and-conditions

@@ -102,25 +102,25 @@ engaged by the practice as an auxiliary
 bound to professional secrecy.
 
 23
-00:01:29.635 --> 00:01:34.558
+00:01:29.635 --> 00:01:34.731
 On a first synthetic
 test set of 180 messages,
 
 24
-00:01:34.558 --> 00:01:40.551
-Inbrev routes 88 % correctly with 8B,
-and 91 % with 70B.
+00:01:34.731 --> 00:01:40.936
+Inbrev routes 94 % correctly with 8B,
+and 96 % with 70B.
 
 25
-00:01:41.151 --> 00:01:48.675
+00:01:41.535 --> 00:01:49.055
 Of 16 messages with clinical content,
 13 leave automation with 8B, 15 with 70B.
 
 26
-00:01:49.275 --> 00:01:54.082
+00:01:49.655 --> 00:01:54.462
 Inbrev. Your practice inbox,
 sorted where it belongs:
 
 27
-00:01:54.082 --> 00:01:57.083
+00:01:54.462 --> 00:01:57.463
 in the practice, or in the Swiss cloud.

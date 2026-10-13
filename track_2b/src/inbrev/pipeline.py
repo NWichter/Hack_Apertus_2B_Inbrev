@@ -6,6 +6,7 @@ samples, so changes to the checks are measured without new model calls.
 
 from __future__ import annotations
 
+import json
 import os
 import re
 from collections import Counter
@@ -19,6 +20,7 @@ from .extract import (
     detect_language,
     find_quote,
     parse_received,
+    quote_span_text,
     source_text,
 )
 from .llm import LLMClient, LLMError
@@ -38,6 +40,10 @@ class Options:
     use_schema: bool = True
     thinking: bool = False
     mode: str = "admin"  # admin (default) | clinical-triage (optional research mode)
+    # Optional second pass: a narrow question "does someone describe a current symptom?"
+    # A verified yes in at least symptom_min_votes samples raises the safety flag.
+    symptom_check: bool = False
+    symptom_min_votes: int = 1
 
     @classmethod
     def from_env(cls, cfg: Settings) -> "Options":
@@ -47,6 +53,8 @@ class Options:
             safety_mode=os.getenv("INBREV_SAFETY_MODE", "or"),
             abstain_below=float(os.getenv("INBREV_ABSTAIN_BELOW", "0.99")),
             mode=os.getenv("INBREV_MODE", "admin"),
+            symptom_check=os.getenv("INBREV_SYMPTOM_CHECK", "0") == "1",
+            symptom_min_votes=int(os.getenv("INBREV_SYMPTOM_MIN_VOTES", "1")),
         )
 
 
@@ -60,32 +68,75 @@ CLINICAL_DISCLAIMER = (
 # but "mund" never hits "Mundart" or "gesund".
 _ESI_TERMS = {
     1: [
-        "bewusstlos", "ohnmacht", "kollabiert", "kann nicht mehr atmen", "keine luft",
-        "perte de connaissance", "évanoui", "perso conoscenza", "svenut", "unconscious",
-        "passed out", "suizid", "selbstmord", "suicid",
+        "bewusstlos",
+        "ohnmacht",
+        "kollabiert",
+        "kann nicht mehr atmen",
+        "keine luft",
+        "perte de connaissance",
+        "évanoui",
+        "perso conoscenza",
+        "svenut",
+        "unconscious",
+        "passed out",
+        "suizid",
+        "selbstmord",
+        "suicid",
     ],
     2: [
-        "brustschmerz", "schmerz in der brust", "schmerzen in der brust", "druck auf der brust",
-        "engegefühl", "atemnot", "kurzatmig", "douleur thoracique", "dolore al petto",
-        "dolore toracico", "chest pain", "lähmung", "gelähmt", "paralys", "paralisi",
-        "hängender mundwinkel", "hängende mundwinkel", "mundwinkel hängt",
-        "spricht verwaschen", "starke blutung", "blutet stark", "allergische reaktion",
-        "zunge schwillt", "anaphylax",
+        "brustschmerz",
+        "schmerz in der brust",
+        "schmerzen in der brust",
+        "druck auf der brust",
+        "engegefühl",
+        "atemnot",
+        "kurzatmig",
+        "douleur thoracique",
+        "dolore al petto",
+        "dolore toracico",
+        "chest pain",
+        "lähmung",
+        "gelähmt",
+        "paralys",
+        "paralisi",
+        "hängender mundwinkel",
+        "hängende mundwinkel",
+        "mundwinkel hängt",
+        "spricht verwaschen",
+        "starke blutung",
+        "blutet stark",
+        "allergische reaktion",
+        "zunge schwillt",
+        "anaphylax",
     ],
     3: [
-        "hohes fieber", "fieber über 39", "starke kopfschmerzen", "forte fièvre",
-        "febbre alta", "high fever", "severe headache", "krampfanfall", "krampft",
-        "convulsion", "seizure",
+        "hohes fieber",
+        "fieber über 39",
+        "starke kopfschmerzen",
+        "forte fièvre",
+        "febbre alta",
+        "high fever",
+        "severe headache",
+        "krampfanfall",
+        "krampft",
+        "convulsion",
+        "seizure",
     ],
 }
 _ESI_RX = {
-    level: re.compile(r"\b(?:" + "|".join(re.escape(t) for t in terms) + ")", re.IGNORECASE)
+    level: re.compile(
+        r"\b(?:" + "|".join(re.escape(t) for t in terms) + ")", re.IGNORECASE
+    )
     for level, terms in _ESI_TERMS.items()
 }
 _ESI_TEXT = {
     1: ("resuscitation", "immediate", "Keyword match for ESI level 1 wording."),
     2: ("emergency", "emergent", "Keyword match for ESI level 2 wording."),
-    3: ("urgent", "urgent", "Keyword match for ESI level 3 wording, or flagged without a keyword match."),
+    3: (
+        "urgent",
+        "urgent",
+        "Keyword match for ESI level 3 wording, or flagged without a keyword match.",
+    ),
 }
 
 
@@ -135,7 +186,8 @@ async def triage(message: dict, client: LLMClient, opts: Options) -> dict:
     msgs = prompt.messages_for(message, received)
     call = {
         "model": client.model,
-        "prompt_version": prompt.PROMPT_VERSION,
+        "prompt_version": prompt.PROMPT_VERSION
+        + (f"+{prompt.VARIANT}" if prompt.VARIANT else ""),
         "error": None,
     }
     try:
@@ -144,7 +196,9 @@ async def triage(message: dict, client: LLMClient, opts: Options) -> dict:
             schema=prompt.output_schema() if opts.use_schema else None,
             n=opts.samples,
             temperature=opts.temperature if opts.samples > 1 else 0.0,
-            extra={"chat_template_kwargs": {"enable_thinking": True}} if opts.thinking else None,
+            extra={"chat_template_kwargs": {"enable_thinking": True}}
+            if opts.thinking
+            else None,
         )
         raw, finish = comp.contents, comp.finish_reasons
         call.update(
@@ -157,7 +211,38 @@ async def triage(message: dict, client: LLMClient, opts: Options) -> dict:
     except LLMError as e:
         raw, finish = [], []
         call["error"] = str(e)
+    if opts.symptom_check:
+        try:
+            sc = await client.chat(
+                prompt.symptom_messages_for(message, received),
+                schema=prompt.symptom_schema(),
+                n=opts.samples,
+                temperature=opts.temperature if opts.samples > 1 else 0.0,
+                max_tokens=200,
+            )
+            call["symptom_raw"] = sc.contents
+            call["symptom_tokens"] = [sc.prompt_tokens, sc.completion_tokens]
+        except LLMError as e:
+            call["symptom_raw"] = []
+            call["symptom_error"] = str(e)
     return assemble(message, raw, finish, opts, call)
+
+
+def symptom_votes(raw: list[str] | None, text: str) -> tuple[int, str | None]:
+    """Count samples that say yes AND quote a passage that is in the message."""
+    votes, quote = 0, None
+    for r in raw or []:
+        try:
+            obj = json.loads(r.split("<|inner_suffix|>")[-1].strip())
+        except (json.JSONDecodeError, AttributeError):
+            continue
+        if not isinstance(obj, dict) or not obj.get("current_symptom"):
+            continue
+        _, q = quote_span_text(obj.get("symptom_quote") or "", text)
+        if q:
+            votes += 1
+            quote = quote or q
+    return votes, quote
 
 
 def assemble(
@@ -179,6 +264,11 @@ def assemble(
     ]
     if not good and opts.safety_mode != "llm":
         safety = True
+    sym_votes, sym_quote = 0, None
+    if opts.symptom_check and "symptom_raw" in call:
+        sym_votes, sym_quote = symptom_votes(call.get("symptom_raw"), text)
+        if sym_votes >= opts.symptom_min_votes and route != "report_received":
+            safety = True
 
     if safety or route == "report_received":
         deadline = "today"
@@ -203,7 +293,9 @@ def assemble(
             reasons.append("no verifiable evidence for route")
     abstain = bool(reasons)
 
-    patient, fields, evidence = _merge_extractions(majority, text, taxonomy.route_fields(route))
+    patient, fields, evidence = _merge_extractions(
+        majority, text, taxonomy.route_fields(route)
+    )
     language = _vote([s.language for s in good])[0]
     if language not in taxonomy.LANGUAGES:
         language = detect_language(text)
@@ -215,6 +307,7 @@ def assemble(
         sq = next(
             (s.safety_quote for s in good if s.safety_flag and s.safety_quote), None
         )
+        sq = sq or sym_quote
         if sq:
             evidence.append({"field": "safety_flag", "quote": sq})
         elif lex:
@@ -266,6 +359,8 @@ def assemble(
         "route_votes": dict(Counter(s.route for s in good)),
         "llm_safety_votes": sum(s.safety_flag for s in good),
         "lexical_safety_hits": [h[0] for h in lex],
+        "symptom_votes": sym_votes,
+        "symptom_raw": call.get("symptom_raw"),
         "ambiguous_votes": ambiguous_votes,
         "abstain_reasons": reasons,
         "quote_status": _quote_stats(good),
@@ -337,6 +432,8 @@ def replay(row: dict, message: dict, opts: Options) -> dict:
         "retries",
     )
     call = {k: trace.get(k) for k in keep}
+    if trace.get("symptom_raw") is not None:
+        call["symptom_raw"] = trace["symptom_raw"]
     out = assemble(message, raw, finish, opts, call)
     out["run"] = row.get("run", {})
     return out

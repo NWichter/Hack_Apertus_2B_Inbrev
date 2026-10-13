@@ -132,4 +132,6 @@ latency, with breakdowns by language, writing level, channel and generator.
 | `INBREV_PRECOMPUTED`   | –                    | JSONL of stored predictions to show without a model |
 | `INBREV_MODE`          | `admin`              | `admin` (triage mode) or `clinical-triage` (research mode) |
 | `INBREV_PROMPT`        | `p3`                 | System prompt version; `p2` reproduces runs before 4 October 2026 (`evidence/prompt-p3/`) |
+| `INBREV_SYMPTOM_CHECK` | `1`                | Second 8B call per message that only asks whether someone describes a current complaint (verified quote); a yes takes the message out of automation. `0` reproduces runs before 13 October 2026 (`evidence/gap/`) |
+| `INBREV_RULES_GATE`  | `0`                | `1`: a person decides when the keyword rules choose another route than the model (fewer unnoticed wrong routes, many more messages to a person) |
 | `INBREV_IMAP_*`        | –                    | Mailbox for "Fetch mail" (see above)                |

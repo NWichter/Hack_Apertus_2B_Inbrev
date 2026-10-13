@@ -34,24 +34,30 @@ labels not reviewed by a person). On 180 messages Inbrev excludes 13 of
 16 messages with clinical content from automation (clinical exclusion
 recall 0.81, 95 % CI 0.57--0.93; keyword rules 7 of 16), routes 170 of
 180 correctly and routes 84 % automatically (an assistant only checks
-the suggestion and its quote). Because 16 cases give a wide interval, a
-held-out challenge set written by an open-weights model after everything
-was frozen adds 44 clinical messages and 39 medical traps: 8B excludes
-41 of 44 (0.93, CI 0.82--0.98; flag precision 0.91), 70B 44 of 44 (CI
+the suggestion and its quote). A second, narrow 8B pass that only asks
+whether someone describes a current complaint, designed on a separate
+dev split and then measured once on these 180, raises this to 16 of 16:
+no clinical message runs automatically, at the cost of 40 instead of 29
+messages for a person. Because 16 cases give a wide interval, a held-out
+challenge set written by an open-weights model after everything was
+frozen adds 44 clinical messages and 39 medical traps: 8B excludes 41 of
+44 (0.93, CI 0.82--0.98; flag precision 0.91), 70B 44 of 44 (CI
 0.92--1.00), keyword rules 31 of 44. Two open-weights models that
 labelled all 367 test messages blind agree with our labels on clinical
 content (κ 0.97--0.98) and route (κ 0.93); scored against their labels,
 the ranking against the keyword rules does not change. 40 German and 38
 French clinical reports written by people are routed right 40/40 and
 37/38. Two same-size open models (Qwen3.5-9B, Ministral 8B) in the
-identical pipeline do better than Apertus 8B (route 177 vs 170 of 180,
-clinical 16 vs 13 of 16) and than Apertus 70B (172, 15); we keep Apertus
-for its documented, opt-out-respecting training data and Swiss
-provenance and report the price (§5). With local Q4 weights Inbrev runs
-fully offline in Docker on a network without internet access (CPU, 192 s
-per message); the same weights run natively on the laptop's integrated
-GPU at 62.7 s per message. A mini PC costs about CHF 12 per 1,000
-messages at 60 messages a day.
+identical pipeline do better than Apertus 8B on routes (177 vs 170 of
+180; wrong routes that run automatically 1 vs 8 at a similar human
+workload), while the clinical gap is closed by the second pass (0
+unnoticed for all); we keep Apertus for its documented,
+opt-out-respecting training data and Swiss provenance and report the
+price (§5). With local Q4 weights Inbrev runs fully offline in Docker on
+a network without internet access (CPU, 192 s per message); the same
+weights run natively on the laptop's integrated GPU at 62.7 s per
+message. A mini PC costs about CHF 12 per 1,000 messages at 60 messages
+a day.
 
 = 2. Architecture
 <architecture>
@@ -85,10 +91,13 @@ and point to the passage that supports a decision.
   samples; the safety flag is raised if any sample or a multilingual
   lexical net fires. Agreement across samples is used as the uncertainty
   signal instead of a verbalised confidence, which is overconfident
-  @xiong2024uncertainty@wang2023selfconsistency. If the samples
-  disagree, the model marks the message as ambiguous, or no route
-  evidence survives, Inbrev abstains: a person decides
-  @wen2025abstention.
+  @xiong2024uncertainty@wang2023selfconsistency. A second, short 8B call
+  (default since 13 October) asks only whether someone describes a
+  current complaint and must quote it; one verified yes out of three
+  samples also raises the flag (not for reports, which go to the doctor
+  anyway). If the samples disagree, the model marks the message as
+  ambiguous, or no route evidence survives, Inbrev abstains: a person
+  decides @wen2025abstention.
 + #strong[Output.] A sorted inbox (web UI: "a person decides" for unsure
   messages and messages with clinical content, by time of receipt and
   without a ranking among them; then today, this week, no deadline), a
@@ -169,18 +178,14 @@ data is used. Licence: CDLA-Permissive-2.0.
   wrote them one by one in an agent session, not a person; they served
   as the development set for the prompt and the checks.
 - #strong[Synthetic part (v0):] 180 messages. Labels are fixed by a
-  seeded grid #emph[before] any text exists (route, deadline, assignee,
-  safety flag, abstain, language, channel, writing level, mixed topics,
-  safety traps); two generator families write the text from one
-  documented prompt, 90 messages each (Claude and GPT-5.5). Apertus
-  neither writes nor labels data, because models recognise and prefer
-  their own text @panickssery2024selfpref. Distribution: German 99,
-  French 45, Italian 27, English 9; 16 messages with clinical content
-  that must leave automation (7 explicit, 9 mentioned in passing) and 14
-  traps that sound medical but need no clinical reading; 9 genuinely
-  ambiguous messages. A validator checks schema, verbatim quotes, date
-  consistency, invalid AHV check digits, fictitious domains and phone
-  numbers, and near-duplicates.
+  seeded grid #emph[before] any text exists; two generator families
+  write the text from one documented prompt, 90 messages each (Claude
+  and GPT-5.5). Apertus neither writes nor labels data
+  @panickssery2024selfpref. German 99, French 45, Italian 27, English 9;
+  16 messages with clinical content (7 explicit, 9 in passing), 14
+  medical traps, 9 ambiguous messages. A validator checks schema,
+  verbatim quotes, dates, invalid AHV check digits, fictitious domains
+  and near-duplicates.
 - #strong[Swiss practice set:] 30 messages (`data/ood/`), text and
   labels by an Antigravity agent session (Gemini, `gemini-3.8-flash`) on
   3 October; real organisation names and domains were later replaced by
@@ -214,13 +219,12 @@ data is used. Licence: CDLA-Permissive-2.0.
   `data/README.md` lists each source and why it is or is not used.
 - #strong[Label check without people (yet):] two open-weights models,
   Nemotron 3 Super and gpt-oss-120b, labelled all 367 test messages
-  (gold, Swiss, Nemotron, challenge) blind from the written label rules,
-  seeing only the message (`scripts/annotate_open_models.py`, USD 0.06).
-  They are not human annotators; agreement shows that the rules can be
-  applied consistently, not that labels are clinically right. The 36
-  disputed messages form the review queue for a person; `tools/review/`
-  (blind pass, second pass after 48 h, Cohen's κ @cohen1960kappa) is
-  ready for that human review, which has not happened yet.
+  blind from the written rules, seeing only the message
+  (`scripts/annotate_open_models.py`, USD 0.06). They are not human
+  annotators: agreement shows that the rules can be applied
+  consistently, not that labels are right. The 36 disputed messages are
+  the review queue for a person; `tools/review/` (Cohen's κ
+  @cohen1960kappa) is ready, the human review has not happened yet.
 
 Closed models (Claude, GPT-5.5 via Codex, Gemini via Antigravity) wrote
 or edited test data and code during development only, and reviewed
@@ -366,28 +370,35 @@ and Ministral 8B both route 177/180 and exclude 16/16 clinical messages,
 against 170/180 and 13/16 for Apertus 8B (route p = 0.04, clinical p =
 0.25) and 172/180 and 15/16 for Apertus 70B (Llama 3.1 8B: provider rate
 limit, no result; `evidence/peers/`), although the prompt was developed
-with Apertus. The safety net does not close this gap: errors that pass
-automation unnoticed (wrong route without abstention, or clinical
-content without a flag) are 9 + 3 for Apertus 8B, 8 + 1 for 70B and 1 +
-0 for both comparison models. What the net does is lift Apertus 8B from
-9/16 (single raw answer) to 13/16, and on the challenge set 8B reaches
-41/44 and 70B 44/44. Local execution, the quote checks and the unranked
-safety net work with any open model and are no argument for Apertus.
-What is specific to Apertus: it was pretrained only on openly available
-data with robots.txt opt-outs applied retroactively and personal data
-filtered, all training artefacts are released @apertus2025, and the
-developers publish a dataset catalogue, an EU training-content summary
-and an EU Code of Practice statement
+with Apertus. With prompt p3 alone, errors that pass automation
+unnoticed (wrong route, or clinical content without a flag) are 9 + 3
+for Apertus 8B, 8 + 1 for 70B and 1 + 0 for both comparison models. We
+then tried to close this gap with Apertus only, choosing on a dev split
+(175 messages, rule fixed before the hold-out run, `evidence/gap/`): a
+safety-first schema order (worse), five samples (no effect) and few-shot
+examples (partial) were dropped; the symptom pass above reached 0
+unnoticed clinical messages on dev. Measured once on the gold set,
+Apertus 8B with the symptom pass lets through 8 + 0 at 40 messages for a
+person (Qwen 1 + 0 at 38); adding a gate that sends a message to a
+person when keyword rules choose another route gives 4 + 0 at 69. The
+clinical part of the gap is closed, the route part only narrowed, and
+only by more human work. Local execution, the quote checks and the
+unranked safety net work with any open model and are no argument for
+Apertus. What is specific to Apertus: it was pretrained only on openly
+available data with robots.txt opt-outs applied retroactively and
+personal data filtered, all training artefacts are released
+@apertus2025, and the developers publish a dataset catalogue, an EU
+training-content summary and an EU Code of Practice statement
 (github.com/swiss-ai/apertus-data-transparency), the kind of
 documentation the EU AI Act asks of general-purpose model providers
 @eu2024aiact\; we did not check equivalent documents for the comparison
 models. A Swiss practice that must justify under the DSG and
 professional secrecy which model reads patient mail @schweiz2020dsg can
 point to this provenance. That is a trade-off, not a free choice: the
-measured price is 7 routes and 3 clinical exclusions in 180 for 8B.
-Inbrev talks to any OpenAI-compatible endpoint, so a practice can choose
-otherwise; with Apertus we recommend 70B where the hardware allows it.
-This is not legal advice.
+measured price is 7 more wrong routes in 180 that reach automation, or
+more human work to catch them. Inbrev talks to any OpenAI-compatible
+endpoint, so a practice can choose otherwise; with Apertus we recommend
+70B where the hardware allows it. This is not legal advice.
 
 #strong[Prompt p3 for "other".] p3 only sharpens route boundaries
 ("other": copy of records, referral elsewhere, symptoms only). It was
@@ -404,44 +415,35 @@ route 157/180 and clinical exclusion 12/16 against 159/180 and 13/16
 mostly from checks and net, so local deployments use one sample.
 
 #strong[Offline on a CPU.] On 30 of the 180 messages (all 16 clinical
-plus 14 over the routes), the offline Docker stack with Q4 weights and
-one sample (p2) routes 24/30 and excludes 11/16; the endpoint (BF16, one
-sample) 23/30 and 12/16, the keyword rules 23/30 and 7/16. Q4 and BF16
-agree on the route for 28 of 30 and on the flag for 29 of 30, so
-quantisation costs little here. Wall time was 192 s per message (p95 417
-s) on a laptop CPU shared with other work. The same llama.cpp build and
-weights run natively on the laptop's integrated GPU (Vulkan, no Docker
-Desktop VM; `scripts/run_native_llamacpp.ps1`) need 62.7 s per message
-(p95 85 s) with p3: route 25/30, clinical 11/16, same route as BF16 on
-27 and same flag on 29 (`evidence/native/`). On the challenge set this
-deployable configuration (Q4, one sample) excludes 38 of 44 clinical
-messages and routes 99/115, against 40/44 and 104/115 for one BF16
-sample (p = 0.63 and 0.06). These native runs measure speed and quality;
-the air-gap proof remains the Docker run.
+plus 14), the offline Docker stack with Q4 weights and one sample (p2)
+routes 24/30 and excludes 11/16; the endpoint (BF16, one sample) 23/30
+and 12/16; Q4 and BF16 agree on the route for 28 and on the flag for 29
+of 30. Wall time was 192 s per message on a laptop CPU. The same build
+and weights natively on the laptop's integrated GPU (Vulkan,
+`scripts/run_native_llamacpp.ps1`) need 62.7 s per message (p95 85 s);
+on the challenge set this configuration (Q4, one sample, without the
+symptom pass) excludes 38 of 44 clinical messages against 40/44 for one
+BF16 sample (`evidence/native/`). These native runs measure speed and
+quality; the air-gap proof remains the Docker run. The symptom pass adds
+one short call per message; its local cost is not measured yet.
 
-#strong[Cost.] From the measured time and cited prices (excl. VAT;
-`scripts/cost_model.py`, `evidence/offline/`): a mini PC with the same
-CPU draws 38--39 W under sustained load @kennedy2024box, so 1,000
-messages need about 2.1 kWh at the CPU run's 192 s per message, CHF 0.52
-at the 2026 Swiss median for small businesses @elcom2026. With the box
-(about CHF 700, three years) and idle power, a practice with 60 messages
-a day pays about CHF 12 per 1,000 messages, roughly CHF 22 a month; the
-box would sort up to 450 messages a day. A Swiss cloud VM with 8 vCPU
-(CHF 0.0448 per hour @infomaniak2026cloud) would cost CHF 32 a month if
-always on. A Swiss token API at the listed Apertus 70B price (CHF 0.70 /
-2.50 per million input / output tokens @infomaniak2026ai\; 8B is not
-listed) would cost CHF 2.59 per 1,000 messages with the 8B token counts
-and CHF 3.40 with 70B. #strong[Value.] Staff time saved is not measured.
-`scripts/value_model.py` makes the arithmetic explicit: measured shares
-from the gold run (84 % automatic, 5.0 % automatic but wrongly routed,
-8.3 % false clinical flags) times assumed volumes and handling times,
-each with a cautious, base and favourable value (`evidence/value/`). At
-60 messages a day, 60 s by hand and 15 s to check a suggestion, an MPA
-saves about 35 minutes a day, net CHF 462 a month after doctor time for
-false flags and running cost (all assumed, not measured); the cautious
-case (30 messages, 30 s by hand) loses CHF 146 a month. Break-even is 27
-s of manual handling per message in the base case. A timing protocol for
-practice interviews will replace the assumptions.
+#strong[Cost.] From measured time and cited prices (excl. VAT;
+`scripts/cost_model.py`): a mini PC with the same CPU draws 38--39 W
+under load @kennedy2024box, about 2.1 kWh or CHF 0.52 per 1,000 messages
+at 192 s each @elcom2026. With the box (about CHF 700, three years) and
+idle power, a practice with 60 messages a day pays about CHF 12 per
+1,000 messages, roughly CHF 22 a month. A Swiss token API at the listed
+Apertus 70B price @infomaniak2026ai would cost CHF 2.59 per 1,000
+messages with the 8B token counts. #strong[Value.] Staff time saved is
+not measured. `scripts/value_model.py` multiplies measured shares of the
+default configuration (78 % automatic, 4.4 % automatic but wrongly
+routed, 12.8 % false clinical flags) with assumed volumes and handling
+times (`evidence/value/`). At 60 messages a day, 60 s by hand and 15 s
+to check a suggestion, an MPA saves about 32 minutes a day, net CHF 349
+a month after doctor time for false flags and running cost (all
+assumed); the cautious case loses CHF 242 a month; break-even is 33 s of
+manual handling per message. Practice interviews with a timing trial
+will replace the assumptions.
 
 On the 30 Swiss practice messages (`data/ood/`, 4 clinical) 8B routes 24
 (p3), 70B 27 (p2), the rules 25; all take the 4 clinical cases out of

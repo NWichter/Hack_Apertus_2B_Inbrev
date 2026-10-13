@@ -1265,8 +1265,9 @@
           Measured: what leaves automation, and what still runs by itself.
         </h1>
         <div class="lead" style="margin-top: 18px">
-          180 synthetic messages, labels not reviewed by a person. Held-out
-          challenge set, 44 clinical: 8B 41/44 (CI 0.82–0.98), 70B 44/44, rules 31/44.
+          180 synthetic messages, labels not reviewed by a person. Symptom pass
+          chosen on a dev split, measured once here. Challenge set, 44 clinical:
+          8B 41/44, 70B 44/44, rules 31/44.
         </div>
         <div class="split">
           <div>
@@ -1309,19 +1310,26 @@
                   <td>0.94</td>
                   <td>82 %</td>
                 </tr>
-                <tr class="ours">
-                  <td>Inbrev (8B + checks + abstain)</td>
+                <tr>
+                  <td>Inbrev 8B, before 13 Oct</td>
                   <td>0.94</td>
                   <td>0.81 (13/16)</td>
                   <td>0.88</td>
                   <td>84 %</td>
+                </tr>
+                <tr class="ours">
+                  <td>Inbrev 8B + symptom pass</td>
+                  <td>0.94</td>
+                  <td>1.00 (16/16)</td>
+                  <td>0.94</td>
+                  <td>78 %</td>
                 </tr>
               </tbody>
             </table>
             <div class="foot" style="margin-top: 22px">
               Prompt p3, built on a separate dev set. Runs automatically =
               neither unsure nor flagged. Paired on the 180, 8B beats the rules
-              32 to 5 (p = 7·10⁻⁶). Half the flags are false alarms. Fax pages
+              32 to 5 (p = 7·10⁻⁶). With the symptom pass 41 % of flags are clinical (16 of 39). Fax pages
               via OCR: route 50/60 (clean 56/60). Other open models: next slide.
             </div>
           </div>
@@ -1357,12 +1365,14 @@
             <h3>Measured: same pipeline, 180 messages</h3>
             <ul>
               <li>Qwen3.5-9B and Ministral 8B: route 177/180, clinical 16/16</li>
-              <li>Apertus 70B: route 172/180, clinical 15/16</li>
-              <li>Apertus 8B: route 170/180, clinical 13/16</li>
+              <li>Apertus 8B: route 170/180, clinical 13/16; 70B 172, 15/16</li>
               <li>
-                Errors that pass automation unnoticed (wrong route + missed
-                clinical): 8B 9 + 3, 70B 8 + 1, the other two 1 + 0. The safety
-                net does not close this gap.
+                Unnoticed (wrong route + clinical): 8B 9 + 3, Qwen 1 + 0
+              </li>
+              <li>
+                Fix chosen on a dev split, measured once: symptom pass → 8B
+                8 + 0 at 40/180 to a person (Qwen 1 + 0 at 38). Clinical gap
+                closed, route gap only narrowed (4 + 0 with a rules gate, 69/180)
               </li>
             </ul>
           </div>
@@ -1386,8 +1396,8 @@
           </div>
         </div>
         <div class="law">
-          <b>A trade-off, not a free choice:</b> 7 routes and 3 clinical
-          exclusions in 180 for 8B. A practice that has to justify under the
+          <b>A trade-off, not a free choice:</b> about 7 more wrong routes in
+          180 that reach automation, or more human work to catch them. A practice that has to justify under the
           FADP and professional secrecy which model reads patient mail can point
           to Apertus' documented provenance. Where the hardware allows, we
           recommend 70B; the endpoint is swappable. The prompt was developed
@@ -1441,8 +1451,8 @@
           <span class="target">assumption</span
           ><span
             >What it buys (assumption model, not measured): 60 messages a day,
-            60 s by hand vs 15 s to check a suggestion ≈ 35 MPA minutes a day,
-            net ≈ CHF 460 a month; break-even at 27 s per message. Interviews pending.</span
+            60 s by hand vs 15 s to check a suggestion ≈ 32 MPA minutes a day,
+            net ≈ CHF 350 a month; break-even at 33 s per message. Interviews pending.</span
           >
         </div>
       </section>

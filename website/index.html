@@ -261,6 +261,13 @@
                   16, route 172
                 </li>
                 <li class="done">
+                  Second, narrow check (since 13 Oct, chosen on a separate dev
+                  split, measured once on the 180): Apertus 8B asks only whether
+                  someone describes a current complaint. All 16 messages with
+                  clinical content now leave automation; 40 instead of 29 of 180
+                  messages go to a person
+                </li>
+                <li class="done">
                   Held-out challenge set (115 messages written by an open model
                   after everything was frozen; 44 with clinical content, 39
                   medical traps): Apertus 8B takes 41 of 44 out of automation
@@ -290,9 +297,11 @@
                 <li class="done">
                   Other open models in the same pipeline do better than Apertus:
                   Qwen3.5-9B and Ministral 8B route 177 of 180 and catch 16 of
-                  16 (Apertus 8B 170 and 13, 70B 172 and 15). We keep Apertus
-                  for its documented, opt-out-respecting training data and Swiss
-                  origin, and say what that costs (see the report)
+                  16 (Apertus 8B 170 and 13, 70B 172 and 15). With the second
+                  check the clinical gap is closed; on routes Apertus still lets 8
+                  of 180 errors through unnoticed, Qwen 1. We keep Apertus for its
+                  documented, opt-out-respecting training data and Swiss origin,
+                  and say what that costs (see the report)
                 </li>
                 <li class="done">
                   Full run without internet: Apertus 8B (Q4 weights, checksum
@@ -306,7 +315,7 @@
                   Cost (model calculation from the measured time and an
                   assumed box price): about CHF 12 per 1,000 messages on a mini
                   PC at 60 messages a day. Staff time saved is an assumption
-                  model, not measured (base case about 35 minutes a day)
+                  model, not measured (base case about 32 minutes a day)
                 </li>
               </ul>
             </article>

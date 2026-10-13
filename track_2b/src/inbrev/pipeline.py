@@ -44,6 +44,8 @@ class Options:
     # A verified yes in at least symptom_min_votes samples raises the safety flag.
     symptom_check: bool = False
     symptom_min_votes: int = 1
+    # Optional: a person decides when the keyword rules pick a different route than the model.
+    rules_gate: bool = False
 
     @classmethod
     def from_env(cls, cfg: Settings) -> "Options":
@@ -53,8 +55,9 @@ class Options:
             safety_mode=os.getenv("INBREV_SAFETY_MODE", "or"),
             abstain_below=float(os.getenv("INBREV_ABSTAIN_BELOW", "0.99")),
             mode=os.getenv("INBREV_MODE", "admin"),
-            symptom_check=os.getenv("INBREV_SYMPTOM_CHECK", "0") == "1",
+            symptom_check=os.getenv("INBREV_SYMPTOM_CHECK", "1") == "1",
             symptom_min_votes=int(os.getenv("INBREV_SYMPTOM_MIN_VOTES", "1")),
+            rules_gate=os.getenv("INBREV_RULES_GATE", "0") == "1",
         )
 
 
@@ -291,6 +294,11 @@ def assemble(
             reasons.append("model marks message as ambiguous")
         if not any(s.route_quote for s in majority):
             reasons.append("no verifiable evidence for route")
+        if opts.rules_gate:
+            from .baselines import keyword_route
+
+            if keyword_route(text) != route:
+                reasons.append("keyword rules choose another route")
     abstain = bool(reasons)
 
     patient, fields, evidence = _merge_extractions(

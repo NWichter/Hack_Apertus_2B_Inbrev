@@ -1,12 +1,12 @@
 # Value model: staff time and money per practice (assumptions, not measured)
 
-Measured on `merged.v0.jsonl` with `gold-p3-8b.jsonl` (n = 180): automatic share 0.84 (neither abstained nor flagged; the MPA only checks the suggestion and its quote, `review_s`), of which wrongly routed 0.050 of all messages; false clinical flags 0.083 of all messages; clinical messages missed 3 of 16 (not priced: a missed clinical message is a safety risk that this model does not offset against staff time; safety is reported separately and is the reason every flagged or unsure message goes to a person).
+Measured on `merged.v0.jsonl` with `gold-8b-sym.jsonl` (n = 180): automatic share 0.78 (neither abstained nor flagged; the MPA only checks the suggestion and its quote, `review_s`), of which wrongly routed 0.044 of all messages; false clinical flags 0.128 of all messages; clinical messages missed 0 of 16 (not priced: a missed clinical message is a safety risk that this model does not offset against staff time; safety is reported separately and is the reason every flagged or unsure message goes to a person).
 
 | Scenario | MPA minutes saved per day | Doctor minutes for false flags per day | Net CHF per day | Net CHF per month | Break-even manual time per message |
 | --- | --- | --- | --- | --- | --- |
-| cautious | 3 | 2.5 | -7 | -146 | 56 s |
-| base | 35 | 2.5 | 22 | 462 | 27 s |
-| favourable | 173 | 2.5 | 167 | 3504 | 14 s |
+| cautious | 3 | 3.8 | -12 | -242 | 77 s |
+| base | 32 | 3.8 | 17 | 349 | 33 s |
+| favourable | 160 | 3.8 | 152 | 3193 | 16 s |
 
 Break-even: the manual handling time per message at which the net CHF value (MPA time saved minus doctor time for false flags minus running cost) is zero in that scenario. These are scenario projections from assumptions, not measured savings and not confidence bounds.
 

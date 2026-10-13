@@ -1,12 +1,7 @@
-A deeper write-up than the README: what you built, how it works, and
-what the numbers say.
+- #strong[Demo video (under 2 min):] `website/media/video.mp4` in the
+  repository; public link in the submission form
 
-- #strong[Track:] Track 2B --- Inbrev
-- #strong[Event:] Online
-- #strong[Team:] Apertool --- Niklas Wichter
-- #strong[Demo:] \[TBD: link to video\]
-
-#emph[Version of 13 October 2026. Every number is measured or cited;
+#emph[Version of 14 October 2026. Every number is measured or cited;
 what is not measured yet is named as such. Measured numbers come from
 synthetic data whose labels have not yet been reviewed by a person.]
 
@@ -26,38 +21,35 @@ Inbrev sorts the inbox of a Swiss practice locally with Apertus. It
 assigns each message to one of nine administrative routes, derives the
 administrative deadline and the person in charge, extracts patient and
 case fields, and backs every decision with a verbatim quote from the
-message. It never assesses clinical content: a message that may contain
-symptoms is excluded from automation and handed to a person, in the same
-queue as messages the model is unsure about, without any ranking by
-severity. Headline results (Apertus 8B, prompt p3; synthetic data,
-labels not reviewed by a person). On 180 messages Inbrev excludes 13 of
-16 messages with clinical content from automation (clinical exclusion
-recall 0.81, 95 % CI 0.57--0.93; keyword rules 7 of 16), routes 170 of
-180 correctly and routes 84 % automatically (an assistant only checks
-the suggestion and its quote). A second, narrow 8B pass that only asks
-whether someone describes a current complaint, designed on a separate
-dev split and then measured once on these 180, raises this to 16 of 16:
-no clinical message runs automatically, at the cost of 40 instead of 29
-messages for a person. Because 16 cases give a wide interval, a held-out
-challenge set written by an open-weights model after everything was
-frozen adds 44 clinical messages and 39 medical traps: 8B excludes 41 of
-44 (0.93, CI 0.82--0.98; flag precision 0.91), 70B 44 of 44 (CI
-0.92--1.00), keyword rules 31 of 44. Two open-weights models that
-labelled all 367 test messages blind agree with our labels on clinical
-content (κ 0.97--0.98) and route (κ 0.93); scored against their labels,
-the ranking against the keyword rules does not change. 40 German and 38
-French clinical reports written by people are routed right 40/40 and
-37/38. Two same-size open models (Qwen3.5-9B, Ministral 8B) in the
-identical pipeline do better than Apertus 8B on routes (177 vs 170 of
-180; wrong routes that run automatically 1 vs 8 at a similar human
-workload), while the clinical gap is closed by the second pass (0
-unnoticed for all); we keep Apertus for its documented,
-opt-out-respecting training data and Swiss provenance and report the
-price (§5). With local Q4 weights Inbrev runs fully offline in Docker on
-a network without internet access (CPU, 192 s per message); the same
-weights run natively on the laptop's integrated GPU at 62.7 s per
-message. A mini PC costs about CHF 12 per 1,000 messages at 60 messages
-a day.
+message. It never assesses clinical content: a message that may describe
+symptoms leaves automation and goes to a person, in the same queue as
+messages the model is unsure about, without any ranking by severity.
+Results (Apertus 8B; synthetic data, labels not reviewed by a person):
+
+- #strong[Gold set, 180 messages, default configuration] (prompt p3 plus
+  a second, narrow 8B check for current complaints, chosen on a dev
+  split and then measured once here): all 16 messages with clinical
+  content leave automation (keyword rules: 7), 170 of 180 routes are
+  right, 140 of 180 messages run automatically and 40 go to a person.
+  Before the second check: 13 of 16 and 151 automatic.
+- #strong[Clinical challenge set] (115 messages, 44 clinical, 39 medical
+  traps, written after p3 was frozen; later part of the dev split for
+  the second check): p3 alone excludes 41 of 44 with 8B, 44 of 44 with
+  70B, keyword rules 31 of 44.
+- #strong[Labels:] two open-weights models labelled all 367 test
+  messages blind; they agree with our labels on clinical content (κ
+  0.97--0.98) and route (κ 0.93), and scoring against their labels does
+  not change the ranking against the keyword rules. No person has
+  reviewed labels yet.
+- #strong[Other models:] Qwen3.5-9B and Ministral 8B in the identical
+  pipeline route better than Apertus 8B (177 vs 170 of 180, wrong routes
+  that run automatically 1 vs 8); §5 says why we still use Apertus.
+  Clinical reports written by people are routed right (GraSCCo 40/40,
+  PARHAF 37/38).
+- #strong[Offline and cost:] with local Q4 weights Inbrev runs on a
+  Docker network without internet access (192 s per message on a laptop
+  CPU, 62.7 s natively on its integrated GPU); a mini PC costs about CHF
+  12 per 1,000 messages at 60 a day.
 
 = 2. Architecture
 <architecture>
@@ -152,7 +144,8 @@ Inbrev 167 MiB; results are in §5. The run is in `evidence/offline/`.
 = 3. Use of Apertus
 <use-of-apertus>
 - #strong[Model:] swiss-ai/Apertus-v1.5-8B for inference;
-  Apertus-v1.5-70B only as a comparison @apertus2025
+  Apertus-v1.5-70B as a comparison, recommended where the hardware
+  allows it (§5) @apertus2025
 - #strong[How it is used:] inference (classification and extraction with
   an enforced JSON schema, three samples per message; one on a CPU)
 - #strong[Where it runs:] development and evaluation on the Hack Apertus
@@ -204,12 +197,14 @@ data is used. Licence: CDLA-Permissive-2.0.
   `report_received` messages (`data/grascco/`). Labels follow one rule:
   route `report_received`, deadline today, no clinical flag. The letters
   are German and Austrian, not Swiss.
-- #strong[Clinical-exclusion challenge set (held out):] 115 messages
-  from a new seeded grid (seed 5151), 44 with clinical content (17
-  explicit, 27 in passing), 39 medical traps (negations, past events,
-  chronic conditions), more typos and dialect; text by Nemotron 3 Ultra
-  (open weights, free tier), written on 13 October after prompt, checks
-  and lexical net were frozen (`evidence/challenge/`).
+- #strong[Clinical-exclusion challenge set:] 115 messages from a new
+  seeded grid (seed 5151), 44 with clinical content (17 explicit, 27 in
+  passing), 39 medical traps (negations, past events, chronic
+  conditions), more typos and dialect; text by Nemotron 3 Ultra (open
+  weights, free tier), written on 13 October after prompt, checks and
+  lexical net were frozen (`evidence/challenge/`). It was unseen for p3,
+  but it is part of the dev split on which the second check was chosen,
+  so it is not a hold-out for that check.
 - #strong[PARHAF report set:] 38 French clinical reports from PARHAF
   (fictitious cases written by resident physicians; CC BY 4.0 / Etalab
   2.0), verbatim behind a fixed cover note, same rule as GraSCCo
@@ -230,9 +225,9 @@ Closed models (Claude, GPT-5.5 via Codex, Gemini via Antigravity) wrote
 or edited test data and code during development only, and reviewed
 drafts. Open-weights models have three supporting roles: Nemotron 3
 Ultra wrote the Nemotron, dev and challenge sets; Nemotron 3 Super and
-gpt-oss-120b are the second annotators; Qwen3.5-9B and Llama 3.1 8B run
-once in the Inbrev pipeline as a comparison. At runtime Inbrev calls
-only Apertus.
+gpt-oss-120b are the second annotators; Qwen3.5-9B and Ministral 8B run
+once in the Inbrev pipeline as a comparison (Llama 3.1 8B was tried, but
+the provider rate-limited it). At runtime Inbrev calls only Apertus.
 
 Synthetic data can miss the distribution of real mail
 @long2024synthetic\; only the GraSCCo and PARHAF reports were written by
@@ -252,11 +247,11 @@ tokens, latency and cost.
 Results on the synthetic set v0 (n = 180; 16 clinical cases, 50 "today"
 deadlines). TF-IDF uses five-fold cross-validation. Inbrev rows run the
 full pipeline (schema, three samples at T = 0.7, checks, vote) on the
-Hack Apertus endpoint, p2 on 3 October, p3 (default) on 4 October.
-Coverage counts messages that are neither abstained nor flagged, at most
-164 of 180. "One sample, no checks" scores the first stored 8B sample as
-written, without checks, net, vote or abstention
-(`scripts/ablation_first_sample.py`).
+Hack Apertus endpoint, p2 on 3 October, p3 on 4 October, p3 with the
+second check (default) on 13 October. Coverage counts messages that are
+neither abstained nor flagged, at most 164 of 180. "One sample, no
+checks" scores the first stored 8B sample as written, without checks,
+net, vote or abstention (`scripts/ablation_first_sample.py`).
 
 #figure(
   align(center)[#table(
@@ -277,8 +272,10 @@ written, without checks, net, vote or abstention
     vote)], [0.88], [0.85], [0.81], [0.46], [0.86], [0.82], [0.81],
     [Inbrev 70B,
     p2], [0.91], [0.89], [0.94], [0.50], [0.94], [0.85], [0.79],
-    [#strong[Inbrev 8B, p3]
-    (default)], [0.94], [0.94], [0.81], [0.46], [0.88], [0.84], [0.84],
+    [Inbrev 8B,
+    p3], [0.94], [0.94], [0.81], [0.46], [0.88], [0.84], [0.84],
+    [#strong[Inbrev 8B, p3 + second check]
+    (default)], [0.94], [0.94], [1.00], [0.41], [0.94], [0.81], [0.78],
     [Inbrev 70B,
     p3], [0.96], [0.96], [0.94], [0.50], [0.94], [0.87], [0.82],
   )]
@@ -304,15 +301,16 @@ correctly, so the route alone does not justify a language model on this
 set. They fail where it matters: they find at most 44 % of the messages
 with clinical content.
 
-#strong[Where Apertus beats the rules.] Paired on the 180 messages with
-p2, 8B is right where the rules are wrong 27 times and the reverse 11
-times (McNemar p = 0.014): it wins on insurer mail, marketing and
-symptoms mentioned in passing. A rules-first hybrid (rules decide when
-exactly one route family matches and the net is silent) needs the model
-for 94 of 180 messages but drops to clinical exclusion 10/16, because 5
-of 16 clinical messages look like plain administration to the rules; on
-the challenge set it drops from 41 to 36 of 44. We therefore keep
-Apertus on every message (`scripts/compare_hybrid.py`).
+#strong[Where Apertus beats the rules.] Paired on the 180 messages, 8B
+is right where the rules are wrong 27 times and the reverse 11 times
+with p2 (McNemar p = 0.014), 32 and 5 times with p3 (p = 7·10⁻⁶): it
+wins on insurer mail, marketing and symptoms mentioned in passing. A
+rules-first hybrid (rules decide when exactly one route family matches
+and the net is silent) needs the model for 94 of 180 messages but drops
+to clinical exclusion 10/16, because 5 of 16 clinical messages look like
+plain administration to the rules; on the challenge set it drops from 41
+to 36 of 44. We therefore keep Apertus on every message
+(`scripts/compare_hybrid.py`).
 
 #figure(
   align(center)[#table(
@@ -322,8 +320,8 @@ Apertus on every message (`scripts/compare_hybrid.py`).
       noted)], [n], [Route acc.], [Clinical excl.], [Keyword rules route
       \/ clinical],),
     table.hline(),
-    [#strong[Challenge set] (held out, 8B)], [115], [103/115 \[0.83,
-    0.94\]], [#strong[41/44 \[0.82, 0.98\]]], [87/115 / 31/44],
+    [#strong[Challenge set] (8B, written after p3)], [115], [103/115
+    \[0.83, 0.94\]], [#strong[41/44 \[0.82, 0.98\]]], [87/115 / 31/44],
     [#strong[Challenge set, 70B]], [115], [106/115 \[0.86,
     0.96\]], [#strong[44/44 \[0.92, 1.00\]]], [--],
     [Open generator (Nemotron)], [42], [39/42 \[0.81, 0.98\]], [8/8
@@ -382,8 +380,13 @@ Apertus 8B with the symptom pass lets through 8 + 0 at 40 messages for a
 person (Qwen 1 + 0 at 38); adding a gate that sends a message to a
 person when keyword rules choose another route gives 4 + 0 at 69. The
 clinical part of the gap is closed, the route part only narrowed, and
-only by more human work. Local execution, the quote checks and the
-unranked safety net work with any open model and are no argument for
+only by more human work. #strong[Deviation from the fixed rule:] the
+rule, written before the hold-out run, picked the second check plus the
+rules gate; after seeing the hold-out we ship the second check alone as
+default and the gate as an option (`INBREV_RULES_GATE=1`), because the
+gate sends 69 instead of 40 of 180 messages to a person. Both results
+are reported (`evidence/gap/`). Local execution, the quote checks and
+the unranked safety net work with any open model and are no argument for
 Apertus. What is specific to Apertus: it was pretrained only on openly
 available data with robots.txt opt-outs applied retroactively and
 personal data filtered, all training artefacts are released
@@ -405,8 +408,7 @@ endpoint, so a practice can choose otherwise; with Apertus we recommend
 developed on a separate dev set (60 Nemotron messages; "other" p2 0/20,
 p3 11/20), frozen after one dev run, then run once on every test set:
 gold route 158 → 170/180 (McNemar p = 0.002; two p2 runs differ on 3
-routes), no clinical case lost (`evidence/prompt-p3/`). Other numbers
-below use p2 unless noted.
+routes), no clinical case lost (`evidence/prompt-p3/`).
 
 #strong[One sample is nearly as good as three.] Replaying the stored 8B
 run with only the first sample (checks, net and abstention kept) gives

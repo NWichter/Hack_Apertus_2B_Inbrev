@@ -1,0 +1,24 @@
+Fresh-clone check: 2026-10-13 22:29:00 UTC
+commit: 863087a feat(run): make run zeigt ohne Zugangsdaten gespeicherte Seed-Ergebnisse, Health nennt Symptom-Prüfung
+host: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64; Alpine Linux v3.21; Docker version 27.5.1, build 9f9e405; Docker Compose version v2.33.0; GNU Make 4.4.1
+untracked files after clone: 0
+data/ tracked size: 588.0K
+
+=== 1. make test (from repo root) ===
+25 passed, 1 warning in 2.62s
+
+=== 2. make run (from repo root), endpoint from track_2b/.env, no local llama-server ===
+health after 4 polls: {"version":"0.1.0","model":"apertus-v1.5-8b","mode":"admin","prompt_version":"p3","mailbox":false,"endpoint_host":"<hack-apertus-endpoint>","endpoint_local":false,"samples":3,"safety_mode":"or","symptom_check":true,"rules_gate":false,"demo_sets":["seed"],"precomputed":"/app/data/demo/seed-predictions.jsonl"}
+triage seed-001 {'route': 'report_received', 'deadline': 'today', 'assignee': 'doctor', 'safety_flag': False, 'abstain': False}
+gold    {'route': 'report_received', 'deadline': 'today', 'assignee': 'doctor', 'safety_flag': False}
+evidence: [{'field': 'route', 'quote': 'Befund: Hämatologie, Patient Weber Lukas'}, {'field': 'fields.report_type', 'quote': 'Hämatologie'}, {'field': 'patient.name', 'quote': 'Lukas Weber'}, {'field': 'patient.birth_date', 'quote': '14.03.1971'}, {'field': 'fields.examination_date', 'quote': '29.09.2026'}]
+web UI: HTTP 200
+
+=== 3. make run WITHOUT track_2b/.env (no credentials) ===
+health: {"version":"0.1.0","model":"apertus-v1.5-8b","mode":"admin","prompt_version":"p3","mailbox":false,"endpoint_host":"llm","endpoint_local":true,"samples":3,"safety_mode":"or","symptom_check":true,"rules_gate":false,"demo_sets":["seed"],"precomputed":"/app/data/demo/seed-predictions.jsonl"}
+load seed with stored predictions: {"loaded":12}
+inbox items: 12 with stored result: 12 taken out of automation (flag or abstain): 1
+web UI: HTTP 200
+done 22:31:57 UTC
+
+[exited with code 0]

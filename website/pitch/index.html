@@ -1127,7 +1127,7 @@
             <h3>Mail, forms, faxes</h3>
             <p>
               E-mail files and IMAP (tested on a local test server), web
-              forms, fax PDFs via OCR (not yet measured); HIN link planned.
+              forms, fax PDFs via OCR (tested); HIN planned.
               German, French, Italian and English.
             </p>
           </div>
@@ -1234,7 +1234,7 @@
           <div class="tiers">
             <div class="tier">
               <b>On-prem box</b
-              ><span>Mini PC in the practice; CPU is enough</span>
+              ><span>Mini PC in the practice; CPU or small GPU</span>
             </div>
             <div class="tier">
               <b>Air-gapped</b
@@ -1245,7 +1245,7 @@
               ><span>Option for single practices, Swiss hosting</span>
             </div>
             <div class="tier">
-              <b>Local Q4</b><span>Offline in Docker on CPU: 19 messages / hour; same weights on the laptop GPU: 46–63 s / message</span>
+              <b>Local Q4</b><span>Offline in Docker on CPU: 19 messages / hour; same weights on the laptop GPU: 62.7 s / message</span>
             </div>
           </div>
           <div class="term">
@@ -1267,7 +1267,7 @@
         <div class="lead" style="margin-top: 18px">
           180 synthetic messages, labels not reviewed by a person. Symptom pass
           chosen on a dev split, measured once here. Challenge set, 44 clinical:
-          8B 41/44, 70B 44/44, rules 31/44.
+          8B 41/44 with p3 (dev for the second check), 70B 44/44, rules 31/44.
         </div>
         <div class="split">
           <div>

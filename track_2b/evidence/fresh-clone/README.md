@@ -20,3 +20,19 @@ Problems found and fixed on the way: `make run-local` was missing in the root Ma
 (`-p no:cacheprovider`); the 504 and `make stop` above. The CPU speed in nested Docker on a busy
 laptop (about 0.3 tokens/s) is far below the earlier offline run (`evidence/offline/`); no GPU was
 available.
+
+## Re-check on 2026-10-14 (commit `863087a`, after the second check became default)
+
+Same setup (`docker:27-dind`, fresh `git clone`, no local llama-server, `check-2026-10-14.sh`, log
+`fresh-clone-2026-10-14.log`, endpoint host masked). Clock in the log is UTC (22:29 on 13 Oct = 00:29 on 14 Oct CEST).
+
+| Step | Result |
+| --- | --- |
+| clone | 0 untracked files; `track_2b/data/` 588 KB (limit 100 MB) |
+| `make test` | 25 passed |
+| `make run` with endpoint values in `track_2b/.env` | health 200 (`symptom_check: true`, `rules_gate: false`), `POST /v1/triage` on seed-001 correct (report_received, today, doctor), UI 200 |
+| `make run` **without** `track_2b/.env` | app starts, "Load" shows the 12 stored seed results (`data/demo/seed-predictions.jsonl`, default configuration, 1 taken out of automation), UI 200 |
+
+Found on the way: without credentials the app used to start with nothing to show (`LLM_BASE_URL` falls back to
+`http://llm:8080`, which exists only in the local profile); fixed in `863087a` with stored seed results. Without
+credentials the header still says "local endpoint"; "Sort inbox" then fails until an endpoint is set.

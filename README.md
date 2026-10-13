@@ -1,75 +1,38 @@
-# Hack Apertus — project template
+# Inbrev: sovereign inbox triage for Swiss medical practices
 
-Template repository for [Hack Apertus](https://hackapertus.ch/) submissions.
-Every project keeps almost the same layout, so organizers and judges find the
-same things in the same place.
+Team Apertool · Hack Apertus 2026 · Track 2B (Own Project). Project root: [`track_2b/`](track_2b/).
 
-## Select your track
+Inbrev sorts the inbox of a Swiss general practice with **Apertus**, on the practice's own hardware: nine
+administrative routes, the administrative deadline, the person in charge, and patient and case fields, each
+backed by a verbatim quote from the message. It never assesses clinical content: a message that may describe
+symptoms leaves automation and goes to "A person decides", unranked, together with messages the model is unsure about.
 
-This repository holds one example project per track:
+## Judges start here
 
-- `track_1a/`
-- `track_1b/`
-- `track_2a/`
-- `track_2b/`
-
-Keep the directory for the track you are competing in **exactly as it is** —
-don't rename it or move its files — and delete the other track directories.
-That directory is your project root. Keep the files and directories as shown
-below.
-
-## The structure
-
-| Path | What it is |
+| What | Where |
 | --- | --- |
-| `README.md` | The challenge description and submission requirements for your track |
-| `technical_report.md` | The deeper write-up: architecture, evaluation, limitations |
-| `Makefile` | `make run` must spin up your project |
-| `src/` | Your code |
-| `data/` | Datasets — `track_1a`, `track_2a` and `track_2b` only; max. 100 MB |
-| `findings/` | Issue files — `track_1a` only |
-| `docs/` | Diagrams, notes, longer write-ups |
+| Technical report (6 pages) | [`track_2b/Apertool_Report.pdf`](track_2b/Apertool_Report.pdf), source [`track_2b/technical_report.md`](track_2b/technical_report.md) |
+| Run it | `make run` from this folder (Docker). With `track_2b/.env` (`LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY`) the web app at http://127.0.0.1:8000 triages with your Apertus endpoint. **Without credentials** the app still starts: "Load" shows stored results for the 12 seed messages; "Sort inbox" needs an endpoint. |
+| Run it offline | `make run-local`: llama.cpp with local Apertus 8B Q4 weights and Inbrev on a Docker network without internet access ([`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md)); `make offline-eval` repeats the logged offline run |
+| Tests | `make test` (25 unit tests, `--network none`) |
+| Evidence for every number | [`track_2b/evidence/`](track_2b/evidence/): logs, predictions and reports per study (`offline`, `prompt-p3`, `challenge`, `agreement`, `gap`, `peers`, `fax`, `parhaf`, `native`, `value`, `fresh-clone`) |
+| Demo video (under 2 min) | `website/media/video.mp4` |
 
-## Run it
+**Key results** (synthetic test data, labels not reviewed by a person; details and intervals in the report):
 
-Judges run `make run` from the root of the project, on a clean checkout:
-
-```bash
-make run
-```
-
-`make run` is expected to run the project using Docker, since that
-is how the judges will run it.
-- If you used other local open-weight models, include instructions for running the project in your technical report.
-- Use the following environment variables:
-```
-LLM_NAME — name and version of the model
-LLM_BASE_URL — endpoint base URL
-LLM_API_KEY — your API key
-```
-
-## Getting started
-
-1. Click **Use this template** to create your own repository.
-2. Delete the other track directories. Don't rename or restructure yours.
-3. Read its `README.md` and fill in `technical_report.md`.
-4. Make `make run` work from the root of the project, on a clean checkout.
-
-## Inbrev in short
-
-Inbrev sorts the inbox of a Swiss general practice with Apertus, on the practice's own hardware.
-Start: `make run` (endpoint from `track_2b/.env`) or `make run-local` (local Apertus GGUF, internal
-Docker network without internet); details in [`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md).
+- Gold set (180 messages, held out for the latest change): with the default configuration no message with clinical
+  content runs automatically (16 of 16 leave automation), 170 of 180 routes are right, 40 of 180 messages go to a person.
+- Keyword rules: 7 of 16 clinical messages; Apertus 8B beats them on routes 32 to 5 (McNemar p = 7·10⁻⁶).
+- Two other small open models in the same pipeline route better than Apertus 8B (177 vs 170 of 180); the report says
+  what that costs and why we still use Apertus.
+- Offline: Q4 weights, no internet access, egress test logged; 192 s per message on a laptop CPU, 62.7 s on its integrated GPU.
 
 | Mode | What it does |
 | --- | --- |
-| **Triage mode** (default) | Administrative sorting only: route, deadline, assignee, extracted fields with verbatim evidence. **Safety net:** a message that may contain symptoms is taken out of automation and goes to "A person decides" with deadline today, without any ranking by severity. All reported numbers use this mode. |
+| **Triage mode** (default) | Administrative sorting only. **Safety net:** the model's flag, a multilingual keyword net and a second narrow 8B check for current complaints take a message out of automation; no ranking by severity. All reported numbers use this mode. |
 | **Clinical research mode** (`INBREV_MODE=clinical-triage`, off by default) | Adds a keyword-based urgency hint to flagged messages. Research prototype without an intended medical purpose, not validated, not certified. |
 
-Measured results with logs and predictions are in `track_2b/evidence/` (offline run, prompt p3, held-out clinical challenge set, label agreement with two open-weights model annotators, fax OCR path, PARHAF reports, native local run, value model); the numbers are summarised in `track_2b/technical_report.md`.
-
-The project website (`website/`) embeds the demo video (`website/media/video.mp4`, subtitles `website/media/video.vtt`).
-
+The project website (`website/`) contains the pitch (`website/pitch/`) and the report as `website/report.pdf`.
 ## License
 
 All Hack Apertus projects are open-sourced. Please check our Terms & Conditions for specific licensing details (6. What you build is open source): https://hackapertus.ch/terms-and-conditions

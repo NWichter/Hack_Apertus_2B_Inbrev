@@ -116,7 +116,7 @@
           <ol class="steps">
             <li>
               <b>Read.</b> E-mail (files or IMAP, tested on a local test
-              server), web forms and fax PDFs (OCR, not yet measured) become
+              server), web forms and fax PDFs (OCR; on 60 rendered fax pages 50 routes right, 56 on clean text) become
               text; a HIN connection is planned. Apertus answers in an enforced JSON schema, three times per
               message.
             </li>
@@ -203,7 +203,7 @@
             <article>
               <h3>On-premise</h3>
               <p>
-                A mini PC in the practice; a CPU is enough for 60 messages a day (measured), a GPU makes it faster.
+                A mini PC in the practice. Measured on a laptop: 192 s per message on the CPU, 62.7 s on its integrated GPU (30 messages, before the second check); 60 messages a day fit either way, a GPU makes it faster.
               </p>
             </article>
             <article>
@@ -253,12 +253,11 @@
                   languages written by Claude and GPT-5.5, all fictional
                 </li>
                 <li class="done">
-                  Measured on the 180 messages: Inbrev with Apertus 8B takes 13
-                  of 16 messages with clinical content out of automation
-                  (clinical exclusion recall 0.81, 95 % CI 0.57–0.93), routes
-                  170 of 180 correctly and handles 84 % automatically (a person
-                  only checks the suggestion and its quote). Apertus 70B: 15 of
-                  16, route 172
+                  Measured on the 180 messages with prompt p3 alone: Inbrev with
+                  Apertus 8B takes 13 of 16 messages with clinical content out of
+                  automation (95 % CI 0.57–0.93), routes 170 of 180 correctly and
+                  handles 84 % automatically (a person only checks the suggestion
+                  and its quote). Apertus 70B: 15 of 16, route 172
                 </li>
                 <li class="done">
                   Second, narrow check (since 13 Oct, chosen on a separate dev
@@ -268,9 +267,10 @@
                   messages go to a person
                 </li>
                 <li class="done">
-                  Held-out challenge set (115 messages written by an open model
-                  after everything was frozen; 44 with clinical content, 39
-                  medical traps): Apertus 8B takes 41 of 44 out of automation
+                  Challenge set (115 messages written by an open model after
+                  prompt p3 was frozen, later part of the dev split for the second
+                  check; 44 with clinical content, 39 medical traps): with p3
+                  Apertus 8B takes 41 of 44 out of automation
                   (95 % CI 0.82–0.98), 70B 44 of 44, keyword rules 31 of 44
                 </li>
                 <li class="done">
@@ -308,7 +308,7 @@
                   logged) in llama.cpp and Inbrev on a Docker network with no
                   route outside; an egress test fails as it should (192 s per
                   message on a laptop CPU). The same weights on the laptop's
-                  integrated GPU: 46–63 s per message, 38 of 44 clinical
+                  integrated GPU: 62.7 s per message (30 messages), 38 of 44 clinical
                   messages caught on the challenge set
                 </li>
                 <li class="done">
@@ -350,7 +350,7 @@
               loading="lazy"
             />
             <span
-              ><b>Pitch</b> Ten slides: problem, approach, architecture,
+              ><b>Pitch</b> Eleven slides: problem, approach, architecture,
               evaluation, cost and roadmap.</span
             >
           </a>
@@ -358,7 +358,7 @@
             <span class="pdf-badge">PDF</span>
             <span
               ><b>Technical report</b> Architecture, use of Apertus, data,
-              measured results with intervals, and limitations. Five
+              measured results with intervals, and limitations. Six
               pages.</span
             >
           </a>

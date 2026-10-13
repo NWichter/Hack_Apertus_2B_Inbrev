@@ -22,6 +22,21 @@ Paired Q4 (native) vs BF16 (one sample, p3): same route on 27 of 30, same clinic
 per hour; the full-cost line (CHF 11.69 per 1,000 at 60 messages a day) is dominated by the box, not by
 energy (CHF 0.17). The cloud-VM rows in that file assume the iGPU time on a CPU VM and do not apply.
 
-## Challenge set on local Q4
+## Challenge set on local Q4 (115 messages, 44 clinical)
 
-See the section below once the run is complete.
+Same native setup, one sample at temperature 0 (`chl-q4-vulkan.jsonl`). The run was interrupted twice: the
+llama-server process stopped without a log message (at least the second time it was ended from outside because the
+laptop had almost no free RAM left and another session needed it);
+rows with connection errors were removed and the run resumed (`*.part1-3.log`). The last 39 messages ran with
+`-c 4096` instead of 8192 to save memory (prompts are about 1,600 tokens, so nothing was truncated); they took
+46.4 s per message. All 115 rows are valid model answers.
+
+| Setup | Route | Clinical exclusion | Today recall |
+| --- | --- | --- | --- |
+| Endpoint BF16, 3 samples (default) | 103/115 [0.83, 0.94] | 41/44 [0.82, 0.98] | 56/59 |
+| Endpoint BF16, first sample only (replay) | 104/115 [0.84, 0.95] | 40/44 [0.79, 0.96] | 55/59 |
+| **Local Q4, 1 sample (deployable configuration)** | **99/115 [0.79, 0.91]** | **38/44 [0.73, 0.94]** | 53/59 |
+
+Paired Q4 vs BF16 one sample (`chl-compare.md`): route 0 vs 5 discordant (p = 0.06), clinical 1 vs 3 (p = 0.63).
+Quantisation costs a few routes (mostly "other": 5/20 vs 10/20) and possibly clinical cases; the deployable
+configuration catches 38 of 44 (keyword rules 31 of 44).

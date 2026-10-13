@@ -18,6 +18,7 @@ param(
     [ValidateSet("cpu", "vulkan", "cuda")][string]$Backend = "vulkan",
     [int]$Threads = 8,
     [int]$Port = 8090,
+    [int]$Ctx = 8192,
     [string]$Gguf = "models\apertus-v1.5-8b-text-Q4_K_M.gguf",
     [string]$Build = "b11382"
 )
@@ -42,7 +43,7 @@ $outDir = Split-Path $Out -Parent
 New-Item -ItemType Directory -Force $outDir | Out-Null
 $log = [IO.Path]::ChangeExtension($Out, ".log")
 $srvLog = [IO.Path]::ChangeExtension($Out, ".server.log")
-$srvArgs = @("-m", $Gguf, "-c", "8192", "--parallel", "1", "--jinja", "--host", "127.0.0.1", "--port", "$Port")
+$srvArgs = @("-m", $Gguf, "-c", "$Ctx", "--parallel", "1", "--jinja", "--host", "127.0.0.1", "--port", "$Port")
 if ($Backend -eq "cpu") { $srvArgs += @("-t", "$Threads", "-ngl", "0") } else { $srvArgs += @("-ngl", "99") }
 
 "started   $(Get-Date -Format o)" | Set-Content $log -Encoding utf8
@@ -68,11 +69,12 @@ try {
     $env:INBREV_TEMPERATURE = "0"
     $env:INBREV_CONCURRENCY = "1"
     $env:INBREV_TIMEOUT = "1800"
+    $before = if (Test-Path $Out) { (Get-Content $Out | Measure-Object -Line).Lines } else { 0 }
     $t1 = Get-Date
     & .venv\Scripts\python -m inbrev triage $InputFile --out $Out --samples 1 --temperature 0 2>&1 | Add-Content $log
-    $n = (Get-Content $Out | Measure-Object -Line).Lines
+    $n = (Get-Content $Out | Measure-Object -Line).Lines - $before
     $sec = ((Get-Date) - $t1).TotalSeconds
-    "finished  $(Get-Date -Format o): $n messages in $([int]$sec) s = $([math]::Round($sec / [math]::Max($n,1), 1)) s per message (wall, includes resumed rows only if new)" | Add-Content $log
+    "finished  $(Get-Date -Format o): $n new messages in $([int]$sec) s = $([math]::Round($sec / [math]::Max($n,1), 1)) s per message (wall; rows already in the output are skipped)" | Add-Content $log
 }
 finally {
     Stop-Process -Id $srv.Id -ErrorAction SilentlyContinue

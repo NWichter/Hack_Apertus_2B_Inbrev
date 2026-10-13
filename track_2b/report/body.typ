@@ -17,12 +17,10 @@ Swiss general practitioners spend more and more time on administration:
 administrative hour raises the odds of stress @zeller2026workforce.
 Physicians in private practice report 54 minutes per day for requests
 from authorities and insurers alone @golder2025fmh. Much of this arrives
-through the practice inbox, which US studies measure as a time block of
-its own (85 minutes per day, 243 messages per week)
-@arndt2017tethered@taiseale2019inbasket. Patient messages fall under
-professional secrecy, which binds physicians and their assistants alike
-@schweiz1937stgb, so sending them to a foreign cloud model is not an
-option.
+through the practice inbox @arndt2017tethered. Patient messages fall
+under professional secrecy, which binds physicians and their assistants
+alike @schweiz1937stgb, so sending them to a foreign cloud model is not
+an option.
 
 Inbrev sorts the inbox of a Swiss practice locally with Apertus. It
 assigns each message to one of nine administrative routes, derives the
@@ -43,17 +41,17 @@ was frozen adds 44 clinical messages and 39 medical traps: 8B excludes
 0.92--1.00), keyword rules 31 of 44. Two open-weights models that
 labelled all 367 test messages blind agree with our labels on clinical
 content (κ 0.97--0.98) and route (κ 0.93); scored against their labels,
-the ranking against the keyword rules does not change. Further checks:
-40 German (GraSCCo) and 38 French (PARHAF) clinical reports written by
-people, not by a model, are routed right 40/40 and 37/38; on rendered
-fax pages read by OCR the route drops from 56 to 50 of 60 and unreadable
-pages go to a person. Two same-size open models (Qwen3.5-9B, Ministral
-8B) in the identical pipeline do better than Apertus 8B (route 177 vs
-170 of 180, clinical 16 vs 13 of 16) and than Apertus 70B (172, 15).
-With local Q4 weights Inbrev runs fully offline in Docker on a network
-without internet access (CPU, 192 s per message); the same weights run
-natively on the laptop's integrated GPU at 62.7 s per message. A mini PC
-costs about CHF 12 per 1,000 messages at 60 messages a day.
+the ranking against the keyword rules does not change. 40 German and 38
+French clinical reports written by people are routed right 40/40 and
+37/38. Two same-size open models (Qwen3.5-9B, Ministral 8B) in the
+identical pipeline do better than Apertus 8B (route 177 vs 170 of 180,
+clinical 16 vs 13 of 16) and than Apertus 70B (172, 15); we keep Apertus
+for its documented, opt-out-respecting training data and Swiss
+provenance and report the price (§5). With local Q4 weights Inbrev runs
+fully offline in Docker on a network without internet access (CPU, 192 s
+per message); the same weights run natively on the laptop's integrated
+GPU at 62.7 s per message. A mini PC costs about CHF 12 per 1,000
+messages at 60 messages a day.
 
 = 2. Architecture
 <architecture>
@@ -160,13 +158,6 @@ system prompt (p2; p3 since 4 October, see section 5) lists the routes
 with short multilingual cues, the rules for safety, deadlines and
 quotes, and an output format with placeholders only.
 
-Two observations shaped the prompt. With the schema enforced but no
-format example, 8B looped on whitespace inside the JSON until the token
-limit; with a concrete example both models copied its values, so the
-example uses placeholders only. On the seed messages 8B often set
-"today" without a date, garbled capital umlauts, HTML-escaped quotes and
-filled fields of other routes; steps 3 and 4 handle these cases.
-
 = 4. Data
 <data>
 All messages, people, practices and identifiers are fictional; AHV
@@ -250,10 +241,9 @@ with clinical content that the safety net takes out of automation;
 "safety" in the tables), the recall of the deadline "today" and the
 share of messages that run without a person (coverage). Clinical
 messages are rare, so recall and precision are reported instead of
-accuracy @saito2015precision. Further metrics: route accuracy and
-macro-F1, deadline accuracy, field F1, evidence faithfulness
-@rashkin2023attribution, tokens, latency and cost, broken down by
-language, writing level, channel and generator.
+accuracy @saito2015precision. Further metrics: route macro-F1, deadline
+accuracy, field F1, evidence faithfulness @rashkin2023attribution,
+tokens, latency and cost.
 
 Results on the synthetic set v0 (n = 180; 16 clinical cases, 50 "today"
 deadlines). TF-IDF uses five-fold cross-validation. Inbrev rows run the
@@ -370,18 +360,34 @@ the majority of three, Inbrev 8B routes 167--169 of 180 gold messages
 (170 against the grid) and keeps 13/16; on every set the ranking against
 the keyword rules is unchanged (`evidence/agreement/`).
 
-#strong[Other open models.] In the identical pipeline (prompt p3,
-checks, three samples) on the gold set, Qwen3.5-9B routes 177/180 and
-excludes 16/16 clinical messages, against 170/180 and 13/16 for Apertus
-8B (route p = 0.04, clinical p = 0.25); Ministral 8B reaches the same
-177/180 and 16/16 (Llama 3.1 8B could not be measured: provider rate
-limit; `evidence/peers/`). The prompt was developed with Apertus, which
-favours Apertus if anything. On this task Apertus 8B is not the
-strongest small open model, and Apertus 70B (172/180, 15/16) does not
-close the gap. We keep Apertus because its training data are open and
-documented and it is developed in Switzerland, which a practice can
-point to when it justifies its tools; Inbrev works with any
-OpenAI-compatible endpoint, so the model can be swapped.
+#strong[Other open models, and why Apertus anyway.] In the identical
+pipeline (prompt p3, checks, three samples) on the gold set, Qwen3.5-9B
+and Ministral 8B both route 177/180 and exclude 16/16 clinical messages,
+against 170/180 and 13/16 for Apertus 8B (route p = 0.04, clinical p =
+0.25) and 172/180 and 15/16 for Apertus 70B (Llama 3.1 8B: provider rate
+limit, no result; `evidence/peers/`), although the prompt was developed
+with Apertus. The safety net does not close this gap: errors that pass
+automation unnoticed (wrong route without abstention, or clinical
+content without a flag) are 9 + 3 for Apertus 8B, 8 + 1 for 70B and 1 +
+0 for both comparison models. What the net does is lift Apertus 8B from
+9/16 (single raw answer) to 13/16, and on the challenge set 8B reaches
+41/44 and 70B 44/44. Local execution, the quote checks and the unranked
+safety net work with any open model and are no argument for Apertus.
+What is specific to Apertus: it was pretrained only on openly available
+data with robots.txt opt-outs applied retroactively and personal data
+filtered, all training artefacts are released @apertus2025, and the
+developers publish a dataset catalogue, an EU training-content summary
+and an EU Code of Practice statement
+(github.com/swiss-ai/apertus-data-transparency), the kind of
+documentation the EU AI Act asks of general-purpose model providers
+@eu2024aiact\; we did not check equivalent documents for the comparison
+models. A Swiss practice that must justify under the DSG and
+professional secrecy which model reads patient mail @schweiz2020dsg can
+point to this provenance. That is a trade-off, not a free choice: the
+measured price is 7 routes and 3 clinical exclusions in 180 for 8B.
+Inbrev talks to any OpenAI-compatible endpoint, so a practice can choose
+otherwise; with Apertus we recommend 70B where the hardware allows it.
+This is not legal advice.
 
 #strong[Prompt p3 for "other".] p3 only sharpens route boundaries
 ("other": copy of records, referral elsewhere, symptoms only). It was
@@ -437,10 +443,9 @@ case (30 messages, 30 s by hand) loses CHF 146 a month. Break-even is 27
 s of manual handling per message in the base case. A timing protocol for
 practice interviews will replace the assumptions.
 
-Two small sets are too small to rank systems: on the 12 seed messages 8B
-routes 10, the keyword rules 11; on the 30 Swiss practice messages
-(`data/ood/`, 4 clinical) 8B routes 24 with p3, 70B 27 (p2), the rules
-25, and all take the 4 clinical cases out of automation.
+On the 30 Swiss practice messages (`data/ood/`, 4 clinical) 8B routes 24
+(p3), 70B 27 (p2), the rules 25; all take the 4 clinical cases out of
+automation.
 
 Not measured yet: latency on an NVIDIA GPU
 (`scripts/run_native_llamacpp.ps1 -Backend cuda` is prepared) and the

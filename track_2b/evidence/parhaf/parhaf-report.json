@@ -1,0 +1,454 @@
+{
+ "majority": {
+  "n": 38,
+  "route_accuracy_ci": [
+   0.9081901304590217,
+   1.0
+  ],
+  "deadline_accuracy_ci": [
+   0.9081901304590217,
+   1.0
+  ],
+  "coverage_ci": [
+   0.9081901304590217,
+   1.0
+  ],
+  "route_accuracy": 1.0,
+  "route_macro_f1": 1.0,
+  "route_f1": {
+   "report_received": 1.0
+  },
+  "deadline_accuracy": 1.0,
+  "assignee_accuracy": 1.0,
+  "safety": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "today": {
+   "tp": 38,
+   "fp": 0,
+   "fn": 0,
+   "recall": 1.0,
+   "precision": 1.0,
+   "recall_ci": [
+    0.9081901304590217,
+    1.0
+   ],
+   "precision_ci": [
+    0.9081901304590217,
+    1.0
+   ]
+  },
+  "abstain": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "coverage": 1.0,
+  "route_accuracy_covered": 1.0,
+  "all_correct_covered": 1.0,
+  "safety_missed_ids": [],
+  "fields": {
+   "fields.sender_institution": {
+    "gold": 38,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "fields.report_type": {
+    "gold": 38,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "ALL": {
+    "gold": 76,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   }
+  },
+  "confusion": [],
+  "coverage_curve": [
+   {
+    "threshold": 1.0,
+    "coverage": 1.0,
+    "accuracy": 1.0
+   }
+  ]
+ },
+ "keywords": {
+  "n": 38,
+  "route_accuracy_ci": [
+   0.027214595294883195,
+   0.2079937158975197
+  ],
+  "deadline_accuracy_ci": [
+   0.37258971272613683,
+   0.6752097678243378
+  ],
+  "coverage_ci": [
+   0.39706297006975455,
+   0.6985359910311952
+  ],
+  "route_accuracy": 0.07894736842105263,
+  "route_macro_f1": 0.029268292682926828,
+  "route_f1": {
+   "report_received": 0.14634146341463414,
+   "appointment": 0.0,
+   "prescription_request": 0.0,
+   "referral_in": 0.0,
+   "other": 0.0
+  },
+  "deadline_accuracy": 0.5263157894736842,
+  "assignee_accuracy": 0.5263157894736842,
+  "safety": {
+   "tp": 0,
+   "fp": 17,
+   "fn": 0,
+   "recall": null,
+   "precision": 0.0,
+   "recall_ci": null,
+   "precision_ci": [
+    0.0,
+    0.18431813738065556
+   ]
+  },
+  "today": {
+   "tp": 20,
+   "fp": 0,
+   "fn": 18,
+   "recall": 0.5263157894736842,
+   "precision": 1.0,
+   "recall_ci": [
+    0.37258971272613683,
+    0.6752097678243378
+   ],
+   "precision_ci": [
+    0.8388748398148705,
+    1.0
+   ]
+  },
+  "abstain": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "coverage": 0.5526315789473685,
+  "route_accuracy_covered": 0.14285714285714285,
+  "all_correct_covered": 0.14285714285714285,
+  "safety_missed_ids": [],
+  "fields": {
+   "fields.sender_institution": {
+    "gold": 38,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "fields.report_type": {
+    "gold": 38,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "ALL": {
+    "gold": 76,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   }
+  },
+  "confusion": [
+   [
+    "report_received->other",
+    26
+   ],
+   [
+    "report_received->prescription_request",
+    7
+   ],
+   [
+    "report_received->appointment",
+    1
+   ],
+   [
+    "report_received->referral_in",
+    1
+   ]
+  ],
+  "coverage_curve": [
+   {
+    "threshold": 1.0,
+    "coverage": 1.0,
+    "accuracy": 0.07894736842105263
+   }
+  ]
+ },
+ "tfidf_logreg": {
+  "n": 38,
+  "route_accuracy_ci": [
+   0.9081901304590217,
+   1.0
+  ],
+  "deadline_accuracy_ci": [
+   0.9081901304590217,
+   1.0
+  ],
+  "coverage_ci": [
+   0.9081901304590217,
+   1.0
+  ],
+  "route_accuracy": 1.0,
+  "route_macro_f1": 1.0,
+  "route_f1": {
+   "report_received": 1.0
+  },
+  "deadline_accuracy": 1.0,
+  "assignee_accuracy": 1.0,
+  "safety": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "today": {
+   "tp": 38,
+   "fp": 0,
+   "fn": 0,
+   "recall": 1.0,
+   "precision": 1.0,
+   "recall_ci": [
+    0.9081901304590217,
+    1.0
+   ],
+   "precision_ci": [
+    0.9081901304590217,
+    1.0
+   ]
+  },
+  "abstain": {
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "recall": null,
+   "precision": null,
+   "recall_ci": null,
+   "precision_ci": null
+  },
+  "coverage": 1.0,
+  "route_accuracy_covered": 1.0,
+  "all_correct_covered": 1.0,
+  "safety_missed_ids": [],
+  "fields": {
+   "fields.sender_institution": {
+    "gold": 38,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "fields.report_type": {
+    "gold": 38,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "ALL": {
+    "gold": 76,
+    "pred": 0,
+    "match": 0,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   }
+  },
+  "confusion": [],
+  "coverage_curve": [
+   {
+    "threshold": 1.0,
+    "coverage": 1.0,
+    "accuracy": 1.0
+   }
+  ]
+ },
+ "parhaf-p3-8b": {
+  "n": 38,
+  "route_accuracy_ci": [
+   0.8650512375427468,
+   0.9953394123657999
+  ],
+  "deadline_accuracy_ci": [
+   0.9081901304590217,
+   1.0
+  ],
+  "coverage_ci": [
+   0.39706297006975455,
+   0.6985359910311952
+  ],
+  "route_accuracy": 0.9736842105263158,
+  "route_macro_f1": 0.4933333333333333,
+  "route_f1": {
+   "report_received": 0.9866666666666666,
+   "referral_in": 0.0
+  },
+  "deadline_accuracy": 1.0,
+  "assignee_accuracy": 1.0,
+  "safety": {
+   "tp": 0,
+   "fp": 17,
+   "fn": 0,
+   "recall": null,
+   "precision": 0.0,
+   "recall_ci": null,
+   "precision_ci": [
+    0.0,
+    0.18431813738065556
+   ]
+  },
+  "today": {
+   "tp": 38,
+   "fp": 0,
+   "fn": 0,
+   "recall": 1.0,
+   "precision": 1.0,
+   "recall_ci": [
+    0.9081901304590217,
+    1.0
+   ],
+   "precision_ci": [
+    0.9081901304590217,
+    1.0
+   ]
+  },
+  "abstain": {
+   "tp": 0,
+   "fp": 1,
+   "fn": 0,
+   "recall": null,
+   "precision": 0.0,
+   "recall_ci": null,
+   "precision_ci": [
+    0.0,
+    0.7934506882081973
+   ]
+  },
+  "coverage": 0.5526315789473685,
+  "route_accuracy_covered": 1.0,
+  "all_correct_covered": 1.0,
+  "safety_missed_ids": [],
+  "fields": {
+   "patient.name": {
+    "gold": 0,
+    "pred": 26,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "fields.sender_institution": {
+    "gold": 38,
+    "pred": 37,
+    "match": 37,
+    "precision": 1.0,
+    "recall": 0.9736842105263158,
+    "f1": 0.9866666666666666
+   },
+   "fields.report_type": {
+    "gold": 38,
+    "pred": 35,
+    "match": 35,
+    "precision": 1.0,
+    "recall": 0.9210526315789473,
+    "f1": 0.958904109589041
+   },
+   "fields.examination_date": {
+    "gold": 0,
+    "pred": 25,
+    "match": 0,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "ALL": {
+    "gold": 76,
+    "pred": 123,
+    "match": 72,
+    "precision": 0.5853658536585366,
+    "recall": 0.9473684210526315,
+    "f1": 0.7236180904522612
+   }
+  },
+  "confusion": [
+   [
+    "report_received->referral_in",
+    1
+   ]
+  ],
+  "coverage_curve": [
+   {
+    "threshold": 0.667,
+    "coverage": 1.0,
+    "accuracy": 0.9736842105263158
+   },
+   {
+    "threshold": 1.0,
+    "coverage": 0.9736842105263158,
+    "accuracy": 1.0
+   }
+  ],
+  "ops": {
+   "errors": 0,
+   "invalid_samples": 1,
+   "samples": 114,
+   "sample_error_kinds": [
+    [
+     "truncated",
+     1
+    ]
+   ],
+   "prompt_tokens_mean": 2176.6315789473683,
+   "completion_tokens_mean": 966.0263157894736,
+   "latency_mean_s": 2.1876052631578946,
+   "latency_p95_s": 3.426,
+   "quote_status": {
+    "route:exact": 113,
+    "exact": 436,
+    "fuzzy": 11,
+    "dropped": 57,
+    "normalized": 5
+   },
+   "lexical_only_safety": 16
+  }
+ }
+}

@@ -1,0 +1,366 @@
+[
+ {
+  "batch": 1,
+  "attempt": 0,
+  "specs": [
+   "chl-010",
+   "chl-013",
+   "chl-026",
+   "chl-027",
+   "chl-028"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3260,
+  "completion_tokens": 10978,
+  "reasoning_tokens": 7331,
+  "cost": 0,
+  "seconds": 527.5,
+  "returned": 5,
+  "failed": {
+   "chl-027": [
+    "swiss: German text contains ß"
+   ],
+   "chl-028": [
+    "swiss: German text contains ß"
+   ]
+  }
+ },
+ {
+  "batch": 1,
+  "attempt": 1,
+  "specs": [
+   "chl-027",
+   "chl-028"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2701,
+  "completion_tokens": 1809,
+  "reasoning_tokens": 561,
+  "cost": 0,
+  "seconds": 57.3,
+  "returned": 2,
+  "failed": {
+   "chl-028": [
+    "evidence: quote not verbatim (route): 'möchten Ihnen unsere neue Praxissoftware vorstellen'"
+   ]
+  }
+ },
+ {
+  "batch": 1,
+  "attempt": 2,
+  "specs": [
+   "chl-028"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2478,
+  "completion_tokens": 1086,
+  "reasoning_tokens": 800,
+  "cost": 0,
+  "seconds": 69.4,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 2,
+  "attempt": 0,
+  "specs": [
+   "chl-029",
+   "chl-030",
+   "chl-035",
+   "chl-037",
+   "chl-040"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3239,
+  "completion_tokens": 20514,
+  "reasoning_tokens": 14764,
+  "cost": 0,
+  "seconds": 847.9,
+  "returned": 5,
+  "failed": {
+   "chl-030": [
+    "evidence: quote not verbatim (patient.name): 'Herr Thomas Berger'",
+    "swiss: German text contains ß"
+   ],
+   "chl-035": [
+    "fiction: e-mail domain not fictitious: anna.schmidt@example.com"
+   ],
+   "chl-037": [
+    "fiction: e-mail domain not fictitious: lukas.weber@example.com"
+   ]
+  }
+ },
+ {
+  "batch": 2,
+  "attempt": 1,
+  "specs": [
+   "chl-030",
+   "chl-035",
+   "chl-037"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2935,
+  "completion_tokens": 1945,
+  "reasoning_tokens": 495,
+  "cost": 0,
+  "seconds": 108.7,
+  "returned": 3,
+  "failed": {
+   "chl-037": [
+    "evidence: quote not verbatim (fields.topic): 'rechten Arm fühlt sich ganz schwach an'"
+   ]
+  }
+ },
+ {
+  "batch": 2,
+  "attempt": 2,
+  "specs": [
+   "chl-037"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2480,
+  "completion_tokens": 2782,
+  "reasoning_tokens": 2353,
+  "cost": 0,
+  "seconds": 189.6,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 3,
+  "attempt": 0,
+  "specs": [
+   "chl-046",
+   "chl-047",
+   "chl-048",
+   "chl-049",
+   "chl-050"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "error",
+  "prompt_tokens": 3011,
+  "completion_tokens": 11655,
+  "reasoning_tokens": 11655,
+  "cost": 0,
+  "seconds": 508.5,
+  "returned": 0,
+  "failed": {
+   "chl-046": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-047": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-048": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-049": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-050": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 3,
+  "attempt": 1,
+  "specs": [
+   "chl-046",
+   "chl-047",
+   "chl-048",
+   "chl-049",
+   "chl-050"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3417,
+  "completion_tokens": 18370,
+  "reasoning_tokens": 11520,
+  "cost": 0,
+  "seconds": 548.9,
+  "returned": 5,
+  "failed": {
+   "chl-050": [
+    "fiction: e-mail domain not fictitious: patient@example.com"
+   ]
+  }
+ },
+ {
+  "batch": 3,
+  "attempt": 2,
+  "specs": [
+   "chl-050"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2474,
+  "completion_tokens": 5232,
+  "reasoning_tokens": 4334,
+  "cost": 0,
+  "seconds": 215.0,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 4,
+  "attempt": 0,
+  "specs": [
+   "chl-061",
+   "chl-062",
+   "chl-065",
+   "chl-117",
+   "chl-118"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "error",
+  "prompt_tokens": 3007,
+  "completion_tokens": 8605,
+  "reasoning_tokens": 8605,
+  "cost": 0,
+  "seconds": 380.2,
+  "returned": 0,
+  "failed": {
+   "chl-061": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-062": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-065": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-117": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-118": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 4,
+  "attempt": 1,
+  "specs": [
+   "chl-061",
+   "chl-062",
+   "chl-065",
+   "chl-117",
+   "chl-118"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3345,
+  "completion_tokens": 7297,
+  "reasoning_tokens": 4826,
+  "cost": 0,
+  "seconds": 266.3,
+  "returned": 0,
+  "failed": {
+   "chl-061": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-062": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-065": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-117": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-118": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 4,
+  "attempt": 2,
+  "specs": [
+   "chl-061",
+   "chl-062",
+   "chl-065",
+   "chl-117",
+   "chl-118"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3345,
+  "completion_tokens": 9719,
+  "reasoning_tokens": 6427,
+  "cost": 0,
+  "seconds": 360.6,
+  "returned": 5,
+  "failed": {
+   "chl-061": [
+    "fiction: e-mail domain not fictitious: marie.dupont@example.com"
+   ],
+   "chl-062": [
+    "fiction: e-mail domain not fictitious: thomas.mueller@example.com"
+   ],
+   "chl-065": [
+    "swiss: German text contains ß"
+   ],
+   "chl-117": [
+    "fiction: e-mail domain not fictitious: luca.rossi@example.com"
+   ],
+   "chl-118": [
+    "fiction: e-mail domain not fictitious: sabine.keller@example.com"
+   ]
+  }
+ },
+ {
+  "batch": 4,
+  "dropped": "chl-061",
+  "errors": [
+   "fiction: e-mail domain not fictitious: marie.dupont@example.com"
+  ]
+ },
+ {
+  "batch": 4,
+  "dropped": "chl-062",
+  "errors": [
+   "fiction: e-mail domain not fictitious: thomas.mueller@example.com"
+  ]
+ },
+ {
+  "batch": 4,
+  "dropped": "chl-065",
+  "errors": [
+   "swiss: German text contains ß"
+  ]
+ },
+ {
+  "batch": 4,
+  "dropped": "chl-117",
+  "errors": [
+   "fiction: e-mail domain not fictitious: luca.rossi@example.com"
+  ]
+ },
+ {
+  "batch": 4,
+  "dropped": "chl-118",
+  "errors": [
+   "fiction: e-mail domain not fictitious: sabine.keller@example.com"
+  ]
+ }
+]

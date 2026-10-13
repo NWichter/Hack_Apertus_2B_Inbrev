@@ -1,0 +1,1847 @@
+[
+ {
+  "batch": 1,
+  "attempt": 0,
+  "specs": [
+   "chl-001",
+   "chl-002",
+   "chl-003",
+   "chl-004",
+   "chl-005"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 19.8,
+  "returned": 0,
+  "failed": {
+   "chl-001": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-002": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-003": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-004": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-005": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 1,
+  "attempt": 1,
+  "specs": [
+   "chl-001",
+   "chl-002",
+   "chl-003",
+   "chl-004",
+   "chl-005"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3375,
+  "completion_tokens": 10517,
+  "reasoning_tokens": 6702,
+  "cost": 0,
+  "seconds": 367.9,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 2,
+  "attempt": 0,
+  "specs": [
+   "chl-006",
+   "chl-007",
+   "chl-008",
+   "chl-009",
+   "chl-010"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 19.3,
+  "returned": 0,
+  "failed": {
+   "chl-006": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-007": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-008": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-009": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-010": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 2,
+  "attempt": 1,
+  "specs": [
+   "chl-006",
+   "chl-007",
+   "chl-008",
+   "chl-009",
+   "chl-010"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 17.8,
+  "returned": 0,
+  "failed": {
+   "chl-006": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-007": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-008": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-009": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-010": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 2,
+  "attempt": 2,
+  "specs": [
+   "chl-006",
+   "chl-007",
+   "chl-008",
+   "chl-009",
+   "chl-010"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3402,
+  "completion_tokens": 12188,
+  "reasoning_tokens": 8440,
+  "cost": 0,
+  "seconds": 408.7,
+  "returned": 5,
+  "failed": {
+   "chl-010": [
+    "evidence: quote not verbatim (fields.requested_document): 'certificato medico per indennita giornaliera'"
+   ]
+  }
+ },
+ {
+  "batch": 2,
+  "dropped": "chl-010",
+  "errors": [
+   "evidence: quote not verbatim (fields.requested_document): 'certificato medico per indennita giornaliera'"
+  ]
+ },
+ {
+  "batch": 3,
+  "attempt": 0,
+  "specs": [
+   "chl-011",
+   "chl-012",
+   "chl-013",
+   "chl-014",
+   "chl-015"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 19.2,
+  "returned": 0,
+  "failed": {
+   "chl-011": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-012": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-013": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-014": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-015": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 3,
+  "attempt": 1,
+  "specs": [
+   "chl-011",
+   "chl-012",
+   "chl-013",
+   "chl-014",
+   "chl-015"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 18.1,
+  "returned": 0,
+  "failed": {
+   "chl-011": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-012": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-013": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-014": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-015": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 3,
+  "attempt": 2,
+  "specs": [
+   "chl-011",
+   "chl-012",
+   "chl-013",
+   "chl-014",
+   "chl-015"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3345,
+  "completion_tokens": 10748,
+  "reasoning_tokens": 7415,
+  "cost": 0,
+  "seconds": 312.5,
+  "returned": 5,
+  "failed": {
+   "chl-013": [
+    "evidence: quote not verbatim (safety_flag): 'leichten Brustschmerzn beim Atmen'"
+   ]
+  }
+ },
+ {
+  "batch": 3,
+  "dropped": "chl-013",
+  "errors": [
+   "evidence: quote not verbatim (safety_flag): 'leichten Brustschmerzn beim Atmen'"
+  ]
+ },
+ {
+  "batch": 4,
+  "attempt": 0,
+  "specs": [
+   "chl-016",
+   "chl-017",
+   "chl-018",
+   "chl-019",
+   "chl-020"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 19.2,
+  "returned": 0,
+  "failed": {
+   "chl-016": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-017": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-018": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-019": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-020": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 4,
+  "attempt": 1,
+  "specs": [
+   "chl-016",
+   "chl-017",
+   "chl-018",
+   "chl-019",
+   "chl-020"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3357,
+  "completion_tokens": 14158,
+  "reasoning_tokens": 9815,
+  "cost": 0,
+  "seconds": 552.4,
+  "returned": 5,
+  "failed": {
+   "chl-017": [
+    "swiss: German text contains ß",
+    "fiction: e-mail domain not fictitious: maria.mueller@example.com"
+   ],
+   "chl-018": [
+    "fiction: e-mail domain not fictitious: thomas.meier@example.com"
+   ]
+  }
+ },
+ {
+  "batch": 4,
+  "attempt": 2,
+  "specs": [
+   "chl-017",
+   "chl-018"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2723,
+  "completion_tokens": 4049,
+  "reasoning_tokens": 2723,
+  "cost": 0,
+  "seconds": 128.1,
+  "returned": 2,
+  "failed": {}
+ },
+ {
+  "batch": 5,
+  "attempt": 0,
+  "specs": [
+   "chl-021",
+   "chl-022",
+   "chl-023",
+   "chl-024",
+   "chl-025"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3249,
+  "completion_tokens": 17511,
+  "reasoning_tokens": 13230,
+  "cost": 0,
+  "seconds": 654.9,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 6,
+  "attempt": 0,
+  "specs": [
+   "chl-026",
+   "chl-027",
+   "chl-028",
+   "chl-029",
+   "chl-030"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 19.4,
+  "returned": 0,
+  "failed": {
+   "chl-026": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-027": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-028": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-029": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-030": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 6,
+  "attempt": 1,
+  "specs": [
+   "chl-026",
+   "chl-027",
+   "chl-028",
+   "chl-029",
+   "chl-030"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "error",
+  "prompt_tokens": 3117,
+  "completion_tokens": 7878,
+  "reasoning_tokens": 7878,
+  "cost": 0,
+  "seconds": 468.7,
+  "returned": 0,
+  "failed": {
+   "chl-026": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-027": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-028": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-029": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-030": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 6,
+  "attempt": 2,
+  "specs": [
+   "chl-026",
+   "chl-027",
+   "chl-028",
+   "chl-029",
+   "chl-030"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "error",
+  "prompt_tokens": 3117,
+  "completion_tokens": 5524,
+  "reasoning_tokens": 5524,
+  "cost": 0,
+  "seconds": 201.4,
+  "returned": 0,
+  "failed": {
+   "chl-026": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-027": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-028": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-029": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-030": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 6,
+  "dropped": "chl-026",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 6,
+  "dropped": "chl-027",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 6,
+  "dropped": "chl-028",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 6,
+  "dropped": "chl-029",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 6,
+  "dropped": "chl-030",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 7,
+  "attempt": 0,
+  "specs": [
+   "chl-031",
+   "chl-032",
+   "chl-033",
+   "chl-034",
+   "chl-035"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 2.8,
+  "returned": 0,
+  "failed": {
+   "chl-031": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-032": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-033": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-034": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-035": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 7,
+  "attempt": 1,
+  "specs": [
+   "chl-031",
+   "chl-032",
+   "chl-033",
+   "chl-034",
+   "chl-035"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 3.2,
+  "returned": 0,
+  "failed": {
+   "chl-031": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-032": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-033": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-034": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-035": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 7,
+  "attempt": 2,
+  "specs": [
+   "chl-031",
+   "chl-032",
+   "chl-033",
+   "chl-034",
+   "chl-035"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3364,
+  "completion_tokens": 18147,
+  "reasoning_tokens": 12318,
+  "cost": 0,
+  "seconds": 502.2,
+  "returned": 5,
+  "failed": {
+   "chl-035": [
+    "swiss: German text contains ß"
+   ]
+  }
+ },
+ {
+  "batch": 7,
+  "dropped": "chl-035",
+  "errors": [
+   "swiss: German text contains ß"
+  ]
+ },
+ {
+  "batch": 8,
+  "attempt": 0,
+  "specs": [
+   "chl-036",
+   "chl-037",
+   "chl-038",
+   "chl-039",
+   "chl-040"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 6.5,
+  "returned": 0,
+  "failed": {
+   "chl-036": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-037": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-038": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-039": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-040": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 8,
+  "attempt": 1,
+  "specs": [
+   "chl-036",
+   "chl-037",
+   "chl-038",
+   "chl-039",
+   "chl-040"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3382,
+  "completion_tokens": 11715,
+  "reasoning_tokens": 8234,
+  "cost": 0,
+  "seconds": 333.1,
+  "returned": 5,
+  "failed": {
+   "chl-037": [
+    "fiction: e-mail domain not fictitious: ahmet.yildiz@example.ch"
+   ],
+   "chl-040": [
+    "fiction: e-mail domain not fictitious: max.mustermann@example.ch"
+   ]
+  }
+ },
+ {
+  "batch": 8,
+  "attempt": 2,
+  "specs": [
+   "chl-037",
+   "chl-040"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 23.4,
+  "returned": 0,
+  "failed": {
+   "chl-037": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-040": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 8,
+  "dropped": "chl-037",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 8,
+  "dropped": "chl-040",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 9,
+  "attempt": 0,
+  "specs": [
+   "chl-041",
+   "chl-042",
+   "chl-043",
+   "chl-044",
+   "chl-045"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3237,
+  "completion_tokens": 18921,
+  "reasoning_tokens": 13769,
+  "cost": 0,
+  "seconds": 560.5,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 10,
+  "attempt": 0,
+  "specs": [
+   "chl-046",
+   "chl-047",
+   "chl-048",
+   "chl-049",
+   "chl-050"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 19.5,
+  "returned": 0,
+  "failed": {
+   "chl-046": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-047": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-048": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-049": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-050": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 10,
+  "attempt": 1,
+  "specs": [
+   "chl-046",
+   "chl-047",
+   "chl-048",
+   "chl-049",
+   "chl-050"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 17.4,
+  "returned": 0,
+  "failed": {
+   "chl-046": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-047": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-048": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-049": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-050": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 10,
+  "attempt": 2,
+  "specs": [
+   "chl-046",
+   "chl-047",
+   "chl-048",
+   "chl-049",
+   "chl-050"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 17.7,
+  "returned": 0,
+  "failed": {
+   "chl-046": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-047": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-048": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-049": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-050": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 10,
+  "dropped": "chl-046",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 10,
+  "dropped": "chl-047",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 10,
+  "dropped": "chl-048",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 10,
+  "dropped": "chl-049",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 10,
+  "dropped": "chl-050",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 11,
+  "attempt": 0,
+  "specs": [
+   "chl-051",
+   "chl-052",
+   "chl-053",
+   "chl-054",
+   "chl-055"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3262,
+  "completion_tokens": 12813,
+  "reasoning_tokens": 10395,
+  "cost": 0,
+  "seconds": 443.8,
+  "returned": 1,
+  "failed": {
+   "chl-052": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-053": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-054": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-055": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 11,
+  "attempt": 1,
+  "specs": [
+   "chl-052",
+   "chl-053",
+   "chl-054",
+   "chl-055"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 12.9,
+  "returned": 0,
+  "failed": {
+   "chl-052": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-053": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-054": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-055": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 11,
+  "attempt": 2,
+  "specs": [
+   "chl-052",
+   "chl-053",
+   "chl-054",
+   "chl-055"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3163,
+  "completion_tokens": 13249,
+  "reasoning_tokens": 9391,
+  "cost": 0,
+  "seconds": 536.4,
+  "returned": 4,
+  "failed": {}
+ },
+ {
+  "batch": 12,
+  "attempt": 0,
+  "specs": [
+   "chl-056",
+   "chl-057",
+   "chl-058",
+   "chl-059",
+   "chl-060"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3274,
+  "completion_tokens": 11782,
+  "reasoning_tokens": 7603,
+  "cost": 0,
+  "seconds": 379.8,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 13,
+  "attempt": 0,
+  "specs": [
+   "chl-061",
+   "chl-062",
+   "chl-063",
+   "chl-064",
+   "chl-065"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 22.4,
+  "returned": 0,
+  "failed": {
+   "chl-061": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-062": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-063": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-064": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-065": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 13,
+  "attempt": 1,
+  "specs": [
+   "chl-061",
+   "chl-062",
+   "chl-063",
+   "chl-064",
+   "chl-065"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "error",
+  "prompt_tokens": 3126,
+  "completion_tokens": 9859,
+  "reasoning_tokens": 9859,
+  "cost": 0,
+  "seconds": 617.3,
+  "returned": 0,
+  "failed": {
+   "chl-061": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-062": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-063": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-064": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-065": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 13,
+  "attempt": 2,
+  "specs": [
+   "chl-061",
+   "chl-062",
+   "chl-063",
+   "chl-064",
+   "chl-065"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3379,
+  "completion_tokens": 12899,
+  "reasoning_tokens": 8444,
+  "cost": 0,
+  "seconds": 489.6,
+  "returned": 5,
+  "failed": {
+   "chl-061": [
+    "fiction: e-mail domain not fictitious: sophie.dupont@example.com"
+   ],
+   "chl-062": [
+    "fiction: e-mail domain not fictitious: karin.mueller@example.com"
+   ],
+   "chl-065": [
+    "fiction: e-mail domain not fictitious: pflegeheim.sonnenhof@example.com"
+   ]
+  }
+ },
+ {
+  "batch": 13,
+  "dropped": "chl-061",
+  "errors": [
+   "fiction: e-mail domain not fictitious: sophie.dupont@example.com"
+  ]
+ },
+ {
+  "batch": 13,
+  "dropped": "chl-062",
+  "errors": [
+   "fiction: e-mail domain not fictitious: karin.mueller@example.com"
+  ]
+ },
+ {
+  "batch": 13,
+  "dropped": "chl-065",
+  "errors": [
+   "fiction: e-mail domain not fictitious: pflegeheim.sonnenhof@example.com"
+  ]
+ },
+ {
+  "batch": 14,
+  "attempt": 0,
+  "specs": [
+   "chl-066",
+   "chl-067",
+   "chl-068",
+   "chl-069",
+   "chl-070"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3257,
+  "completion_tokens": 9548,
+  "reasoning_tokens": 5928,
+  "cost": 0,
+  "seconds": 299.3,
+  "returned": 5,
+  "failed": {
+   "chl-066": [
+    "fiction: e-mail domain not fictitious: figlia.rossi@example.com"
+   ],
+   "chl-068": [
+    "fiction: e-mail domain not fictitious: figlia.bianchi@example.com"
+   ]
+  }
+ },
+ {
+  "batch": 14,
+  "attempt": 1,
+  "specs": [
+   "chl-066",
+   "chl-068"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2698,
+  "completion_tokens": 3907,
+  "reasoning_tokens": 2927,
+  "cost": 0,
+  "seconds": 117.6,
+  "returned": 1,
+  "failed": {
+   "chl-068": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 14,
+  "attempt": 2,
+  "specs": [
+   "chl-068"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2467,
+  "completion_tokens": 1440,
+  "reasoning_tokens": 919,
+  "cost": 0,
+  "seconds": 59.2,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 15,
+  "attempt": 0,
+  "specs": [
+   "chl-071",
+   "chl-072",
+   "chl-073",
+   "chl-074",
+   "chl-075"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3254,
+  "completion_tokens": 11066,
+  "reasoning_tokens": 7795,
+  "cost": 0,
+  "seconds": 426.8,
+  "returned": 5,
+  "failed": {
+   "chl-072": [
+    "swiss: German text contains ß"
+   ],
+   "chl-075": [
+    "swiss: German text contains ß"
+   ]
+  }
+ },
+ {
+  "batch": 15,
+  "attempt": 1,
+  "specs": [
+   "chl-072",
+   "chl-075"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "error",
+  "prompt_tokens": 2621,
+  "completion_tokens": 1222,
+  "reasoning_tokens": 1222,
+  "cost": 0,
+  "seconds": 55.7,
+  "returned": 0,
+  "failed": {
+   "chl-072": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-075": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 15,
+  "attempt": 2,
+  "specs": [
+   "chl-072",
+   "chl-075"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2719,
+  "completion_tokens": 6155,
+  "reasoning_tokens": 3651,
+  "cost": 0,
+  "seconds": 220.7,
+  "returned": 2,
+  "failed": {}
+ },
+ {
+  "batch": 16,
+  "attempt": 0,
+  "specs": [
+   "chl-076",
+   "chl-077",
+   "chl-078",
+   "chl-079",
+   "chl-080"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3247,
+  "completion_tokens": 17156,
+  "reasoning_tokens": 11919,
+  "cost": 0,
+  "seconds": 552.1,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 17,
+  "attempt": 0,
+  "specs": [
+   "chl-081",
+   "chl-082",
+   "chl-083",
+   "chl-084",
+   "chl-085"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3241,
+  "completion_tokens": 17367,
+  "reasoning_tokens": 12656,
+  "cost": 0,
+  "seconds": 443.1,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 18,
+  "attempt": 0,
+  "specs": [
+   "chl-086",
+   "chl-087",
+   "chl-088",
+   "chl-089",
+   "chl-090"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "error",
+  "prompt_tokens": 3007,
+  "completion_tokens": 12218,
+  "reasoning_tokens": 12218,
+  "cost": 0,
+  "seconds": 565.2,
+  "returned": 0,
+  "failed": {
+   "chl-086": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-087": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-088": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-089": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-090": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 18,
+  "attempt": 1,
+  "specs": [
+   "chl-086",
+   "chl-087",
+   "chl-088",
+   "chl-089",
+   "chl-090"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3408,
+  "completion_tokens": 10439,
+  "reasoning_tokens": 6075,
+  "cost": 0,
+  "seconds": 428.1,
+  "returned": 5,
+  "failed": {
+   "chl-088": [
+    "evidence: quote not verbatim (fields.referring_physician): 'Dr. med. Thomas Müller'"
+   ]
+  }
+ },
+ {
+  "batch": 18,
+  "attempt": 2,
+  "specs": [
+   "chl-088"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2498,
+  "completion_tokens": 1498,
+  "reasoning_tokens": 588,
+  "cost": 0,
+  "seconds": 69.4,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 19,
+  "attempt": 0,
+  "specs": [
+   "chl-091",
+   "chl-092",
+   "chl-093",
+   "chl-094",
+   "chl-095"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 9.1,
+  "returned": 0,
+  "failed": {
+   "chl-091": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-092": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-093": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-094": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-095": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 19,
+  "attempt": 1,
+  "specs": [
+   "chl-091",
+   "chl-092",
+   "chl-093",
+   "chl-094",
+   "chl-095"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 8.3,
+  "returned": 0,
+  "failed": {
+   "chl-091": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-092": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-093": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-094": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-095": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 19,
+  "attempt": 2,
+  "specs": [
+   "chl-091",
+   "chl-092",
+   "chl-093",
+   "chl-094",
+   "chl-095"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3369,
+  "completion_tokens": 17129,
+  "reasoning_tokens": 12956,
+  "cost": 0,
+  "seconds": 400.3,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 20,
+  "attempt": 0,
+  "specs": [
+   "chl-096",
+   "chl-097",
+   "chl-098",
+   "chl-099",
+   "chl-100"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3249,
+  "completion_tokens": 11246,
+  "reasoning_tokens": 7301,
+  "cost": 0,
+  "seconds": 323.2,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 21,
+  "attempt": 0,
+  "specs": [
+   "chl-101",
+   "chl-102",
+   "chl-103",
+   "chl-104",
+   "chl-105"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "error",
+  "prompt_tokens": 3001,
+  "completion_tokens": 8112,
+  "reasoning_tokens": 8112,
+  "cost": 0,
+  "seconds": 462.6,
+  "returned": 0,
+  "failed": {
+   "chl-101": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-102": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-103": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-104": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-105": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 21,
+  "attempt": 1,
+  "specs": [
+   "chl-101",
+   "chl-102",
+   "chl-103",
+   "chl-104",
+   "chl-105"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3344,
+  "completion_tokens": 927,
+  "reasoning_tokens": 418,
+  "cost": 0,
+  "seconds": 33.9,
+  "returned": 1,
+  "failed": {
+   "chl-102": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-103": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-104": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-105": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 21,
+  "attempt": 2,
+  "specs": [
+   "chl-102",
+   "chl-103",
+   "chl-104",
+   "chl-105"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3127,
+  "completion_tokens": 3798,
+  "reasoning_tokens": 1218,
+  "cost": 0,
+  "seconds": 184.5,
+  "returned": 4,
+  "failed": {}
+ },
+ {
+  "batch": 22,
+  "attempt": 0,
+  "specs": [
+   "chl-106",
+   "chl-107",
+   "chl-108",
+   "chl-109",
+   "chl-110"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 5.0,
+  "returned": 0,
+  "failed": {
+   "chl-106": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-107": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-108": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-109": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-110": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 22,
+  "attempt": 1,
+  "specs": [
+   "chl-106",
+   "chl-107",
+   "chl-108",
+   "chl-109",
+   "chl-110"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 6.2,
+  "returned": 0,
+  "failed": {
+   "chl-106": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-107": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-108": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-109": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-110": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 22,
+  "attempt": 2,
+  "specs": [
+   "chl-106",
+   "chl-107",
+   "chl-108",
+   "chl-109",
+   "chl-110"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3373,
+  "completion_tokens": 13325,
+  "reasoning_tokens": 9551,
+  "cost": 0,
+  "seconds": 468.9,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 23,
+  "attempt": 0,
+  "specs": [
+   "chl-111",
+   "chl-112",
+   "chl-113",
+   "chl-114",
+   "chl-115"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "error",
+  "prompt_tokens": 2991,
+  "completion_tokens": 24648,
+  "reasoning_tokens": 24648,
+  "cost": 0,
+  "seconds": 926.0,
+  "returned": 0,
+  "failed": {
+   "chl-111": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-112": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-113": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-114": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-115": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 23,
+  "attempt": 1,
+  "specs": [
+   "chl-111",
+   "chl-112",
+   "chl-113",
+   "chl-114",
+   "chl-115"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3340,
+  "completion_tokens": 11287,
+  "reasoning_tokens": 7424,
+  "cost": 0,
+  "seconds": 408.5,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 24,
+  "attempt": 0,
+  "specs": [
+   "chl-116",
+   "chl-117",
+   "chl-118",
+   "chl-119",
+   "chl-120"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 3240,
+  "completion_tokens": 17379,
+  "reasoning_tokens": 13055,
+  "cost": 0,
+  "seconds": 583.0,
+  "returned": 5,
+  "failed": {
+   "chl-117": [
+    "fiction: e-mail domain not fictitious: luca.rossi@example.com"
+   ],
+   "chl-118": [
+    "fiction: e-mail domain not fictitious: thomas.mueller@example.com"
+   ]
+  }
+ },
+ {
+  "batch": 24,
+  "attempt": 1,
+  "specs": [
+   "chl-117",
+   "chl-118"
+  ],
+  "model": null,
+  "provider": null,
+  "finish_reason": null,
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost": null,
+  "seconds": 0.6,
+  "returned": 0,
+  "failed": {
+   "chl-117": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-118": [
+    "message missing or not valid JSON in the output"
+   ]
+  }
+ },
+ {
+  "batch": 24,
+  "attempt": 2,
+  "specs": [
+   "chl-117",
+   "chl-118"
+  ],
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "provider": "Nvidia",
+  "finish_reason": "stop",
+  "prompt_tokens": 2686,
+  "completion_tokens": 3271,
+  "reasoning_tokens": 1962,
+  "cost": 0,
+  "seconds": 80.8,
+  "returned": 1,
+  "failed": {
+   "chl-117": [
+    "message missing or not valid JSON in the output"
+   ],
+   "chl-118": [
+    "swiss: German text contains ß",
+    "fiction: e-mail domain not fictitious: anna.mueller@example.com"
+   ]
+  }
+ },
+ {
+  "batch": 24,
+  "dropped": "chl-117",
+  "errors": [
+   "message missing or not valid JSON in the output"
+  ]
+ },
+ {
+  "batch": 24,
+  "dropped": "chl-118",
+  "errors": [
+   "swiss: German text contains ß",
+   "fiction: e-mail domain not fictitious: anna.mueller@example.com"
+  ]
+ }
+]

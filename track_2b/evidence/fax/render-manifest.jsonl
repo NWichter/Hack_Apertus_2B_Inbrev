@@ -1,0 +1,60 @@
+{"message_id": "syn-001", "file": "syn-001.png", "level": "medium", "skew_deg": -0.63, "blur": 0.8, "noise_sigma": 36.0, "threshold": 153, "speckle_share": 0.0016, "stamp": false}
+{"message_id": "syn-003", "file": "syn-003.png", "level": "medium", "skew_deg": 0.93, "blur": 0.8, "noise_sigma": 36.0, "threshold": 157, "speckle_share": 0.0016, "scan_line_y": 1063, "stamp": true}
+{"message_id": "syn-004", "file": "syn-004.png", "level": "heavy", "skew_deg": -2.11, "blur": 1.2, "noise_sigma": 54.0, "threshold": 178, "speckle_share": 0.0024, "scan_line_y": 1374, "stamp": true}
+{"message_id": "syn-005", "file": "syn-005.png", "level": "heavy", "skew_deg": -2.03, "blur": 1.2, "noise_sigma": 54.0, "threshold": 155, "speckle_share": 0.0024, "scan_line_y": 243, "stamp": false}
+{"message_id": "syn-014", "file": "syn-014.png", "level": "heavy", "skew_deg": -4.07, "blur": 1.2, "noise_sigma": 54.0, "threshold": 177, "speckle_share": 0.0024, "stamp": true}
+{"message_id": "syn-019", "file": "syn-019.png", "level": "heavy", "skew_deg": -0.4, "blur": 1.2, "noise_sigma": 54.0, "threshold": 185, "speckle_share": 0.0024, "scan_line_y": 1480, "stamp": true}
+{"message_id": "syn-020", "file": "syn-020.png", "level": "medium", "skew_deg": 0.88, "blur": 0.8, "noise_sigma": 36.0, "threshold": 171, "speckle_share": 0.0016, "scan_line_y": 93, "stamp": false}
+{"message_id": "syn-024", "file": "syn-024.png", "level": "medium", "skew_deg": -0.23, "blur": 0.8, "noise_sigma": 36.0, "threshold": 184, "speckle_share": 0.0016, "scan_line_y": 1567, "stamp": false}
+{"message_id": "syn-026", "file": "syn-026.png", "level": "heavy", "skew_deg": 3.6, "blur": 1.2, "noise_sigma": 54.0, "threshold": 180, "speckle_share": 0.0024, "scan_line_y": 295, "stamp": false}
+{"message_id": "syn-030", "file": "syn-030.png", "level": "light", "skew_deg": 1.37, "blur": 0.4, "noise_sigma": 18.0, "threshold": 172, "speckle_share": 0.0008, "scan_line_y": 1938, "stamp": true}
+{"message_id": "syn-037", "file": "syn-037.png", "level": "light", "skew_deg": 0.82, "blur": 0.4, "noise_sigma": 18.0, "threshold": 157, "speckle_share": 0.0008, "stamp": false}
+{"message_id": "syn-043", "file": "syn-043.png", "level": "medium", "skew_deg": -1.47, "blur": 0.8, "noise_sigma": 36.0, "threshold": 159, "speckle_share": 0.0016, "stamp": false}
+{"message_id": "syn-044", "file": "syn-044.png", "level": "heavy", "skew_deg": 2.27, "blur": 1.2, "noise_sigma": 54.0, "threshold": 150, "speckle_share": 0.0024, "scan_line_y": 1553, "stamp": true}
+{"message_id": "syn-047", "file": "syn-047.png", "level": "heavy", "skew_deg": -2.57, "blur": 1.2, "noise_sigma": 54.0, "threshold": 153, "speckle_share": 0.0024, "stamp": true}
+{"message_id": "syn-051", "file": "syn-051.png", "level": "heavy", "skew_deg": 0.79, "blur": 1.2, "noise_sigma": 54.0, "threshold": 184, "speckle_share": 0.0024, "scan_line_y": 714, "stamp": false}
+{"message_id": "syn-053", "file": "syn-053.png", "level": "medium", "skew_deg": 1.02, "blur": 0.8, "noise_sigma": 36.0, "threshold": 178, "speckle_share": 0.0016, "stamp": false}
+{"message_id": "syn-054", "file": "syn-054.png", "level": "light", "skew_deg": 0.95, "blur": 0.4, "noise_sigma": 18.0, "threshold": 180, "speckle_share": 0.0008, "stamp": false}
+{"message_id": "syn-059", "file": "syn-059.png", "level": "medium", "skew_deg": 2.88, "blur": 0.8, "noise_sigma": 36.0, "threshold": 164, "speckle_share": 0.0016, "stamp": false}
+{"message_id": "syn-062", "file": "syn-062.png", "level": "heavy", "skew_deg": 2.46, "blur": 1.2, "noise_sigma": 54.0, "threshold": 182, "speckle_share": 0.0024, "stamp": true}
+{"message_id": "syn-063", "file": "syn-063.png", "level": "medium", "skew_deg": 0.79, "blur": 0.8, "noise_sigma": 36.0, "threshold": 161, "speckle_share": 0.0016, "scan_line_y": 1989, "stamp": true}
+{"message_id": "syn-064", "file": "syn-064.png", "level": "medium", "skew_deg": -0.68, "blur": 0.8, "noise_sigma": 36.0, "threshold": 157, "speckle_share": 0.0016, "stamp": false}
+{"message_id": "syn-065", "file": "syn-065.png", "level": "light", "skew_deg": -0.65, "blur": 0.4, "noise_sigma": 18.0, "threshold": 171, "speckle_share": 0.0008, "stamp": true}
+{"message_id": "syn-069", "file": "syn-069.png", "level": "medium", "skew_deg": -1.15, "blur": 0.8, "noise_sigma": 36.0, "threshold": 178, "speckle_share": 0.0016, "stamp": false}
+{"message_id": "syn-071", "file": "syn-071.png", "level": "heavy", "skew_deg": 1.84, "blur": 1.2, "noise_sigma": 54.0, "threshold": 182, "speckle_share": 0.0024, "stamp": false}
+{"message_id": "syn-072", "file": "syn-072.png", "level": "heavy", "skew_deg": -1.93, "blur": 1.2, "noise_sigma": 54.0, "threshold": 151, "speckle_share": 0.0024, "stamp": false}
+{"message_id": "syn-073", "file": "syn-073.png", "level": "medium", "skew_deg": 1.79, "blur": 0.8, "noise_sigma": 36.0, "threshold": 184, "speckle_share": 0.0016, "stamp": true}
+{"message_id": "syn-076", "file": "syn-076.png", "level": "light", "skew_deg": 0.85, "blur": 0.4, "noise_sigma": 18.0, "threshold": 183, "speckle_share": 0.0008, "scan_line_y": 1184, "stamp": true}
+{"message_id": "syn-079", "file": "syn-079.png", "level": "medium", "skew_deg": 2.61, "blur": 0.8, "noise_sigma": 36.0, "threshold": 185, "speckle_share": 0.0016, "scan_line_y": 308, "stamp": true}
+{"message_id": "syn-080", "file": "syn-080.png", "level": "heavy", "skew_deg": -2.04, "blur": 1.2, "noise_sigma": 54.0, "threshold": 176, "speckle_share": 0.0024, "scan_line_y": 1495, "stamp": false}
+{"message_id": "syn-083", "file": "syn-083.png", "level": "medium", "skew_deg": -0.07, "blur": 0.8, "noise_sigma": 36.0, "threshold": 179, "speckle_share": 0.0016, "scan_line_y": 1834, "stamp": true}
+{"message_id": "syn-084", "file": "syn-084.png", "level": "medium", "skew_deg": 0.11, "blur": 0.8, "noise_sigma": 36.0, "threshold": 168, "speckle_share": 0.0016, "stamp": true}
+{"message_id": "syn-085", "file": "syn-085.png", "level": "heavy", "skew_deg": -1.05, "blur": 1.2, "noise_sigma": 54.0, "threshold": 163, "speckle_share": 0.0024, "scan_line_y": 1017, "stamp": false}
+{"message_id": "syn-089", "file": "syn-089.png", "level": "medium", "skew_deg": -0.02, "blur": 0.8, "noise_sigma": 36.0, "threshold": 166, "speckle_share": 0.0016, "scan_line_y": 447, "stamp": false}
+{"message_id": "syn-094", "file": "syn-094.png", "level": "medium", "skew_deg": 1.32, "blur": 0.8, "noise_sigma": 36.0, "threshold": 152, "speckle_share": 0.0016, "stamp": false}
+{"message_id": "syn-098", "file": "syn-098.png", "level": "light", "skew_deg": 1.35, "blur": 0.4, "noise_sigma": 18.0, "threshold": 167, "speckle_share": 0.0008, "stamp": false}
+{"message_id": "syn-101", "file": "syn-101.png", "level": "heavy", "skew_deg": 1.44, "blur": 1.2, "noise_sigma": 54.0, "threshold": 183, "speckle_share": 0.0024, "scan_line_y": 766, "stamp": false}
+{"message_id": "syn-103", "file": "syn-103.png", "level": "medium", "skew_deg": -0.68, "blur": 0.8, "noise_sigma": 36.0, "threshold": 155, "speckle_share": 0.0016, "stamp": true}
+{"message_id": "syn-106", "file": "syn-106.png", "level": "heavy", "skew_deg": 3.49, "blur": 1.2, "noise_sigma": 54.0, "threshold": 184, "speckle_share": 0.0024, "scan_line_y": 304, "stamp": false}
+{"message_id": "syn-113", "file": "syn-113.png", "level": "heavy", "skew_deg": -2.8, "blur": 1.2, "noise_sigma": 54.0, "threshold": 167, "speckle_share": 0.0024, "scan_line_y": 1740, "stamp": false}
+{"message_id": "syn-114", "file": "syn-114.png", "level": "light", "skew_deg": -0.16, "blur": 0.4, "noise_sigma": 18.0, "threshold": 162, "speckle_share": 0.0008, "stamp": true}
+{"message_id": "syn-118", "file": "syn-118.png", "level": "medium", "skew_deg": -1.52, "blur": 0.8, "noise_sigma": 36.0, "threshold": 160, "speckle_share": 0.0016, "scan_line_y": 345, "stamp": false}
+{"message_id": "syn-119", "file": "syn-119.png", "level": "light", "skew_deg": 0.81, "blur": 0.4, "noise_sigma": 18.0, "threshold": 164, "speckle_share": 0.0008, "scan_line_y": 1878, "stamp": false}
+{"message_id": "syn-120", "file": "syn-120.png", "level": "light", "skew_deg": 0.66, "blur": 0.4, "noise_sigma": 18.0, "threshold": 156, "speckle_share": 0.0008, "scan_line_y": 1878, "stamp": false}
+{"message_id": "syn-122", "file": "syn-122.png", "level": "light", "skew_deg": 1.4, "blur": 0.4, "noise_sigma": 18.0, "threshold": 185, "speckle_share": 0.0008, "stamp": true}
+{"message_id": "syn-125", "file": "syn-125.png", "level": "light", "skew_deg": 0.57, "blur": 0.4, "noise_sigma": 18.0, "threshold": 151, "speckle_share": 0.0008, "stamp": false}
+{"message_id": "syn-137", "file": "syn-137.png", "level": "heavy", "skew_deg": -1.68, "blur": 1.2, "noise_sigma": 54.0, "threshold": 172, "speckle_share": 0.0024, "stamp": false}
+{"message_id": "syn-140", "file": "syn-140.png", "level": "heavy", "skew_deg": -0.4, "blur": 1.2, "noise_sigma": 54.0, "threshold": 175, "speckle_share": 0.0024, "scan_line_y": 748, "stamp": false}
+{"message_id": "syn-146", "file": "syn-146.png", "level": "heavy", "skew_deg": -3.98, "blur": 1.2, "noise_sigma": 54.0, "threshold": 165, "speckle_share": 0.0024, "scan_line_y": 2173, "stamp": false}
+{"message_id": "syn-152", "file": "syn-152.png", "level": "medium", "skew_deg": -2.24, "blur": 0.8, "noise_sigma": 36.0, "threshold": 151, "speckle_share": 0.0016, "scan_line_y": 1070, "stamp": true}
+{"message_id": "syn-153", "file": "syn-153.png", "level": "light", "skew_deg": -1.31, "blur": 0.4, "noise_sigma": 18.0, "threshold": 184, "speckle_share": 0.0008, "stamp": true}
+{"message_id": "syn-154", "file": "syn-154.png", "level": "heavy", "skew_deg": -3.63, "blur": 1.2, "noise_sigma": 54.0, "threshold": 183, "speckle_share": 0.0024, "scan_line_y": 2024, "stamp": false}
+{"message_id": "syn-158", "file": "syn-158.png", "level": "light", "skew_deg": -1.16, "blur": 0.4, "noise_sigma": 18.0, "threshold": 173, "speckle_share": 0.0008, "scan_line_y": 1672, "stamp": true}
+{"message_id": "syn-161", "file": "syn-161.png", "level": "medium", "skew_deg": -1.68, "blur": 0.8, "noise_sigma": 36.0, "threshold": 166, "speckle_share": 0.0016, "scan_line_y": 251, "stamp": false}
+{"message_id": "syn-163", "file": "syn-163.png", "level": "heavy", "skew_deg": 3.3, "blur": 1.2, "noise_sigma": 54.0, "threshold": 159, "speckle_share": 0.0024, "scan_line_y": 437, "stamp": false}
+{"message_id": "syn-164", "file": "syn-164.png", "level": "heavy", "skew_deg": -2.12, "blur": 1.2, "noise_sigma": 54.0, "threshold": 155, "speckle_share": 0.0024, "stamp": true}
+{"message_id": "syn-168", "file": "syn-168.png", "level": "medium", "skew_deg": -0.27, "blur": 0.8, "noise_sigma": 36.0, "threshold": 185, "speckle_share": 0.0016, "scan_line_y": 911, "stamp": true}
+{"message_id": "syn-170", "file": "syn-170.png", "level": "medium", "skew_deg": 1.98, "blur": 0.8, "noise_sigma": 36.0, "threshold": 152, "speckle_share": 0.0016, "scan_line_y": 937, "stamp": false}
+{"message_id": "syn-172", "file": "syn-172.png", "level": "heavy", "skew_deg": -0.23, "blur": 1.2, "noise_sigma": 54.0, "threshold": 160, "speckle_share": 0.0024, "stamp": false}
+{"message_id": "syn-173", "file": "syn-173.png", "level": "light", "skew_deg": -1.01, "blur": 0.4, "noise_sigma": 18.0, "threshold": 172, "speckle_share": 0.0008, "scan_line_y": 1535, "stamp": false}
+{"message_id": "syn-180", "file": "syn-180.png", "level": "heavy", "skew_deg": -1.71, "blur": 1.2, "noise_sigma": 54.0, "threshold": 171, "speckle_share": 0.0024, "stamp": false}

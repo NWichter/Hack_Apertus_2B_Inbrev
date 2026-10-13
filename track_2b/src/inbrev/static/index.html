@@ -501,6 +501,10 @@
           m.classList.add("none");
           m.title =
             "Set LLM_BASE_URL, LLM_API_KEY and LLM_NAME (e.g. in track_2b/.env) and run make run again, or use make run-local.";
+          const n = $("#notice");
+          n.hidden = false;
+          n.textContent =
+            "No model endpoint is configured. Load shows stored results of the default configuration (marked 'stored result'). To sort with Apertus, set LLM_BASE_URL, LLM_API_KEY and LLM_NAME (e.g. in track_2b/.env) and run make run again, or start the offline stack with make run-local.";
         } else {
           m.textContent = `${h.model} · ${h.endpoint_local ? "local endpoint" : h.endpoint_host}`;
           m.classList.add(h.endpoint_local ? "local" : "remote");

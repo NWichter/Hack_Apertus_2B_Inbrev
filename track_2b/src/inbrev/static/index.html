@@ -82,6 +82,22 @@
         border-radius: 50%;
         background: #2e9e6a;
       }
+      .notice {
+        margin: 8px 12px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: var(--amber-bg);
+        color: var(--amber);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .badge.none::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #9aa3a8;
+      }
       .badge.remote::before {
         content: "";
         width: 7px;
@@ -381,6 +397,7 @@
           /></label>
           <span class="count" id="count"></span>
         </div>
+        <div id="notice" class="notice" role="status" hidden></div>
         <div id="groups"></div>
       </section>
       <section id="detail">
@@ -479,11 +496,18 @@
           ? "Research prototype: flagged messages get a keyword-based urgency hint. Not a medical device, not validated."
           : "Administrative sorting with a safety net: possible symptoms go to a person, never ranked.";
         const m = $("#model");
-        m.textContent = `${h.model} · ${h.endpoint_local ? "local endpoint" : h.endpoint_host}`;
-        m.classList.add(h.endpoint_local ? "local" : "remote");
-        m.title = h.endpoint_local
-          ? "Model runs inside this deployment"
-          : "Development endpoint; production runs the same model on-premise";
+        if (!h.endpoint_configured) {
+          m.textContent = "No endpoint configured · showing stored results";
+          m.classList.add("none");
+          m.title =
+            "Set LLM_BASE_URL, LLM_API_KEY and LLM_NAME (e.g. in track_2b/.env) and run make run again, or use make run-local.";
+        } else {
+          m.textContent = `${h.model} · ${h.endpoint_local ? "local endpoint" : h.endpoint_host}`;
+          m.classList.add(h.endpoint_local ? "local" : "remote");
+          m.title = h.endpoint_local
+            ? "Model runs inside this deployment"
+            : "Development endpoint; production runs the same model on-premise";
+        }
         $("#set").innerHTML = h.demo_sets
           .map((s) => `<option value="${s}">${s} inbox</option>`)
           .join("");
@@ -513,9 +537,10 @@
         }
       }
 
-      function chips(r) {
+      function chips(r, stored) {
         if (!r) return "";
         const c = [];
+        if (stored) c.push('<span class="chip grey" title="Stored result, not computed now">stored result</span>');
         if (r.safety_flag)
           c.push('<span class="chip amber">Clinical content</span>');
         if (r.abstain && !r.safety_flag)
@@ -546,7 +571,7 @@
                 return `<div class="item ${m.message_id === selected ? "active" : ""}" data-id="${esc(m.message_id)}">
         <div class="top"><span class="subj">${esc(m.subject || "(no subject)")}</span>${st}</div>
         <div class="from">${esc(m.sender)}${m.channel ? " · " + esc(m.channel) : ""}</div>
-        <div class="chips">${chips(it.result)}</div></div>`;
+        <div class="chips">${chips(it.result, it.stored)}</div></div>`;
               })
               .join("") +
             "</div>"
@@ -655,7 +680,10 @@
         refresh();
       };
       $("#sort").onclick = async () => {
-        await api("/v1/inbox/sort", { method: "POST" });
+        const r = await api("/v1/inbox/sort", { method: "POST" });
+        const n = $("#notice");
+        n.hidden = !r.message;
+        n.textContent = r.message || "";
         refresh();
       };
       $("#file").onchange = async (e) => {

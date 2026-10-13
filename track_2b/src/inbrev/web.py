@@ -47,6 +47,24 @@ class MessageIn(BaseModel):
     mode: Literal["admin", "clinical-triage"] | None = None
 
 
+NO_ENDPOINT = (
+    "No model endpoint is configured. Set LLM_BASE_URL, LLM_API_KEY and LLM_NAME "
+    "(for example in track_2b/.env, then run `make run` again), or start the offline stack "
+    "with `make run-local`."
+)
+
+
+def endpoint_configured() -> bool:
+    return bool(cfg.llm_base_url.strip())
+
+
+def _stored_results() -> dict[str, dict]:
+    pre = os.getenv("INBREV_PRECOMPUTED")
+    if not pre or not Path(pre).exists():
+        return {}
+    return {r["result"]["message_id"]: r for r in read_jsonl(Path(pre))}
+
+
 def client() -> LLMClient:
     global _client
     if _client is None:
@@ -142,10 +160,14 @@ def health() -> dict:
         "mode": opts.mode,
         "prompt_version": prompt.PROMPT_VERSION,
         "mailbox": bool(os.getenv("INBREV_IMAP_HOST")),
+        "endpoint_configured": endpoint_configured(),
         "endpoint_host": host,
-        "endpoint_local": host in ("localhost", "127.0.0.1", "llm")
-        or host.endswith(".local")
-        or "." not in host,
+        "endpoint_local": endpoint_configured()
+        and (
+            host in ("localhost", "127.0.0.1", "llm")
+            or host.endswith(".local")
+            or "." not in host
+        ),
         "samples": opts.samples,
         "safety_mode": opts.safety_mode,
         "symptom_check": opts.symptom_check,
@@ -187,7 +209,10 @@ def load_demo(name: str, limit: int = 30, with_predictions: bool = False) -> dic
             item = inbox.get(row["result"]["message_id"])
             if item:
                 item.update(
-                    result=row["result"], trace=_trace_view(row["trace"]), status="done"
+                    result=row["result"],
+                    trace=_trace_view(row["trace"]),
+                    status="done",
+                    stored=True,
                 )
     return {"loaded": len(msgs)}
 
@@ -219,6 +244,31 @@ def fetch_mail() -> dict:
 @app.post("/v1/inbox/sort")
 async def sort_inbox() -> dict:
     pending = [i for i in inbox.values() if i["status"] in ("pending", "error")]
+    if not endpoint_configured():
+        stored = _stored_results()
+        used = 0
+        for i in pending:
+            row = stored.get(i["message"]["message_id"])
+            if row:
+                i.update(
+                    result=row["result"],
+                    trace=_trace_view(row["trace"]),
+                    status="done",
+                    stored=True,
+                )
+                used += 1
+        return {
+            "queued": 0,
+            "stored": used,
+            "not_sorted": len(pending) - used,
+            "endpoint_configured": False,
+            "message": NO_ENDPOINT
+            + (
+                f" Showing {used} stored results instead (marked as stored)."
+                if used
+                else ""
+            ),
+        }
     for i in pending:
         i["status"] = "queued"
 
@@ -239,6 +289,8 @@ def clear_inbox() -> dict:
 
 @app.post("/v1/triage")
 async def triage_one(msg: MessageIn) -> dict:
+    if not endpoint_configured():
+        raise HTTPException(503, NO_ENDPOINT)
     m = msg.model_dump()
     m["message_id"] = m["message_id"] or ingest._new_id("api")
     req_opts = replace(opts, mode=m["mode"]) if m.get("mode") else opts
@@ -256,5 +308,8 @@ async def upload(file: UploadFile = File(...)) -> dict:
         raise HTTPException(422, f"could not read {file.filename}: {e}") from e
     item = {"message": m, "result": None, "trace": None, "status": "queued"}
     inbox[m["message_id"]] = item
+    if not endpoint_configured():
+        item["status"] = "pending"
+        return {**item, "message": NO_ENDPOINT}
     await _triage_item(item)
     return item

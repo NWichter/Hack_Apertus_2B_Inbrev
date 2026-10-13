@@ -6,7 +6,8 @@ services:
       - "127.0.0.1:${INBREV_PORT:-8000}:8000"
     environment:
       LLM_NAME: ${LLM_NAME:-apertus-v1.5-8b}
-      LLM_BASE_URL: ${LLM_BASE_URL:-http://llm:8080/v1}
+      # Empty = no endpoint: the app shows stored results and explains what to set.
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
       LLM_API_KEY: ${LLM_API_KEY:-none}
       INBREV_SAMPLES: ${INBREV_SAMPLES:-3}
       # Stored seed results so "Load" works without endpoint credentials; "Sort inbox" calls the model.

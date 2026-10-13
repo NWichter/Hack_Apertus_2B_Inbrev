@@ -37,6 +37,7 @@ PROMPT_MD = ROOT / "data" / "generation" / "PROMPT.md"
 API = "https://openrouter.ai/api/v1/chat/completions"
 PROMPT_VERSION = "v0.2-nemotron"
 GENERATOR = "nemotron"
+# Set from --generator-name (e.g. "gemma" for the second hold-out of 14 October 2026).
 MAX_RETRIES = 2
 
 GRID_45 = {
@@ -148,7 +149,42 @@ GRID_CHALLENGE = {
         "institution": {"clean": 75, "typos": 25},
     },
 }
-PRESETS = {"45": GRID_45, "dev": GRID_DEV, "challenge": GRID_CHALLENGE}
+# Second hold-out (seed 7373, prefix "ho2", 14 October 2026): gold v0 distribution scaled to 150.
+GRID_HOLDOUT2 = {
+    "ROUTE_COUNTS": {
+        "report_received": 22,
+        "appointment": 22,
+        "prescription_request": 18,
+        "insurer": 20,
+        "referral_in": 15,
+        "certificate_request": 15,
+        "billing": 13,
+        "spam_marketing": 12,
+        "other": 13,
+    },
+    "SAFETY_SLOTS": {
+        "acute_explicit": {"other": 3, "appointment": 3},
+        "acute_incidental": {
+            "appointment": 2,
+            "prescription_request": 2,
+            "certificate_request": 2,
+            "billing": 1,
+            "other": 1,
+        },
+        "medical_trap": {
+            "report_received": 3,
+            "appointment": 2,
+            "prescription_request": 2,
+            "insurer": 2,
+            "certificate_request": 1,
+            "other": 2,
+        },
+    },
+    "LANG_COUNTS": {"de": 83, "fr": 37, "it": 23, "en": 7},
+    "MIXED_N": 15,
+    "ABSTAIN_N": 7,
+}
+PRESETS = {"45": GRID_45, "dev": GRID_DEV, "challenge": GRID_CHALLENGE, "holdout2": GRID_HOLDOUT2}
 
 PROMPT_EDITS = [
     (
@@ -204,7 +240,7 @@ def cmd_grid(args: argparse.Namespace) -> None:
     specs = make_grid.build(args.seed)
     for s in specs:
         s["message_id"] = s["message_id"].replace("syn-", f"{args.prefix}-")
-        s["generator"] = GENERATOR
+        s["generator"] = args.generator_name
     specs.sort(key=lambda s: s["message_id"])
     assemble.write_jsonl(Path(args.out), specs)
     print(f"wrote {len(specs)} specs to {args.out}")
@@ -309,7 +345,8 @@ def cmd_generate(args: argparse.Namespace) -> None:
     raw_dir = Path(args.raw_dir)
     raw_dir.mkdir(parents=True, exist_ok=True)
     system = build_prompt()
-    (raw_dir / f"PROMPT-{PROMPT_VERSION}.txt").write_text(system, encoding="utf-8")
+    pv = f"v0.2-{args.generator_name}"
+    (raw_dir / f"PROMPT-{pv}.txt").write_text(system, encoding="utf-8")
     today = date.today().isoformat()
 
     accepted: dict[str, dict] = {}
@@ -402,8 +439,8 @@ def cmd_generate(args: argparse.Namespace) -> None:
                     raw["edit_note"] = "; ".join(notes)
                 raw["generator_model"] = args.model
                 raw["generated_at"] = today
-                raw["prompt_version"] = PROMPT_VERSION
-                rec = assemble.assemble(raw, by_id[mid], GENERATOR, args.model, today)
+                raw["prompt_version"] = pv
+                rec = assemble.assemble(raw, by_id[mid], args.generator_name, args.model, today)
                 errs = check(rec, by_id[mid], validator, args.strict)
                 if errs:
                     feedback[mid] = errs
@@ -443,6 +480,7 @@ def main() -> None:
     g = sub.add_parser("grid")
     g.add_argument("--seed", type=int, default=2027)
     g.add_argument("--prefix", default="nem")
+    g.add_argument("--generator-name", default=GENERATOR)
     g.add_argument("--preset", choices=sorted(PRESETS), default="45")
     g.add_argument("--out", required=True)
     r = sub.add_parser("generate")
@@ -455,6 +493,7 @@ def main() -> None:
     r.add_argument("--max-tokens", type=int, default=40000)
     r.add_argument("--only", help="comma-separated message_ids to (re)generate")
     r.add_argument("--workers", type=int, default=1, help="batches in parallel")
+    r.add_argument("--generator-name", default=GENERATOR)
     r.add_argument(
         "--strict", action="store_true", help="treat validator warnings as errors"
     )

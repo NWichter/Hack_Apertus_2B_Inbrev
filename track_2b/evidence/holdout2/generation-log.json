@@ -1,0 +1,1338 @@
+[
+ {
+  "batch": 1,
+  "attempt": 0,
+  "specs": [
+   "ho2-001",
+   "ho2-002",
+   "ho2-003",
+   "ho2-004",
+   "ho2-005"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3322,
+  "completion_tokens": 2648,
+  "reasoning_tokens": 0,
+  "cost": 0.00123252,
+  "seconds": 75.9,
+  "returned": 5,
+  "failed": {
+   "ho2-003": [
+    "evidence: quote not verbatim (route): 'LABORBERICHT\\n\\nF AX TRANSMISSION\\nSeite 1/1\\n\\nBETRIFF: Laborbefunde'"
+   ]
+  }
+ },
+ {
+  "batch": 1,
+  "attempt": 1,
+  "specs": [
+   "ho2-003"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2562,
+  "completion_tokens": 544,
+  "reasoning_tokens": 0,
+  "cost": 0.00032466,
+  "seconds": 7.3,
+  "returned": 1,
+  "failed": {
+   "ho2-003": [
+    "evidence: quote not verbatim (route): 'Laborbericht\\n\\nF AX TRANSMISSION\\nSeite 1/1\\n\\nBETRIFF: Laborbefunde'"
+   ]
+  }
+ },
+ {
+  "batch": 1,
+  "attempt": 2,
+  "specs": [
+   "ho2-003"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2559,
+  "completion_tokens": 587,
+  "reasoning_tokens": 0,
+  "cost": 0.00033005,
+  "seconds": 14.5,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 2,
+  "attempt": 0,
+  "specs": [
+   "ho2-006",
+   "ho2-007",
+   "ho2-008",
+   "ho2-009",
+   "ho2-010"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3351,
+  "completion_tokens": 2396,
+  "reasoning_tokens": 0,
+  "cost": 0.00114974,
+  "seconds": 32.7,
+  "returned": 5,
+  "failed": {
+   "ho2-009": [
+    "evidence: quote not verbatim (secondary_route): 'benötige für meinen Arbeitgeber eine kurze Bestätigung'"
+   ]
+  }
+ },
+ {
+  "batch": 2,
+  "attempt": 1,
+  "specs": [
+   "ho2-009"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 2547,
+  "completion_tokens": 417,
+  "reasoning_tokens": 0,
+  "cost": 0.00039648,
+  "seconds": 13.5,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 3,
+  "attempt": 0,
+  "specs": [
+   "ho2-011",
+   "ho2-012",
+   "ho2-013",
+   "ho2-014",
+   "ho2-015"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3332,
+  "completion_tokens": 2936,
+  "reasoning_tokens": 0,
+  "cost": 0.00133144,
+  "seconds": 38.1,
+  "returned": 5,
+  "failed": {
+   "ho2-012": [
+    "evidence: quote not verbatim (fields.pharmacy): 'Apotheke Sonnenhof'"
+   ],
+   "ho2-014": [
+    "evidence: quote not verbatim (patient.insurer): 'SwissCare Global'"
+   ],
+   "ho2-015": [
+    "evidence: quote not verbatim (fields.referring_physician): 'Dr. med. Julia Stern'"
+   ]
+  }
+ },
+ {
+  "batch": 3,
+  "attempt": 1,
+  "specs": [
+   "ho2-012",
+   "ho2-014",
+   "ho2-015"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3037,
+  "completion_tokens": 1500,
+  "reasoning_tokens": 0,
+  "cost": 0.0008137,
+  "seconds": 19.7,
+  "returned": 3,
+  "failed": {}
+ },
+ {
+  "batch": 4,
+  "attempt": 0,
+  "specs": [
+   "ho2-016",
+   "ho2-017",
+   "ho2-018",
+   "ho2-019",
+   "ho2-020"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3307,
+  "completion_tokens": 2084,
+  "reasoning_tokens": 0,
+  "cost": 0.00103926,
+  "seconds": 62.1,
+  "returned": 5,
+  "failed": {
+   "ho2-016": [
+    "evidence: quote not verbatim (fields.requested_dates): 'nächste Woche am Nachmittag'"
+   ]
+  }
+ },
+ {
+  "batch": 4,
+  "attempt": 1,
+  "specs": [
+   "ho2-016"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2544,
+  "completion_tokens": 348,
+  "reasoning_tokens": 0,
+  "cost": 0.0002564,
+  "seconds": 6.5,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 5,
+  "attempt": 0,
+  "specs": [
+   "ho2-021",
+   "ho2-022",
+   "ho2-023",
+   "ho2-024",
+   "ho2-025"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3306,
+  "completion_tokens": 2285,
+  "reasoning_tokens": 0,
+  "cost": 0.00107444,
+  "seconds": 39.4,
+  "returned": 5,
+  "failed": {
+   "ho2-023": [
+    "evidence: deadline_date set but no evidence for deadline"
+   ]
+  }
+ },
+ {
+  "batch": 5,
+  "attempt": 1,
+  "specs": [
+   "ho2-023"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2561,
+  "completion_tokens": 699,
+  "reasoning_tokens": 0,
+  "cost": 0.00046815,
+  "seconds": 10.8,
+  "returned": 1,
+  "failed": {
+   "ho2-023": [
+    "evidence: quote not verbatim (patient.insurer): 'AstraNova Krankenversicherung'",
+    "evidence: quote not verbatim (fields.creditor): 'AstraNova Krankenversicherung'",
+    "evidence: deadline_date set but no evidence for deadline"
+   ]
+  }
+ },
+ {
+  "batch": 5,
+  "attempt": 2,
+  "specs": [
+   "ho2-023"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 2595,
+  "completion_tokens": 698,
+  "reasoning_tokens": 0,
+  "cost": 0.00049682,
+  "seconds": 9.9,
+  "returned": 1,
+  "failed": {
+   "ho2-023": [
+    "evidence: deadline_date set but no evidence for deadline"
+   ]
+  }
+ },
+ {
+  "batch": 5,
+  "dropped": "ho2-023",
+  "errors": [
+   "evidence: deadline_date set but no evidence for deadline"
+  ]
+ },
+ {
+  "batch": 6,
+  "attempt": 0,
+  "specs": [
+   "ho2-026",
+   "ho2-027",
+   "ho2-028",
+   "ho2-029",
+   "ho2-030"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3310,
+  "completion_tokens": 3029,
+  "reasoning_tokens": 0,
+  "cost": 0.00136086,
+  "seconds": 88.3,
+  "returned": 5,
+  "failed": {
+   "ho2-026": [
+    "evidence: quote not verbatim (fields.referring_physician): 'Dr. med. Beat Lustenberger'"
+   ],
+   "ho2-029": [
+    "evidence: quote not verbatim (route): 'nous vous prions de bien vouloir nous faire parvenir le certificat médical'"
+   ]
+  }
+ },
+ {
+  "batch": 6,
+  "attempt": 1,
+  "specs": [
+   "ho2-026",
+   "ho2-029"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2780,
+  "completion_tokens": 985,
+  "reasoning_tokens": 0,
+  "cost": 0.00049422,
+  "seconds": 17.0,
+  "returned": 2,
+  "failed": {}
+ },
+ {
+  "batch": 7,
+  "attempt": 0,
+  "specs": [
+   "ho2-031",
+   "ho2-032",
+   "ho2-033",
+   "ho2-034",
+   "ho2-035"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3366,
+  "completion_tokens": 2591,
+  "reasoning_tokens": 0,
+  "cost": 0.001093,
+  "seconds": 41.6,
+  "returned": 5,
+  "failed": {
+   "ho2-033": [
+    "evidence: quote not verbatim (patient.insurer): 'Assurance Santé Horizon'"
+   ],
+   "ho2-034": [
+    "evidence: quote not verbatim (route): 'dans le cadre du versement des indemnités journalières'"
+   ]
+  }
+ },
+ {
+  "batch": 7,
+  "attempt": 1,
+  "specs": [
+   "ho2-033",
+   "ho2-034"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2825,
+  "completion_tokens": 1227,
+  "reasoning_tokens": 0,
+  "cost": 0.00058055,
+  "seconds": 21.0,
+  "returned": 2,
+  "failed": {}
+ },
+ {
+  "batch": 8,
+  "attempt": 0,
+  "specs": [
+   "ho2-036",
+   "ho2-037",
+   "ho2-038",
+   "ho2-039",
+   "ho2-040"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3301,
+  "completion_tokens": 2142,
+  "reasoning_tokens": 0,
+  "cost": 0.001517,
+  "seconds": 74.9,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 9,
+  "attempt": 0,
+  "specs": [
+   "ho2-041",
+   "ho2-042",
+   "ho2-043",
+   "ho2-044",
+   "ho2-045"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3316,
+  "completion_tokens": 2338,
+  "reasoning_tokens": 0,
+  "cost": 0.00112652,
+  "seconds": 31.9,
+  "returned": 5,
+  "failed": {
+   "ho2-042": [
+    "evidence: quote not verbatim (route): 'richiesta informazioni - Polizza 992834'"
+   ],
+   "ho2-043": [
+    "evidence: quote not verbatim (fields.sender_institution): 'Laboratoire BioSwiss'"
+   ]
+  }
+ },
+ {
+  "batch": 9,
+  "attempt": 1,
+  "specs": [
+   "ho2-042",
+   "ho2-043"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2771,
+  "completion_tokens": 933,
+  "reasoning_tokens": 0,
+  "cost": 0.00047573,
+  "seconds": 15.7,
+  "returned": 2,
+  "failed": {}
+ },
+ {
+  "batch": 10,
+  "attempt": 0,
+  "specs": [
+   "ho2-046",
+   "ho2-047",
+   "ho2-048",
+   "ho2-049",
+   "ho2-050"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3340,
+  "completion_tokens": 2189,
+  "reasoning_tokens": 0,
+  "cost": 0.00107826,
+  "seconds": 66.4,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 11,
+  "attempt": 0,
+  "specs": [
+   "ho2-051",
+   "ho2-052",
+   "ho2-053",
+   "ho2-054",
+   "ho2-055"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3302,
+  "completion_tokens": 2335,
+  "reasoning_tokens": 0,
+  "cost": 0.0011241,
+  "seconds": 71.7,
+  "returned": 5,
+  "failed": {
+   "ho2-052": [
+    "evidence: quote not verbatim (fields.sender_institution): 'Kardiologie Zentrum Nord'"
+   ],
+   "ho2-054": [
+    "evidence: quote not verbatim (fields.referral_reason): 'weitere ambulante Betreuung nach einer Pneumonie'"
+   ]
+  }
+ },
+ {
+  "batch": 11,
+  "attempt": 1,
+  "specs": [
+   "ho2-052",
+   "ho2-054"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2779,
+  "completion_tokens": 1007,
+  "reasoning_tokens": 0,
+  "cost": 0.00050161,
+  "seconds": 16.8,
+  "returned": 2,
+  "failed": {
+   "ho2-054": [
+    "evidence: quote not verbatim (fields.referral_reason): 'weitere ambulante Betreuung nach einer Pneumonie'"
+   ]
+  }
+ },
+ {
+  "batch": 11,
+  "attempt": 2,
+  "specs": [
+   "ho2-054"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 2549,
+  "completion_tokens": 590,
+  "reasoning_tokens": 0,
+  "cost": 0.0004555,
+  "seconds": 19.4,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 12,
+  "attempt": 0,
+  "specs": [
+   "ho2-056",
+   "ho2-057",
+   "ho2-058",
+   "ho2-059",
+   "ho2-060"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3310,
+  "completion_tokens": 2099,
+  "reasoning_tokens": 0,
+  "cost": 0.00104466,
+  "seconds": 29.0,
+  "returned": 5,
+  "failed": {
+   "ho2-057": [
+    "evidence: quote not verbatim (patient.name): 'Julie Morel'"
+   ]
+  }
+ },
+ {
+  "batch": 12,
+  "attempt": 1,
+  "specs": [
+   "ho2-057"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 2536,
+  "completion_tokens": 422,
+  "reasoning_tokens": 0,
+  "cost": 0.00039708,
+  "seconds": 6.3,
+  "returned": 1,
+  "failed": {
+   "ho2-057": [
+    "evidence: quote not verbatim (route): 'vouderais savoir si vous pouviez me préparer une nouvelle ordonnance'"
+   ]
+  }
+ },
+ {
+  "batch": 12,
+  "attempt": 2,
+  "specs": [
+   "ho2-057"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2548,
+  "completion_tokens": 446,
+  "reasoning_tokens": 0,
+  "cost": 0.00029008,
+  "seconds": 7.7,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 13,
+  "attempt": 0,
+  "specs": [
+   "ho2-061",
+   "ho2-062",
+   "ho2-063",
+   "ho2-064",
+   "ho2-065"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3286,
+  "completion_tokens": 2200,
+  "reasoning_tokens": 0,
+  "cost": 0.00095286,
+  "seconds": 39.0,
+  "returned": 5,
+  "failed": {
+   "ho2-062": [
+    "evidence: quote not verbatim (fields.sender_institution): 'Pathologie Zentrum Nord'"
+   ],
+   "ho2-064": [
+    "evidence: quote not verbatim (fields.topic): 'digitale Übermittlung meiner Patientenakten'"
+   ]
+  }
+ },
+ {
+  "batch": 13,
+  "attempt": 1,
+  "specs": [
+   "ho2-062",
+   "ho2-064"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2766,
+  "completion_tokens": 927,
+  "reasoning_tokens": 0,
+  "cost": 0.00047324,
+  "seconds": 13.0,
+  "returned": 2,
+  "failed": {}
+ },
+ {
+  "batch": 14,
+  "attempt": 0,
+  "specs": [
+   "ho2-066",
+   "ho2-067",
+   "ho2-068",
+   "ho2-069",
+   "ho2-070"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3328,
+  "completion_tokens": 2309,
+  "reasoning_tokens": 0,
+  "cost": 0.0009937,
+  "seconds": 40.1,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 15,
+  "attempt": 0,
+  "specs": [
+   "ho2-071",
+   "ho2-072",
+   "ho2-073",
+   "ho2-074",
+   "ho2-075"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3324,
+  "completion_tokens": 2805,
+  "reasoning_tokens": 0,
+  "cost": 0.0012861,
+  "seconds": 79.0,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 16,
+  "attempt": 0,
+  "specs": [
+   "ho2-076",
+   "ho2-077",
+   "ho2-078",
+   "ho2-079",
+   "ho2-080"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3309,
+  "completion_tokens": 2586,
+  "reasoning_tokens": 0,
+  "cost": 0.00108617,
+  "seconds": 39.4,
+  "returned": 5,
+  "failed": {
+   "ho2-078": [
+    "evidence: quote not verbatim (fields.sender_institution): 'Studio di Cardiologia'"
+   ]
+  }
+ },
+ {
+  "batch": 16,
+  "attempt": 1,
+  "specs": [
+   "ho2-078"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2558,
+  "completion_tokens": 582,
+  "reasoning_tokens": 0,
+  "cost": 0.00033722,
+  "seconds": 8.9,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 17,
+  "attempt": 0,
+  "specs": [
+   "ho2-081",
+   "ho2-082",
+   "ho2-083",
+   "ho2-084",
+   "ho2-085"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3311,
+  "completion_tokens": 2157,
+  "reasoning_tokens": 0,
+  "cost": 0.00094049,
+  "seconds": 33.3,
+  "returned": 5,
+  "failed": {
+   "ho2-081": [
+    "evidence: quote not verbatim (fields.sender_institution): 'Orthopaedic Clinic North'"
+   ],
+   "ho2-084": [
+    "evidence: quote not verbatim (patient.insurer): 'SicherheitsVersicherung AG'"
+   ]
+  }
+ },
+ {
+  "batch": 17,
+  "attempt": 1,
+  "specs": [
+   "ho2-081",
+   "ho2-084"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2793,
+  "completion_tokens": 945,
+  "reasoning_tokens": 0,
+  "cost": 0.0009366,
+  "seconds": 42.0,
+  "returned": 2,
+  "failed": {}
+ },
+ {
+  "batch": 18,
+  "attempt": 0,
+  "specs": [
+   "ho2-086",
+   "ho2-087",
+   "ho2-088",
+   "ho2-089",
+   "ho2-090"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3327,
+  "completion_tokens": 2658,
+  "reasoning_tokens": 0,
+  "cost": 0.00123642,
+  "seconds": 75.8,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 19,
+  "attempt": 0,
+  "specs": [
+   "ho2-091",
+   "ho2-092",
+   "ho2-093",
+   "ho2-094",
+   "ho2-095"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3334,
+  "completion_tokens": 2501,
+  "reasoning_tokens": 0,
+  "cost": 0.00118374,
+  "seconds": 37.3,
+  "returned": 5,
+  "failed": {
+   "ho2-093": [
+    "evidence: quote not verbatim (fields.sender_institution): 'Orthopedic Center'"
+   ]
+  }
+ },
+ {
+  "batch": 19,
+  "attempt": 1,
+  "specs": [
+   "ho2-093"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 2539,
+  "completion_tokens": 562,
+  "reasoning_tokens": 0,
+  "cost": 0.00044498,
+  "seconds": 9.4,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 20,
+  "attempt": 0,
+  "specs": [
+   "ho2-096",
+   "ho2-097",
+   "ho2-098",
+   "ho2-099",
+   "ho2-100"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "Parasail",
+  "finish_reason": "stop",
+  "prompt_tokens": 3308,
+  "completion_tokens": 2137,
+  "reasoning_tokens": 0,
+  "cost": 0.00135055,
+  "seconds": 47.5,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 21,
+  "attempt": 0,
+  "specs": [
+   "ho2-101",
+   "ho2-102",
+   "ho2-103",
+   "ho2-104",
+   "ho2-105"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3314,
+  "completion_tokens": 2247,
+  "reasoning_tokens": 0,
+  "cost": 0.00097136,
+  "seconds": 33.2,
+  "returned": 5,
+  "failed": {
+   "ho2-103": [
+    "evidence: quote not verbatim (fields.creditor): 'MedSupply Solutions'"
+   ],
+   "ho2-104": [
+    "evidence: quote not verbatim (patient.name): 'Lukas Meier'"
+   ],
+   "ho2-105": [
+    "evidence: quote not verbatim (route): 'IV-Stelle Kanton Zürich'"
+   ]
+  }
+ },
+ {
+  "batch": 21,
+  "attempt": 1,
+  "specs": [
+   "ho2-103",
+   "ho2-104",
+   "ho2-105"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3008,
+  "completion_tokens": 1278,
+  "reasoning_tokens": 0,
+  "cost": 0.00061436,
+  "seconds": 18.1,
+  "returned": 3,
+  "failed": {
+   "ho2-103": [
+    "evidence: deadline_date set but no evidence for deadline"
+   ],
+   "ho2-105": [
+    "evidence: deadline_date set but no evidence for deadline"
+   ]
+  }
+ },
+ {
+  "batch": 21,
+  "attempt": 2,
+  "specs": [
+   "ho2-103",
+   "ho2-105"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 2771,
+  "completion_tokens": 958,
+  "reasoning_tokens": 0,
+  "cost": 0.00060282,
+  "seconds": 31.5,
+  "returned": 2,
+  "failed": {
+   "ho2-103": [
+    "evidence: deadline_date set but no evidence for deadline"
+   ],
+   "ho2-105": [
+    "evidence: deadline_date set but no evidence for deadline"
+   ]
+  }
+ },
+ {
+  "batch": 21,
+  "dropped": "ho2-103",
+  "errors": [
+   "evidence: deadline_date set but no evidence for deadline"
+  ]
+ },
+ {
+  "batch": 21,
+  "dropped": "ho2-105",
+  "errors": [
+   "evidence: deadline_date set but no evidence for deadline"
+  ]
+ },
+ {
+  "batch": 22,
+  "attempt": 0,
+  "specs": [
+   "ho2-106",
+   "ho2-107",
+   "ho2-108",
+   "ho2-109",
+   "ho2-110"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3320,
+  "completion_tokens": 2372,
+  "reasoning_tokens": 0,
+  "cost": 0.00113848,
+  "seconds": 76.5,
+  "returned": 5,
+  "failed": {
+   "ho2-107": [
+    "evidence: quote not verbatim (patient.name): 'Susi Muster'"
+   ]
+  }
+ },
+ {
+  "batch": 22,
+  "attempt": 1,
+  "specs": [
+   "ho2-107"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2552,
+  "completion_tokens": 436,
+  "reasoning_tokens": 0,
+  "cost": 0.00028704,
+  "seconds": 9.7,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 23,
+  "attempt": 0,
+  "specs": [
+   "ho2-111",
+   "ho2-112",
+   "ho2-113",
+   "ho2-114",
+   "ho2-115"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3319,
+  "completion_tokens": 2205,
+  "reasoning_tokens": 0,
+  "cost": 0.00095753,
+  "seconds": 31.5,
+  "returned": 5,
+  "failed": {
+   "ho2-113": [
+    "evidence: quote not verbatim (fields.sender_institution): 'Kardiologie Zentrum Nord'"
+   ]
+  }
+ },
+ {
+  "batch": 23,
+  "attempt": 1,
+  "specs": [
+   "ho2-113"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2543,
+  "completion_tokens": 490,
+  "reasoning_tokens": 0,
+  "cost": 0.00030459,
+  "seconds": 6.8,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 24,
+  "attempt": 0,
+  "specs": [
+   "ho2-116",
+   "ho2-117",
+   "ho2-118",
+   "ho2-119",
+   "ho2-120"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 3306,
+  "completion_tokens": 2399,
+  "reasoning_tokens": 0,
+  "cost": 0.00114626,
+  "seconds": 40.7,
+  "returned": 5,
+  "failed": {
+   "ho2-118": [
+    "evidence: quote not verbatim (fields.appointment_action): 'Termin für meinen Vater, vereinbaren'"
+   ]
+  }
+ },
+ {
+  "batch": 24,
+  "attempt": 1,
+  "specs": [
+   "ho2-118"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2553,
+  "completion_tokens": 444,
+  "reasoning_tokens": 0,
+  "cost": 0.00028985,
+  "seconds": 6.4,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 25,
+  "attempt": 0,
+  "specs": [
+   "ho2-121",
+   "ho2-122",
+   "ho2-123",
+   "ho2-124",
+   "ho2-125"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3322,
+  "completion_tokens": 2045,
+  "reasoning_tokens": 0,
+  "cost": 0.0009034,
+  "seconds": 27.8,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 26,
+  "attempt": 0,
+  "specs": [
+   "ho2-126",
+   "ho2-127",
+   "ho2-128",
+   "ho2-129",
+   "ho2-130"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3341,
+  "completion_tokens": 2420,
+  "reasoning_tokens": 0,
+  "cost": 0.00103261,
+  "seconds": 33.2,
+  "returned": 5,
+  "failed": {
+   "ho2-129": [
+    "evidence: quote not verbatim (route): 'Anforderung von Unterlagen'"
+   ]
+  }
+ },
+ {
+  "batch": 26,
+  "attempt": 1,
+  "specs": [
+   "ho2-129"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2569,
+  "completion_tokens": 653,
+  "reasoning_tokens": 0,
+  "cost": 0.00036235,
+  "seconds": 9.0,
+  "returned": 1,
+  "failed": {}
+ },
+ {
+  "batch": 27,
+  "attempt": 0,
+  "specs": [
+   "ho2-131",
+   "ho2-132",
+   "ho2-133",
+   "ho2-134",
+   "ho2-135"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3325,
+  "completion_tokens": 2650,
+  "reasoning_tokens": 0,
+  "cost": 0.00110937,
+  "seconds": 36.2,
+  "returned": 5,
+  "failed": {
+   "ho2-134": [
+    "fiction: e-mail domain not fictitious: claire.dubois@example.com"
+   ],
+   "ho2-135": [
+    "fiction: e-mail domain not fictitious: a.mansour@example.com"
+   ]
+  }
+ },
+ {
+  "batch": 27,
+  "attempt": 1,
+  "specs": [
+   "ho2-134",
+   "ho2-135"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2762,
+  "completion_tokens": 950,
+  "reasoning_tokens": 0,
+  "cost": 0.0004807,
+  "seconds": 18.9,
+  "returned": 2,
+  "failed": {}
+ },
+ {
+  "batch": 28,
+  "attempt": 0,
+  "specs": [
+   "ho2-136",
+   "ho2-137",
+   "ho2-138",
+   "ho2-139",
+   "ho2-140"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3293,
+  "completion_tokens": 1840,
+  "reasoning_tokens": 0,
+  "cost": 0.00083109,
+  "seconds": 25.6,
+  "returned": 5,
+  "failed": {
+   "ho2-138": [
+    "evidence: quote not verbatim (route): \"Sconto del 30% sull'installazione iniziale\""
+   ]
+  }
+ },
+ {
+  "batch": 28,
+  "attempt": 1,
+  "specs": [
+   "ho2-138"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 2542,
+  "completion_tokens": 347,
+  "reasoning_tokens": 0,
+  "cost": 0.00037218,
+  "seconds": 15.2,
+  "returned": 1,
+  "failed": {
+   "ho2-138": [
+    "evidence: quote not verbatim (route): \"Sconto del 30% sull'installazione iniziale\""
+   ]
+  }
+ },
+ {
+  "batch": 28,
+  "attempt": 2,
+  "specs": [
+   "ho2-138"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 2542,
+  "completion_tokens": 343,
+  "reasoning_tokens": 0,
+  "cost": 0.00037082,
+  "seconds": 12.9,
+  "returned": 1,
+  "failed": {
+   "ho2-138": [
+    "evidence: quote not verbatim (route): \"Sconto del 30% sull'installazione iniziale\""
+   ]
+  }
+ },
+ {
+  "batch": 28,
+  "dropped": "ho2-138",
+  "errors": [
+   "evidence: quote not verbatim (route): \"Sconto del 30% sull'installazione iniziale\""
+  ]
+ },
+ {
+  "batch": 29,
+  "attempt": 0,
+  "specs": [
+   "ho2-141",
+   "ho2-142",
+   "ho2-143",
+   "ho2-144",
+   "ho2-145"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "Crusoe",
+  "finish_reason": "stop",
+  "prompt_tokens": 3325,
+  "completion_tokens": 1897,
+  "reasoning_tokens": 0,
+  "cost": 0.0012243,
+  "seconds": 26.8,
+  "returned": 5,
+  "failed": {}
+ },
+ {
+  "batch": 30,
+  "attempt": 0,
+  "specs": [
+   "ho2-146",
+   "ho2-147",
+   "ho2-148",
+   "ho2-149",
+   "ho2-150"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 3352,
+  "completion_tokens": 2582,
+  "reasoning_tokens": 0,
+  "cost": 0.0017032,
+  "seconds": 130.3,
+  "returned": 5,
+  "failed": {
+   "ho2-147": [
+    "evidence: quote not verbatim (patient.insurer): 'Helvetia-Care Unfallversicherung'"
+   ],
+   "ho2-148": [
+    "evidence: quote not verbatim (route): 'entlassen heute Frau Elena Rossi... in Ihre weitere Betreuung'"
+   ]
+  }
+ },
+ {
+  "batch": 30,
+  "attempt": 1,
+  "specs": [
+   "ho2-147",
+   "ho2-148"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "DeepInfra",
+  "finish_reason": "stop",
+  "prompt_tokens": 2800,
+  "completion_tokens": 1072,
+  "reasoning_tokens": 0,
+  "cost": 0.00061648,
+  "seconds": 19.1,
+  "returned": 2,
+  "failed": {
+   "ho2-148": [
+    "evidence: quote not verbatim (route): 'entlassen heute Frau Elena Rossi... in Ihre weitere Betreuung'"
+   ]
+  }
+ },
+ {
+  "batch": 30,
+  "attempt": 2,
+  "specs": [
+   "ho2-148"
+  ],
+  "model": "google/gemma-4-31b-it",
+  "provider": "CoreWeave",
+  "finish_reason": "stop",
+  "prompt_tokens": 2558,
+  "completion_tokens": 579,
+  "reasoning_tokens": 0,
+  "cost": 0.00045266,
+  "seconds": 11.3,
+  "returned": 1,
+  "failed": {}
+ }
+]

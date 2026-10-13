@@ -1245,7 +1245,7 @@
               ><span>Option for single practices, Swiss hosting</span>
             </div>
             <div class="tier">
-              <b>CPU only</b><span>GGUF Q4, measured offline: 19 messages / hour</span>
+              <b>Local Q4</b><span>Offline in Docker on CPU: 19 messages / hour; same weights on the laptop GPU: 46–63 s / message</span>
             </div>
           </div>
           <div class="term">
@@ -1265,9 +1265,8 @@
           Measured: what leaves automation, and what still runs by itself.
         </h1>
         <div class="lead" style="margin-top: 18px">
-          180 synthetic messages, labels not yet reviewed by a person. Target
-          0.95 for clinical exclusion recall and “today” recall; 8B does not
-          reach it yet (13 of 16, 95 % CI 0.57–0.93).
+          180 synthetic messages, labels not reviewed by a person. Held-out
+          challenge set, 44 clinical: 8B 41/44 (CI 0.82–0.98), 70B 44/44, rules 31/44.
         </div>
         <div class="split">
           <div>
@@ -1320,12 +1319,10 @@
               </tbody>
             </table>
             <div class="foot" style="margin-top: 22px">
-              Inbrev: prompt p3, built on a separate dev set. Runs
-              automatically = neither unsure nor flagged (max. 91 %: clinical
-              mail always goes to a person). Rules route 79 % without a model
-              and match 8B on 30 Swiss-style messages (25 vs 24); paired on the
-              180, 8B wins 32 to 5 (p = 7·10⁻⁶). Half the flags are false
-              alarms. Nemotron set: 39/42, 8/8 clinical. Fax OCR not measured.
+              Prompt p3, built on a separate dev set. Runs automatically =
+              neither unsure nor flagged. Paired on the 180, 8B beats the rules
+              32 to 5 (p = 7·10⁻⁶). Half the flags are false alarms. Fax pages
+              via OCR: route 50/60 (clean 56/60). Other open models: next slide.
             </div>
           </div>
           <div class="side">
@@ -1338,15 +1335,63 @@
                 never writes or labels test data.
               </li>
               <li>
-                Fictional people; AHV numbers with an invalid check digit.
+                Two open models (not people) relabelled all 367 test messages
+                blind: κ 0.93 route, 0.97–0.98 clinical. Human review pending.
               </li>
               <li>
-                Review tool for a blind relabelling by a person (κ) is
-                ready; planned: handwritten messages and scanned faxes
+                Reports written by people: GraSCCo 40/40, PARHAF (French)
+                37/38 routed correctly.
               </li>
-              <li>Seed and Swiss sets in the repo (CDLA-Permissive-2.0); the 180 follow after human review.</li>
+              
             </ul>
           </div>
+        </div>
+      </section>
+
+      <!-- 6b · Why Apertus -->
+      <section class="slide">
+        <div class="eyebrow">Purposeful use of AI · model choice</div>
+        <h1 style="font-size: 66px">Why Apertus, and what it costs.</h1>
+        <div class="cols2">
+          <div class="col never">
+            <h3>Measured: same pipeline, 180 messages</h3>
+            <ul>
+              <li>Qwen3.5-9B and Ministral 8B: route 177/180, clinical 16/16</li>
+              <li>Apertus 70B: route 172/180, clinical 15/16</li>
+              <li>Apertus 8B: route 170/180, clinical 13/16</li>
+              <li>
+                Errors that pass automation unnoticed (wrong route + missed
+                clinical): 8B 9 + 3, 70B 8 + 1, the other two 1 + 0. The safety
+                net does not close this gap.
+              </li>
+            </ul>
+          </div>
+          <div class="col do">
+            <h3>Why we still choose Apertus</h3>
+            <ul>
+              <li>
+                Pretrained only on openly available data, robots.txt opt-outs
+                applied retroactively, personal data filtered (arXiv 2509.14233)
+              </li>
+              <li>
+                Published dataset catalogue, EU training-content summary and EU
+                Code of Practice statement (swiss-ai/apertus-data-transparency)
+              </li>
+              <li>Developed in Switzerland; all training artefacts released</li>
+              <li>
+                Local run, quote checks and the unranked safety net work with
+                any open model: no argument for Apertus
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="law">
+          <b>A trade-off, not a free choice:</b> 7 routes and 3 clinical
+          exclusions in 180 for 8B. A practice that has to justify under the
+          FADP and professional secrecy which model reads patient mail can point
+          to Apertus' documented provenance. Where the hardware allows, we
+          recommend 70B; the endpoint is swappable. The prompt was developed
+          with Apertus. Not legal advice.
         </div>
       </section>
 
@@ -1395,8 +1440,9 @@
         <div class="assume">
           <span class="target">assumption</span
           ><span
-            >What it buys: 60 messages a day × 1 minute each × CHF 50/h MPA time
-            ≈ CHF 50 a day. To be checked in interviews with practices.</span
+            >What it buys (assumption model, not measured): 60 messages a day,
+            60 s by hand vs 15 s to check a suggestion ≈ 35 MPA minutes a day,
+            net ≈ CHF 460 a month; break-even at 27 s per message. Interviews pending.</span
           >
         </div>
       </section>

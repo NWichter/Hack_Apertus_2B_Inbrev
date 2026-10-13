@@ -255,49 +255,58 @@
                 <li class="done">
                   Measured on the 180 messages: Inbrev with Apertus 8B takes 13
                   of 16 messages with clinical content out of automation
-                  (clinical exclusion recall 0.81, 95 % CI 0.57–0.93) and
-                  handles 84 % of all messages without a person (at most
-                  91 %, because clinical mail always goes to a person); route
-                  macro-F1 0.94 with prompt p3, which was built on a separate
-                  development set. Apertus 70B: 15 of 16
+                  (clinical exclusion recall 0.81, 95 % CI 0.57–0.93), routes
+                  170 of 180 correctly and handles 84 % automatically (a person
+                  only checks the suggestion and its quote). Apertus 70B: 15 of
+                  16, route 172
+                </li>
+                <li class="done">
+                  Held-out challenge set (115 messages written by an open model
+                  after everything was frozen; 44 with clinical content, 39
+                  medical traps): Apertus 8B takes 41 of 44 out of automation
+                  (95 % CI 0.82–0.98), 70B 44 of 44, keyword rules 31 of 44
                 </li>
                 <li class="done">
                   Baselines without a language model: keyword rules route 79 %
                   correctly but catch only 7 of 16 messages with clinical
-                  content, a TF-IDF classifier 2 of 16; a single Apertus 8B
-                  answer without the checks catches 9 of 16
+                  content; a single Apertus 8B answer without the checks catches
+                  9 of 16
                 </li>
                 <li class="done">
-                  Control set written by an open model (Nemotron), 42
-                  messages: Apertus 8B routes 39 and takes all 8 messages with
-                  clinical content out of automation; keyword rules 32 and 6
+                  Second labels from two open models (not people) on all 367
+                  test messages: agreement with our labels κ 0.93 for the
+                  route and 0.97–0.98 for clinical content; no ranking changes
+                  when scored against their labels
                 </li>
                 <li class="done">
-                  A rules-first hybrid would skip the model on half the mail
-                  but miss 3 more of the 16 clinical messages, so Apertus reads
-                  every message
+                  Clinical reports written by people: 40 of 40 German (GraSCCo)
+                  and 37 of 38 French (PARHAF) routed as reports; most false
+                  clinical flags on them come from the keyword net
                 </li>
                 <li class="done">
-                  40 German clinical letters from GraSCCo (CC BY 4.0): all 40
-                  routed as reports; 7 false clinical flags, 6 of them from the
-                  keyword net
+                  Fax pages read by OCR (60 messages): route 50 of 60 instead of
+                  56 on clean text; unreadable pages go to a person
                 </li>
                 <li class="done">
-                  Offline review tool for a blind relabelling by a person,
-                  with Cohen's κ
+                  Other open models in the same pipeline do better than Apertus:
+                  Qwen3.5-9B and Ministral 8B route 177 of 180 and catch 16 of
+                  16 (Apertus 8B 170 and 13, 70B 172 and 15). We keep Apertus
+                  for its documented, opt-out-respecting training data and Swiss
+                  origin, and say what that costs (see the report)
                 </li>
                 <li class="done">
                   Full run without internet: Apertus 8B (Q4 weights, checksum
                   logged) in llama.cpp and Inbrev on a Docker network with no
-                  route outside; an egress test fails as it should. On 30
-                  messages it gives the same route as the hosted model on 28,
-                  at 192 s per message on a 28-W laptop CPU
+                  route outside; an egress test fails as it should (192 s per
+                  message on a laptop CPU). The same weights on the laptop's
+                  integrated GPU: 46–63 s per message, 38 of 44 clinical
+                  messages caught on the challenge set
                 </li>
                 <li class="done">
                   Cost (model calculation from the measured time and an
                   assumed box price): about CHF 12 per 1,000 messages on a mini
-                  PC at 60 messages a day; CHF 2.39 on a Swiss cloud VM billed while
-                  sorting
+                  PC at 60 messages a day. Staff time saved is an assumption
+                  model, not measured (base case about 35 minutes a day)
                 </li>
               </ul>
             </article>
@@ -305,10 +314,10 @@
               <h3>In progress</h3>
               <ul class="checklist">
                 <li class="todo">
-                  Review of the labels by a person; so far all labels come from
-                  the generating models
+                  Review of the labels by a person; so far labels come from the
+                  generating grid and two open models
                 </li>
-                <li class="todo">Handwritten and faxed test messages</li>
+                <li class="todo">Interviews and a timing trial in practices</li>
                 <li class="todo">Latency on a GPU in the practice</li>
               </ul>
             </article>

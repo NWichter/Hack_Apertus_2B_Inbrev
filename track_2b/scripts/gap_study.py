@@ -45,6 +45,7 @@ def gate_70b(r8: dict, r70: dict) -> tuple[dict, int]:
             calls += 1
             if b["safety_flag"]:
                 x["safety_flag"] = True
+                x["deadline"] = "today"
             elif b["abstain"] or b["route"] != a["route"]:
                 x["abstain"] = True
         out[mid] = x
@@ -102,8 +103,15 @@ def main() -> None:
     if "70b" in runs:
         r70 = results(runs["70b"], gold)
         variants["70B p3"] = r70
-        if "base" in runs:
-            g, c = gate_70b(results(runs["base"], gold), r70)
+        base8 = (
+            with_symptom(runs["sym"], gold, None)
+            if "sym" in runs
+            else results(runs["base"], gold)
+            if "base" in runs
+            else None
+        )
+        if base8 is not None:
+            g, c = gate_70b(base8, r70)
             variants["8B + 70B gate"] = g
             calls_note.append(f"8B + 70B gate: 70B called for {c}/{len(gold)} messages")
         if "sym" in runs:
@@ -112,8 +120,11 @@ def main() -> None:
             calls_note.append(
                 f"8B + symptom + 70B gate: 70B called for {c}/{len(gold)} messages"
             )
-    if "base" in runs:
-        variants["8B + rules gate"] = gate_rules(results(runs["base"], gold), gold)
+    gate_base = with_symptom(runs["sym"], gold, None) if "sym" in runs else None
+    if gate_base is None and "base" in runs:
+        gate_base = results(runs["base"], gold)
+    if gate_base is not None:
+        variants["8B + rules gate"] = gate_rules(gate_base, gold)
     if "sym" in runs:
         variants["8B + symptom >= 1 + rules gate"] = gate_rules(
             with_symptom(runs["sym"], gold, 1), gold

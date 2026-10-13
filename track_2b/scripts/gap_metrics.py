@@ -30,6 +30,7 @@ def score(gold: list[dict], res: dict[str, dict]) -> dict:
     out = {
         "n": n,
         "route_ok": 0,
+        "auto_ok": 0,
         "clin": 0,
         "clin_flag": 0,
         "clin_out": 0,
@@ -44,25 +45,26 @@ def score(gold: list[dict], res: dict[str, dict]) -> dict:
         auto = automatic(r)
         out["route_ok"] += r["route"] == lab["route"]
         out["to_person"] += not auto
+        out["auto_ok"] += auto and r["route"] == lab["route"]
         out["false_flags"] += bool(r["safety_flag"]) and not lab["safety_flag"]
         if lab["safety_flag"]:
             out["clin"] += 1
             out["clin_flag"] += bool(r["safety_flag"])
             out["clin_out"] += not auto
             out["unnoticed_clin"] += auto
-        elif auto and r["route"] != lab["route"]:
+        if auto and r["route"] != lab["route"]:
             out["unnoticed_route"] += 1
     return out
 
 
 def fmt(name: str, s: dict) -> str:
     return (
-        f"| {name} | {s['route_ok']}/{s['n']} | {s['clin_flag']}/{s['clin']} | {s['clin_out']}/{s['clin']} | "
+        f"| {name} | {s['route_ok']}/{s['n']} | {s['auto_ok']} | {s['clin_flag']}/{s['clin']} | {s['clin_out']}/{s['clin']} | "
         f"{s['unnoticed_route']} | {s['unnoticed_clin']} | {s['to_person']}/{s['n']} | {s['false_flags']} |"
     )
 
 
 HEADER = (
-    "| Variant | Route | Clinical flagged | Clinical out of automation | Unnoticed wrong route | "
-    "Unnoticed clinical | To a person | False flags |\n| --- | --- | --- | --- | --- | --- | --- | --- |"
+    "| Variant | Route (model) | Automatic and right | Clinical flagged | Clinical out of automation | Unnoticed wrong route | "
+    "Unnoticed clinical | To a person | False flags |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |"
 )

@@ -9,7 +9,8 @@ services:
       LLM_BASE_URL: ${LLM_BASE_URL:-http://llm:8080/v1}
       LLM_API_KEY: ${LLM_API_KEY:-none}
       INBREV_SAMPLES: ${INBREV_SAMPLES:-3}
-      INBREV_PRECOMPUTED: ${INBREV_PRECOMPUTED:-}
+      # Stored seed results so "Load" works without endpoint credentials; "Sort inbox" calls the model.
+      INBREV_PRECOMPUTED: ${INBREV_PRECOMPUTED:-/app/data/demo/seed-predictions.jsonl}
       INBREV_AUDIT_LOG: /app/runs/audit.jsonl
     volumes:
       - runs:/app/runs

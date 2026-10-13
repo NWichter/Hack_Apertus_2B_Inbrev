@@ -148,6 +148,8 @@ def health() -> dict:
         or "." not in host,
         "samples": opts.samples,
         "safety_mode": opts.safety_mode,
+        "symptom_check": opts.symptom_check,
+        "rules_gate": opts.rules_gate,
         "demo_sets": list(_demo_sets()),
         "precomputed": os.getenv("INBREV_PRECOMPUTED", ""),
     }

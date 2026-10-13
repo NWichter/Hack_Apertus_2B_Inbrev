@@ -50,6 +50,8 @@ class Settings:
     split_samples: str = field(
         default_factory=lambda: os.getenv("INBREV_SPLIT_SAMPLES", "auto").lower()
     )
+    # Extra JSON merged into every chat request, e.g. to switch off reasoning of a comparison model.
+    extra_body: str = field(default_factory=lambda: os.getenv("INBREV_EXTRA_BODY", ""))
     timeout: float = field(
         default_factory=lambda: float(os.getenv("INBREV_TIMEOUT", "180"))
     )

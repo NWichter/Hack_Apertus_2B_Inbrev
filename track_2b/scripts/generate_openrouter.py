@@ -21,6 +21,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date
 from pathlib import Path
 
@@ -105,7 +106,49 @@ GRID_DEV = {
     "MIXED_N": 6,
     "ABSTAIN_N": 3,
 }
-PRESETS = {"45": GRID_45, "dev": GRID_DEV}
+# Clinical-exclusion challenge set (seed 5151, prefix "chl"), written on 13 October 2026:
+# 48 messages with clinical content, 40 medical traps, more typos and dialect.
+# Held out: prompt, checks and lexical net were frozen before it was generated.
+GRID_CHALLENGE = {
+    "ROUTE_COUNTS": {
+        "report_received": 10,
+        "appointment": 22,
+        "prescription_request": 18,
+        "insurer": 12,
+        "referral_in": 8,
+        "certificate_request": 16,
+        "billing": 10,
+        "spam_marketing": 4,
+        "other": 20,
+    },
+    "SAFETY_SLOTS": {
+        "acute_explicit": {"other": 8, "appointment": 10},
+        "acute_incidental": {
+            "appointment": 6,
+            "prescription_request": 9,
+            "certificate_request": 8,
+            "billing": 3,
+            "other": 4,
+        },
+        "medical_trap": {
+            "report_received": 8,
+            "appointment": 5,
+            "prescription_request": 6,
+            "insurer": 6,
+            "referral_in": 4,
+            "certificate_request": 5,
+            "other": 6,
+        },
+    },
+    "LANG_COUNTS": {"de": 60, "fr": 32, "it": 22, "en": 6},
+    "MIXED_N": 10,
+    "ABSTAIN_N": 4,
+    "WRITING_LEVEL": {
+        "personal": {"clean": 20, "typos": 35, "non_native": 20, "dialect": 25},
+        "institution": {"clean": 75, "typos": 25},
+    },
+}
+PRESETS = {"45": GRID_45, "dev": GRID_DEV, "challenge": GRID_CHALLENGE}
 
 PROMPT_EDITS = [
     (
@@ -192,15 +235,22 @@ def call(key: str, model: str, messages: list[dict], max_tokens: int) -> dict:
             "X-Title": "Inbrev gold-set generation",
         },
     )
-    for attempt in range(4):
+    for attempt in range(8):
         try:
-            with urllib.request.urlopen(req, timeout=600) as r:
-                return json.loads(r.read().decode("utf-8"))
+            with urllib.request.urlopen(req, timeout=900) as r:
+                resp = json.loads(r.read().decode("utf-8"))
+            # Free providers answer "overloaded" with HTTP 200 and an error body: wait, do not
+            # spend a generation attempt on it.
+            if resp.get("error") and not resp.get("choices"):
+                print(f"  provider error ({attempt}): {str(resp['error'])[:200]}")
+                time.sleep(30 * (attempt + 1))
+                continue
+            return resp
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as exc:
             body = exc.read().decode("utf-8", "replace") if hasattr(exc, "read") else ""
             print(f"  http error ({attempt}): {exc} {body[:300]}")
             time.sleep(10 * (attempt + 1))
-    raise SystemExit("API failed repeatedly")
+    raise RuntimeError("API failed repeatedly")
 
 
 def parse_messages(content: str) -> list[dict]:
@@ -267,7 +317,17 @@ def cmd_generate(args: argparse.Namespace) -> None:
     batches = [
         grid[i : i + args.batch_size] for i in range(0, len(grid), args.batch_size)
     ]
-    for bi, batch in enumerate(batches, start=1):
+
+    def run_batch(bi: int, batch: list[dict]) -> tuple[dict, list]:
+        accepted: dict[str, dict] = {}
+        log: list = []
+        try:
+            _run_batch(bi, batch, accepted, log)
+        except RuntimeError as exc:
+            log.append({"batch": bi, "error": str(exc)})
+        return accepted, log
+
+    def _run_batch(bi: int, batch: list[dict], accepted: dict, log: list) -> None:
         pending = [s["message_id"] for s in batch]
         feedback: dict[str, list[str]] = {}
         for attempt in range(MAX_RETRIES + 1):
@@ -358,6 +418,16 @@ def cmd_generate(args: argparse.Namespace) -> None:
         for mid in pending:
             log.append({"batch": bi, "dropped": mid, "errors": feedback.get(mid)})
 
+    with ThreadPoolExecutor(max_workers=args.workers) as pool:
+        futures = [
+            pool.submit(run_batch, bi, batch)
+            for bi, batch in enumerate(batches, start=1)
+        ]
+        for fut in futures:
+            acc, lg = fut.result()
+            accepted.update(acc)
+            log.extend(lg)
+
     rows = [accepted[m] for m in sorted(accepted)]
     assemble.write_jsonl(Path(args.out), rows)
     (raw_dir / "run-log.json").write_text(
@@ -384,7 +454,10 @@ def main() -> None:
     r.add_argument("--batch-size", type=int, default=5)
     r.add_argument("--max-tokens", type=int, default=40000)
     r.add_argument("--only", help="comma-separated message_ids to (re)generate")
-    r.add_argument("--strict", action="store_true", help="treat validator warnings as errors")
+    r.add_argument("--workers", type=int, default=1, help="batches in parallel")
+    r.add_argument(
+        "--strict", action="store_true", help="treat validator warnings as errors"
+    )
     args = ap.parse_args()
     {"grid": cmd_grid, "generate": cmd_generate}[args.cmd](args)
 

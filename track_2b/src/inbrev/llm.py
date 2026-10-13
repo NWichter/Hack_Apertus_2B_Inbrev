@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import random
 import re
 import time
@@ -100,6 +101,8 @@ class LLMClient:
             "max_tokens": max_tokens or self.cfg.max_tokens,
             "n": n,
         }
+        if getattr(self.cfg, "extra_body", ""):
+            body.update(json.loads(self.cfg.extra_body))
         if extra:
             body.update(extra)
         if schema is not None:

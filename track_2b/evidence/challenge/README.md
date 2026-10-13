@@ -1,4 +1,6 @@
-# Clinical-exclusion challenge set (held out)
+# Clinical-exclusion challenge set
+
+Note (14 Oct): unseen for prompt p3 when these numbers were measured, but on 13 October it became part of the dev split for the second check (`../gap/`), so it is not a hold-out for that check.
 
 Date: 2026-10-13. Purpose: the gold set has only 16 messages with clinical content, so the main safety
 number had a wide interval (13/16, 95 % CI 0.57–0.93). This set adds 44 clinical messages and 39

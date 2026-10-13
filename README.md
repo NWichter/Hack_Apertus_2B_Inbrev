@@ -64,7 +64,9 @@ Docker network without internet); details in [`track_2b/docs/RUNNING.md`](track_
 | Mode | What it does |
 | --- | --- |
 | **Triage mode** (default) | Administrative sorting only: route, deadline, assignee, extracted fields with verbatim evidence. **Safety net:** a message that may contain symptoms is taken out of automation and goes to "A person decides" with deadline today, without any ranking by severity. All reported numbers use this mode. |
-| **Clinical research mode** (`INBREV_MODE=clinical-triage`, off by default) | Adds a keyword-based urgency hint to flagged messages. Research prototype, not a medical device, not validated. |
+| **Clinical research mode** (`INBREV_MODE=clinical-triage`, off by default) | Adds a keyword-based urgency hint to flagged messages. Research prototype without an intended medical purpose, not validated, not certified. |
+
+Measured results with logs and predictions are in `track_2b/evidence/` (offline run, prompt p3, held-out clinical challenge set, label agreement with two open-weights model annotators, fax OCR path, PARHAF reports, native local run, value model); the numbers are summarised in `track_2b/technical_report.md`.
 
 The project website (`website/`) embeds the demo video (`website/media/video.mp4`, subtitles `website/media/video.vtt`).
 
@@ -84,4 +86,5 @@ Third-party material keeps its own licence and is not relicensed:
 
 - External datasets used only for local checks (`sweatSmile/medical-symptom-triage`, `ale-dp/german-english-email-ticket-classification`, `PortalPal-AI/Portal-Messaging-Topics`, `lavita/ChatDoctor-HealthCareMagic-100k`) are not in the repository and keep the licences stated on their dataset cards (see `track_2b/data/README.md`). They are not covered by CDLA-Permissive-2.0.
 - The GraSCCo report set (`track_2b/data/grascco/`) contains letters from GraSCCo v1.1 (Modersohn et al. 2022, doi:10.5281/zenodo.18874981), licensed CC BY 4.0 on Zenodo; it keeps that licence (attribution and list of changes in `track_2b/data/grascco/README.md`).
+- The PARHAF report set (`track_2b/data/parhaf/`) contains French clinical reports from PARHAF (HealthDataHub, CC BY 4.0 / Licence Ouverte Etalab 2.0); it keeps that licence (source and changes in `track_2b/data/parhaf/README.md`).
 - The offline run uses the community GGUF `Colby/apertus-v1.5-8b-text-Q4_K_M-GGUF` (Apache-2.0); the weights are downloaded, not stored in the repository (`track_2b/docs/RUNNING.md`).

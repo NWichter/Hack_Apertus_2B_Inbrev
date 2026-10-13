@@ -6,8 +6,8 @@ what the numbers say.
 - #strong[Team:] Apertool --- Niklas Wichter
 - #strong[Demo:] \[TBD: link to video\]
 
-#emph[Version of 4 October 2026. Every number is measured or cited; what
-is not measured yet is named as such. Measured numbers come from
+#emph[Version of 13 October 2026. Every number is measured or cited;
+what is not measured yet is named as such. Measured numbers come from
 synthetic data whose labels have not yet been reviewed by a person.]
 
 = 1. Summary
@@ -31,26 +31,29 @@ case fields, and backs every decision with a verbatim quote from the
 message. It never assesses clinical content: a message that may contain
 symptoms is excluded from automation and handed to a person, in the same
 queue as messages the model is unsure about, without any ranking by
-severity. Headline result on 180 synthetic messages (labels not yet
-reviewed by a person), Apertus 8B with the current prompt p3: Inbrev
-excludes 13 of 16 messages with clinical content from automation
-(clinical exclusion recall, also called safety-net recall, 0.81, 95 % CI
-0.57--0.93; keyword rules 7 of 16), finds 44 of 50 "today" deadlines
-(0.88) and routes 170 of 180 correctly (macro-F1 0.94), while 84 % of
-the messages (at most 91 %) run without a person. A single Apertus
-answer without the checks finds 9 of 16. Apertus 70B finds 15 of 16.
-Inbrev uses about 1,400 input and 640 output tokens per message with 8B.
-Three checks against our own bias: on 42 messages written by an
-open-weights model (Nemotron) the results hold (route 39 of 42 with p3,
-clinical exclusion 8 of 8); a rules-first hybrid saves 48 % of the model
-calls but loses 3 of the 13 clinical cases, because 5 of 16 clinical
-messages look like plain administration to keyword rules; on 40 German
-clinical letters from GraSCCo the route is right 40 of 40. Run fully
-offline (llama.cpp, Q4 GGUF, CPU only, Docker network without internet
-access), Inbrev matches the endpoint on the same 30 messages (same route
-on 28, same clinical flag on 29) at 192 s per message on a 28-W laptop
-CPU, which is about CHF 12 per 1,000 messages on a mini PC at 60
-messages a day.
+severity. Headline results (Apertus 8B, prompt p3; synthetic data,
+labels not reviewed by a person). On 180 messages Inbrev excludes 13 of
+16 messages with clinical content from automation (clinical exclusion
+recall 0.81, 95 % CI 0.57--0.93; keyword rules 7 of 16), routes 170 of
+180 correctly and routes 84 % automatically (an assistant only checks
+the suggestion and its quote). Because 16 cases give a wide interval, a
+held-out challenge set written by an open-weights model after everything
+was frozen adds 44 clinical messages and 39 medical traps: 8B excludes
+41 of 44 (0.93, CI 0.82--0.98; flag precision 0.91), 70B 44 of 44 (CI
+0.92--1.00), keyword rules 31 of 44. Two open-weights models that
+labelled all 367 test messages blind agree with our labels on clinical
+content (κ 0.97--0.98) and route (κ 0.93); scored against their labels,
+the ranking against the keyword rules does not change. Further checks:
+40 German (GraSCCo) and 38 French (PARHAF) clinical reports written by
+people, not by a model, are routed right 40/40 and 37/38; on rendered
+fax pages read by OCR the route drops from 56 to 50 of 60 and unreadable
+pages go to a person. Two same-size open models (Qwen3.5-9B, Ministral
+8B) in the identical pipeline do better than Apertus 8B (route 177 vs
+170 of 180, clinical 16 vs 13 of 16) and than Apertus 70B (172, 15).
+With local Q4 weights Inbrev runs fully offline in Docker on a network
+without internet access (CPU, 192 s per message); the same weights run
+natively on the laptop's integrated GPU at 62.7 s per message. A mini PC
+costs about CHF 12 per 1,000 messages at 60 messages a day.
 
 = 2. Architecture
 <architecture>
@@ -158,15 +161,11 @@ with short multilingual cues, the rules for safety, deadlines and
 quotes, and an output format with placeholders only.
 
 Two observations shaped the prompt. With the schema enforced but no
-format example in the prompt, the 8B model got stuck in a loop of
-whitespace inside the JSON until the token limit; the 70B model did not.
-A compact format example fixes this, but both models then copied
-concrete example values (a clear appointment request came back as
-`"other"`, the value in the example), so the example uses placeholders
-only. In a first run on twelve seed messages, the 8B model often set the
-deadline "today" without any date in the text, copied capital umlauts
-incorrectly, HTML-escaped quotes and filled fields of other routes; the
-checks in step 3 and 4 of the pipeline handle these cases.
+format example, 8B looped on whitespace inside the JSON until the token
+limit; with a concrete example both models copied its values, so the
+example uses placeholders only. On the seed messages 8B often set
+"today" without a date, garbled capital umlauts, HTML-escaped quotes and
+filled fields of other routes; steps 3 and 4 handle these cases.
 
 = 4. Data
 <data>
@@ -192,14 +191,10 @@ data is used. Licence: CDLA-Permissive-2.0.
   consistency, invalid AHV check digits, fictitious domains and phone
   numbers, and near-duplicates.
 - #strong[Swiss practice set:] 30 messages (`data/ood/`), text and
-  labels written by an Antigravity agent session (Gemini,
-  `gemini-3.8-flash`) on 3 October; Codex (`gpt-6.1-sol`) replaced real
-  e-mail domains and organisation names the same day, and on 4 October
-  the last four real organisation names were replaced by fictitious ones
-  (`scripts/annotate_swiss_set.py`). Every row now records generator,
-  model, date, edits and evidence in a `provenance` field; the
-  generation prompt was not recorded and no person has reviewed the
-  labels.
+  labels by an Antigravity agent session (Gemini, `gemini-3.8-flash`) on
+  3 October; real organisation names and domains were later replaced by
+  fictitious ones (`scripts/annotate_swiss_set.py`); each row records
+  its edits in `provenance`\; the generation prompt was not recorded.
 - #strong[Open-generator set:] 42 messages from a fresh seeded grid
   (seed 2027, 8 with clinical content, 7 traps), text by an open-weights
   model, NVIDIA Nemotron 3 Ultra @nvidia2026nemotron, through OpenRouter
@@ -213,53 +208,61 @@ data is used. Licence: CDLA-Permissive-2.0.
   `report_received` messages (`data/grascco/`). Labels follow one rule:
   route `report_received`, deadline today, no clinical flag. The letters
   are German and Austrian, not Swiss.
+- #strong[Clinical-exclusion challenge set (held out):] 115 messages
+  from a new seeded grid (seed 5151), 44 with clinical content (17
+  explicit, 27 in passing), 39 medical traps (negations, past events,
+  chronic conditions), more typos and dialect; text by Nemotron 3 Ultra
+  (open weights, free tier), written on 13 October after prompt, checks
+  and lexical net were frozen (`evidence/challenge/`).
+- #strong[PARHAF report set:] 38 French clinical reports from PARHAF
+  (fictitious cases written by resident physicians; CC BY 4.0 / Etalab
+  2.0), verbatim behind a fixed cover note, same rule as GraSCCo
+  (`data/parhaf/`).
 - #strong[External datasets] (Hugging Face) were downloaded only for
   local stress tests, are not redistributed and give no reported number;
   `data/README.md` lists each source and why it is or is not used.
-- #strong[Human review, prepared:] `tools/review/` is an offline HTML
-  tool for a blind pass over all messages, a second blind pass over 60
-  fixed messages (all 16 clinical cases) after 48 hours, and Cohen's κ
-  @cohen1960kappa (intra-rater and against the generator labels),
-  exported as `review_log.jsonl` and recomputed by
-  `tools/review/kappa.py`. Not done yet. Also planned: about 60
-  handwritten messages and rendered fax pages for the OCR path.
+- #strong[Label check without people (yet):] two open-weights models,
+  Nemotron 3 Super and gpt-oss-120b, labelled all 367 test messages
+  (gold, Swiss, Nemotron, challenge) blind from the written label rules,
+  seeing only the message (`scripts/annotate_open_models.py`, USD 0.06).
+  They are not human annotators; agreement shows that the rules can be
+  applied consistently, not that labels are clinically right. The 36
+  disputed messages form the review queue for a person; `tools/review/`
+  (blind pass, second pass after 48 h, Cohen's κ @cohen1960kappa) is
+  ready for that human review, which has not happened yet.
 
 Closed models (Claude, GPT-5.5 via Codex, Gemini via Antigravity) wrote
-or edited test data and code during development only, and an
-open-weights model (Nemotron) wrote the third test set; at runtime
-Inbrev calls only Apertus.
+or edited test data and code during development only, and reviewed
+drafts. Open-weights models have three supporting roles: Nemotron 3
+Ultra wrote the Nemotron, dev and challenge sets; Nemotron 3 Super and
+gpt-oss-120b are the second annotators; Qwen3.5-9B and Llama 3.1 8B run
+once in the Inbrev pipeline as a comparison. At runtime Inbrev calls
+only Apertus.
 
 Synthetic data can miss the distribution of real mail
-@long2024synthetic\; the gap between the generated and the handwritten
-part is reported.
+@long2024synthetic\; only the GraSCCo and PARHAF reports were written by
+people, and they cover a single route.
 
 = 5. Evaluation
 <evaluation>
 The main numbers are the clinical exclusion recall (share of messages
 with clinical content that the safety net takes out of automation;
-"safety" in the tables) and the recall of the deadline "today", reported
-together with the share of messages that run without a person
-(coverage). Messages with clinical content are rare, so recall and
-precision are reported instead of accuracy @saito2015precision, and the
-coverage--accuracy curve follows selective classification
-@geifman2017selective. Further metrics: route accuracy and macro-F1,
-deadline accuracy, field F1, evidence faithfulness (share of model
-quotes found in the message) @rashkin2023attribution, tokens, latency
-and cost; all broken down by language, writing level, channel and
-generator.
+"safety" in the tables), the recall of the deadline "today" and the
+share of messages that run without a person (coverage). Clinical
+messages are rare, so recall and precision are reported instead of
+accuracy @saito2015precision. Further metrics: route accuracy and
+macro-F1, deadline accuracy, field F1, evidence faithfulness
+@rashkin2023attribution, tokens, latency and cost, broken down by
+language, writing level, channel and generator.
 
-Results on the synthetic set v0 (n = 180; 16 safety cases, 50 "today"
-deadlines; labels not yet reviewed by a person). Baselines without a
-language model; TF-IDF with five-fold cross-validation. The Inbrev rows
-run the full pipeline (schema, three samples at T = 0.7, checks, vote)
-on the Hack Apertus endpoint, p2 on 3 October 2026, p3 (default) on 4
-October. Coverage is the share of messages Inbrev handles without "a
-person decides", i.e.~neither abstained nor flagged for clinical
-content; at most 164 of 180 (0.91) here, because the 16 clinical
-messages must go to a person. The row "one sample, no checks" needs no
-new model call: it scores the first of the three stored 8B samples as
-the model wrote it, without quote checks, lexical net, vote or
-abstention (`scripts/ablation_first_sample.py`).
+Results on the synthetic set v0 (n = 180; 16 clinical cases, 50 "today"
+deadlines). TF-IDF uses five-fold cross-validation. Inbrev rows run the
+full pipeline (schema, three samples at T = 0.7, checks, vote) on the
+Hack Apertus endpoint, p2 on 3 October, p3 (default) on 4 October.
+Coverage counts messages that are neither abstained nor flagged, at most
+164 of 180. "One sample, no checks" scores the first stored 8B sample as
+written, without checks, net, vote or abstention
+(`scripts/ablation_first_sample.py`).
 
 #figure(
   align(center)[#table(
@@ -288,147 +291,172 @@ abstention (`scripts/ablation_first_sample.py`).
   , kind: table
   )
 
-With 95 % Wilson intervals (p2): safety recall 13/16 = 0.81 \[0.57,
-0.93\] for 8B and 15/16 = 0.94 \[0.72, 0.99\] for 70B, against 9/16 =
-0.56 \[0.33, 0.77\] for a single 8B answer without checks and 7/16 =
-0.44 \[0.23, 0.67\] for the keyword rules; route accuracy 159/180 = 0.88
-\[0.83, 0.92\] for 8B, 163/180 = 0.91 \[0.85, 0.94\] for 70B and 143/180
-\= 0.79 \[0.73, 0.85\] for the keyword rules. With 16 cases the
-intervals are wide, and the 8B--70B difference is not significant (exact
-McNemar p = 0.50). Of the gain over a single answer, three samples,
-where a flag from any one counts, add two cases (11/16 without the
-lexical net) and the lexical net two more. The net is tuned for recall:
-about half of the flags are false alarms (15 of 28 for 8B, 15 of 30 for
-70B; all of them come from the lexical net, none from the model), which
-costs a doctor a glance, not a missed case. Recall differs by generator
-(8B: 7/7 \[0.65, 1.00\] of the cases written by GPT-5.5, 6/9 \[0.35,
-0.88\] of those written by Claude; route 79/90 and 80/90), so the set
-partly measures its authors; the open-generator set below is the
-control. The target of 0.95 is not reached with 8B. Field F1 is 0.73 for
-8B and 0.83 for 70B (paired bootstrap p \< 0.001), the only metric where
-70B is clearly better; the checks drop 309 of 2,086 values that 8B
-extracted (15 %). Mean latency per message (three samples in one
-request) was 3.0 s for 8B and 10.7 s for 70B on the shared endpoint.
+With 95 % Wilson intervals (p2): clinical exclusion 13/16 \[0.57, 0.93\]
+for 8B and 15/16 \[0.72, 0.99\] for 70B (McNemar p = 0.50), against 9/16
+\[0.33, 0.77\] for a single 8B answer without checks and 7/16 \[0.23,
+0.67\] for the keyword rules. Three samples add two cases (11/16 without
+the lexical net), the net two more; it is tuned for recall, and about
+half of the flags on this set are false alarms from the net (15 of 28
+for 8B), which costs a doctor a glance, not a missed case. Recall
+differs by generator (8B: 7/7 for texts by GPT-5.5, 6/9 by Claude), so
+the set partly measures its authors; the open-generator and challenge
+sets are the control. Field F1 is 0.73 for 8B and 0.83 for 70B (paired
+bootstrap p \< 0.001); the checks drop 15 % of the values 8B extracted.
+Mean latency per message was 3.0 s (8B) and 10.7 s (70B) on the shared
+endpoint.
 
 The baselines already route 79--83 % of the synthetic messages
 correctly, so the route alone does not justify a language model on this
 set. They fail where it matters: they find at most 44 % of the messages
-with clinical content. For context only, not as a direct comparison: a
-clinical triage model guided by a triage manual reached a sensitivity of
-0.98 @liu2025emergency, and a deployed acuity classifier ran at 0.63
-@yang2024prioritization.
+with clinical content.
 
-#strong[Where Apertus beats the rules, and where not.] Paired on the 180
-messages, 8B is right where the rules are wrong 27 times and the reverse
-11 times (exact McNemar p = 0.014; 70B: 31 vs 11, p = 0.003). The model
-wins on insurer mail (24/24 vs 16/24), marketing (11/14 vs 4/14) and
-symptoms mentioned in passing (7/9 vs 3/9); with prompt p2 it lost on
-"other" (3/16 vs 9/16) and billing (14/16 vs 15/16). A rules-first
-hybrid, where the keyword rules decide whenever exactly one route family
-matches and the lexical net is silent and Apertus decides otherwise,
-needs the model for only 94 of 180 messages but drops to route 152/180
-and clinical exclusion 10/16: 5 of the 16 clinical messages look like
-plain administration to the rules (one keyword family, no lexicon hit);
-on the Nemotron set the hybrid drops 2 of 8. We therefore keep Apertus
-on every message (`scripts/compare_hybrid.py`).
+#strong[Where Apertus beats the rules.] Paired on the 180 messages with
+p2, 8B is right where the rules are wrong 27 times and the reverse 11
+times (McNemar p = 0.014): it wins on insurer mail, marketing and
+symptoms mentioned in passing. A rules-first hybrid (rules decide when
+exactly one route family matches and the net is silent) needs the model
+for 94 of 180 messages but drops to clinical exclusion 10/16, because 5
+of 16 clinical messages look like plain administration to the rules; on
+the challenge set it drops from 41 to 36 of 44. We therefore keep
+Apertus on every message (`scripts/compare_hybrid.py`).
 
 #figure(
   align(center)[#table(
-    columns: (16.67%, 16.67%, 16.67%, 16.67%, 16.67%, 16.67%),
-    align: (auto,auto,auto,auto,auto,auto,),
-    table.header([Further sets (Inbrev 8B, p2, full
-      pipeline)], [n], [Route acc.], [Clinical excl.], [Today
-      rec.], [Keyword rules route / clinical],),
+    columns: (20%, 20%, 20%, 20%, 20%),
+    align: (auto,auto,auto,auto,auto,),
+    table.header([Further sets (Inbrev 8B, p3 unless
+      noted)], [n], [Route acc.], [Clinical excl.], [Keyword rules route
+      \/ clinical],),
     table.hline(),
-    [Open generator (Nemotron)], [42], [38/42 \[0.78, 0.96\]], [8/8
-    \[0.68, 1.00\]], [17/18], [32/42 / 6/8],
-    [GraSCCo clinical letters], [40], [40/40 \[0.91, 1.00\]], [-- (7
-    false flags)], [40/40], [40/40 / -- (7 false flags)],
+    [#strong[Challenge set] (held out, 8B)], [115], [103/115 \[0.83,
+    0.94\]], [#strong[41/44 \[0.82, 0.98\]]], [87/115 / 31/44],
+    [#strong[Challenge set, 70B]], [115], [106/115 \[0.86,
+    0.96\]], [#strong[44/44 \[0.92, 1.00\]]], [--],
+    [Open generator (Nemotron)], [42], [39/42 \[0.81, 0.98\]], [8/8
+    \[0.68, 1.00\]], [32/42 / 6/8],
+    [GraSCCo letters (German, p2)], [40], [40/40 \[0.91, 1.00\]], [-- (7
+    false flags)], [40/40 / --],
+    [PARHAF reports (French)], [38], [37/38 \[0.87, 1.00\]], [-- (17
+    false flags)], [3/38 / --],
+    [Rendered fax pages via OCR (gold subset)], [60], [50/60 \[0.72,
+    0.91\]], [12/16 flagged, 13/16 out of automation], [--],
   )]
   , kind: table
   )
 
-On the Nemotron set 70B scores the same route accuracy (38/42) and also
-8/8. On GraSCCo, 6 of the 7 false flags come from the lexical net alone
-(e.g.~negated "Suizidalität" in a psychiatric letter), one from the
-model; the cost is a doctor's glance at a report that goes to the doctor
-anyway.
+#strong[Challenge set.] The 44 clinical messages narrow the interval of
+the main metric: 8B 41/44, against 31/44 for the keyword rules (10 vs 0
+discordant, exact McNemar p = 0.002), 70B 44/44 (8B vs 70B p = 0.25). Of
+71 non-clinical messages, including 39 traps, 8B and 70B each flag 4
+(precision 0.91 and 0.92). Route: 8B wins 20 vs 4 against the rules (p =
+0.0015). A TF-IDF classifier cross-validated on the set itself reaches
+39/44 (an in-domain reference, not deployable). #strong[Reports.] On
+GraSCCo and PARHAF the false flags come almost only from the lexical net
+(6 of 7; 16 of 17, mostly "urgence" in emergency department reports);
+Apertus itself flags 1 of 38 French reports. Each costs a doctor's
+glance at a report that goes to the doctor anyway; we did not retune the
+net on these test sets. #strong[Fax.] 60 gold messages rendered as
+degraded fax pages and read by Inbrev's own Tesseract intake (character
+error rate 0.27, upper bound): the route falls from 56 to 50 of 60, the
+3 unreadable pages abstain, and 13 of 16 clinical messages still leave
+automation, as on clean text (`evidence/fax/`).
 
-#strong[Prompt p3 for "other".] p3 only sharpens the route boundaries
-(copy or transfer of records, referral elsewhere, symptoms only:
-"other"). It was developed on a separate dev set (60 new Nemotron
-messages, 20 "other"\; p2 0/20, p3 11/20), frozen after one dev run,
-then run once on every test set next to a fresh p2 run (p3 rows above):
-gold route 158 → 170/180 \[0.90, 0.97\] (McNemar p = 0.002; two p2 runs
-differ on 3 routes), "other" 2/16 → 13/16 (rules 9/16), no clinical
-exclusion lost; Swiss 23 → 24/30, Nemotron 38 → 39/42. Against the
-rules, p3 8B wins 32 to 5 (`evidence/prompt-p3/`). Other numbers below
-use p2 unless noted.
+#strong[Label source.] Two open-weights models labelled all 367 messages
+of the four generated sets blind (§4). Cohen's κ with our grid labels is
+0.93 for the route and 0.97--0.98 for clinical content (gold and
+challenge: no disagreement on clinical content), 0.60--0.90 for the
+deadline and 0.40--0.42 for "ambiguous". Scored against either model or
+the majority of three, Inbrev 8B routes 167--169 of 180 gold messages
+(170 against the grid) and keeps 13/16; on every set the ranking against
+the keyword rules is unchanged (`evidence/agreement/`).
+
+#strong[Other open models.] In the identical pipeline (prompt p3,
+checks, three samples) on the gold set, Qwen3.5-9B routes 177/180 and
+excludes 16/16 clinical messages, against 170/180 and 13/16 for Apertus
+8B (route p = 0.04, clinical p = 0.25); Ministral 8B reaches the same
+177/180 and 16/16 (Llama 3.1 8B could not be measured: provider rate
+limit; `evidence/peers/`). The prompt was developed with Apertus, which
+favours Apertus if anything. On this task Apertus 8B is not the
+strongest small open model, and Apertus 70B (172/180, 15/16) does not
+close the gap. We keep Apertus because its training data are open and
+documented and it is developed in Switzerland, which a practice can
+point to when it justifies its tools; Inbrev works with any
+OpenAI-compatible endpoint, so the model can be swapped.
+
+#strong[Prompt p3 for "other".] p3 only sharpens route boundaries
+("other": copy of records, referral elsewhere, symptoms only). It was
+developed on a separate dev set (60 Nemotron messages; "other" p2 0/20,
+p3 11/20), frozen after one dev run, then run once on every test set:
+gold route 158 → 170/180 (McNemar p = 0.002; two p2 runs differ on 3
+routes), no clinical case lost (`evidence/prompt-p3/`). Other numbers
+below use p2 unless noted.
 
 #strong[One sample is nearly as good as three.] Replaying the stored 8B
-run with only the first sample, but with checks, lexical net and
-abstention, gives route 157/180, clinical exclusion 12/16 and coverage
-150/180, against 159/180, 13/16 and 145/180 with three samples
-(`scripts/replay_k_samples.py`, no new model call). Most of the gain
-over a single raw answer (9/16) comes from the checks and the net, not
-from sampling. The CPU deployment therefore uses one sample.
+run with only the first sample (checks, net and abstention kept) gives
+route 157/180 and clinical exclusion 12/16 against 159/180 and 13/16
+(`scripts/replay_k_samples.py`). The gain over a raw answer (9/16) comes
+mostly from checks and net, so local deployments use one sample.
 
-#strong[Offline on a CPU.] On 30 of the 180 messages (all 16 with
-clinical content plus 14 drawn over the routes), the offline stack with
-Q4 weights and one sample routes 24/30 \[0.63, 0.90\] and excludes 11/16
-\[0.44, 0.86\] clinical messages; the endpoint (BF16, one sample) gives
-23/30 and 12/16 on the same messages, three samples 24/30 and 13/16, the
-keyword rules 23/30 and 7/16. Paired, Q4 and BF16 agree on the route for
-28 of 30 messages and on the clinical flag for 29 of 30 (Q4 misses one
-more), so quantisation costs little here; the subset is small and
-over-weights clinical cases. Wall time was 5,765 s for 30 messages (192
-s per message, median 163 s, p95 417 s), about 19 messages per hour, on
-a laptop that was also running other work; Q4 wrote 267 output tokens
-per sample against 213 at the endpoint.
+#strong[Offline on a CPU.] On 30 of the 180 messages (all 16 clinical
+plus 14 over the routes), the offline Docker stack with Q4 weights and
+one sample (p2) routes 24/30 and excludes 11/16; the endpoint (BF16, one
+sample) 23/30 and 12/16, the keyword rules 23/30 and 7/16. Q4 and BF16
+agree on the route for 28 of 30 and on the flag for 29 of 30, so
+quantisation costs little here. Wall time was 192 s per message (p95 417
+s) on a laptop CPU shared with other work. The same llama.cpp build and
+weights run natively on the laptop's integrated GPU (Vulkan, no Docker
+Desktop VM; `scripts/run_native_llamacpp.ps1`) need 62.7 s per message
+(p95 85 s) with p3: route 25/30, clinical 11/16, same route as BF16 on
+27 and same flag on 29 (`evidence/native/`). On the challenge set this
+deployable configuration (Q4, one sample) excludes 38 of 44 clinical
+messages and routes 99/115, against 40/44 and 104/115 for one BF16
+sample (p = 0.63 and 0.06). These native runs measure speed and quality;
+the air-gap proof remains the Docker run.
 
 #strong[Cost.] From the measured time and cited prices (excl. VAT;
 `scripts/cost_model.py`, `evidence/offline/`): a mini PC with the same
 CPU draws 38--39 W under sustained load @kennedy2024box, so 1,000
-messages need about 2.1 kWh, CHF 0.52 at the 2026 Swiss median for small
-businesses @elcom2026. With the box (about CHF 700, three years) and
-idle power, a practice with 60 messages a day pays about CHF 12 per
-1,000 messages, roughly CHF 22 a month; the box would sort up to 450
-messages a day. For single practices without hardware, a Swiss cloud VM
-with 8 vCPU costs CHF 0.0448 per hour @infomaniak2026cloud (CHF 2.39 per
-1,000 messages if billed only while sorting, CHF 32 a month if always
-on; other CPU, not measured). A Swiss token API at the listed Apertus
-70B price (CHF 0.70 / 2.50 per million input / output tokens
-@infomaniak2026ai\; 8B is not listed) would cost CHF 2.59 per 1,000
-messages with the 8B token counts and CHF 3.40 with 70B. Not measured:
-GPU latency in the practice and the staff time saved.
+messages need about 2.1 kWh at the CPU run's 192 s per message, CHF 0.52
+at the 2026 Swiss median for small businesses @elcom2026. With the box
+(about CHF 700, three years) and idle power, a practice with 60 messages
+a day pays about CHF 12 per 1,000 messages, roughly CHF 22 a month; the
+box would sort up to 450 messages a day. A Swiss cloud VM with 8 vCPU
+(CHF 0.0448 per hour @infomaniak2026cloud) would cost CHF 32 a month if
+always on. A Swiss token API at the listed Apertus 70B price (CHF 0.70 /
+2.50 per million input / output tokens @infomaniak2026ai\; 8B is not
+listed) would cost CHF 2.59 per 1,000 messages with the 8B token counts
+and CHF 3.40 with 70B. #strong[Value.] Staff time saved is not measured.
+`scripts/value_model.py` makes the arithmetic explicit: measured shares
+from the gold run (84 % automatic, 5.0 % automatic but wrongly routed,
+8.3 % false clinical flags) times assumed volumes and handling times,
+each with a cautious, base and favourable value (`evidence/value/`). At
+60 messages a day, 60 s by hand and 15 s to check a suggestion, an MPA
+saves about 35 minutes a day, net CHF 462 a month after doctor time for
+false flags and running cost (all assumed, not measured); the cautious
+case (30 messages, 30 s by hand) loses CHF 146 a month. Break-even is 27
+s of manual handling per message in the base case. A timing protocol for
+practice interviews will replace the assumptions.
 
-Two small sets are reported separately because they are too small to
-rank systems. On the 12 seed messages (1 case with clinical content;
-prompt p1, run on 1 October), Inbrev with 8B routes 10 of 12 correctly
-(0.83, macro-F1 0.82), the keyword rules 11 of 12. On the 30 Swiss
-practice messages (4 cases with clinical content; `data/ood/`, labels
-not reviewed; run again on 4 October after the names were neutralised,
-60 model calls), 8B routes 23 of 30 correctly (0.77 \[0.59, 0.88\],
-macro-F1 0.76), 70B 27 of 30 (0.90 \[0.74, 0.97\]; McNemar p = 0.125),
-the keyword rules 25 of 30 (0.83): on this set the keyword rules route
-better than 8B. All three take the 4 cases out of automation; 70B also
-abstains on 4 messages, including both ambiguous ones, 8B on none.
-Deadline accuracy is low for all (0.47 for both models, 0.53 for the
-keyword rules), partly because the rows carry no time of receipt.
+Two small sets are too small to rank systems: on the 12 seed messages 8B
+routes 10, the keyword rules 11; on the 30 Swiss practice messages
+(`data/ood/`, 4 clinical) 8B routes 24 with p3, 70B 27 (p2), the rules
+25, and all take the 4 clinical cases out of automation.
 
-A unit test covers the OCR failure path: when a fax is so degraded that
-no quote can be found in the text, the checks drop every value and
-Inbrev abstains instead of filling fields. Not measured yet: OCR on
-rendered fax pages, latency on a GPU in the practice, and the time to
-sort 30 messages by hand versus with Inbrev.
+Not measured yet: latency on an NVIDIA GPU
+(`scripts/run_native_llamacpp.ps1 -Backend cuda` is prepared) and the
+time to sort messages by hand versus with Inbrev.
 
 = 6. Limitations
 <limitations>
 - The synthetic set partly measures its generators; the strong surface
-  baselines suggest it is easier to separate than real mail. The
-  handwritten part is the stronger test
+  baselines suggest it is easier to separate than real mail. Messages
+  written by people (practice staff or patients) would be the stronger
+  test; none are in the evaluation yet
   @long2024synthetic@panickssery2024selfpref.
-- One person labels; agreement is intra-rater κ, not inter-rater.
+- No person has reviewed the labels yet. The second labels come from two
+  open-weights models (§4, §5), which measure whether the written rules
+  are applied consistently, not clinical correctness; one is from the
+  same family as the generator of two sets.
 - #strong[Regulatory boundary.] Software that automatically
   reprioritises by clinical criticality based on patient data qualifies
   as medical device software @mdcg2025software\; in Switzerland
@@ -443,12 +471,10 @@ sort 30 messages by hand versus with Inbrev.
 - #strong[Optional research mode.] `--mode clinical-triage` (off by
   default; the app then shows a labelled research hint) adds a
   keyword-based hint in the style of the Emergency Severity Index to
-  flagged messages. It is an optional research mode, not a medical
-  device and not certified; it has not been validated. Any clinical use
-  would require an MDR/MDSW conformity assessment first. All numbers in
-  this report use the default administrative mode.
-- Enforced formats can cost reasoning quality @tam2024format\; three
-  samples triple the output tokens.
+  flagged messages. It is an optional research mode without an intended
+  medical purpose and not certified; it has not been validated. Any
+  clinical use would require an MDR/MDSW conformity assessment first.
+  All numbers in this report use the default administrative mode.
 - No measurement on real practice data; US inbox figures transfer only
   partly. The GraSCCo letters are real-style clinical text, but German
   and Austrian; the Nemotron set reuses our label grid and prompt.
@@ -462,19 +488,16 @@ sort 30 messages by hand versus with Inbrev.
 runs llama.cpp with local weights and Inbrev on an internal network;
 `make offline-eval` repeats the offline run with its log; `make test`
 and `make offline-check` run the tests and the non-LLM evaluation with
-`--network none`. `scripts/compare_hybrid.py`,
-`scripts/replay_k_samples.py` and `scripts/cost_model.py` recompute the
-rules comparison, the one-sample ablation and the cost table from stored
-runs; every rate in the report carries a 95 % Wilson interval in the
-`eval` output. `python -m inbrev triage|replay|eval` reproduces every
-number: `replay` re-applies the deterministic checks to stored raw model
-output, so changes to the checks are measured without new model calls.
-The grid for the synthetic set is seeded (2026), cross-validation uses
-seed 2026. Model runs: `apertus-v1.5-8b` and `apertus-v1.5-70b` as named
-by the Hack Apertus endpoint (3 October for the 180-message set, 4
-October for the Swiss set); the endpoint does not expose the Hugging
-Face revision. The 180-message set is not in the repository yet; it
-follows after human review.
+`--network none`. `scripts/agreement.py`, `value_model.py`,
+`compare_hybrid.py`, `replay_k_samples.py` and `cost_model.py` recompute
+agreement, value, rules comparison, ablation and cost from stored runs
+and annotations; `python -m inbrev triage|replay|eval` reproduces the
+numbers from the stored runs, with 95 % Wilson intervals. Grids and
+cross-validation are seeded. Model runs use `apertus-v1.5-8b` and
+`apertus-v1.5-70b` as named by the Hack Apertus endpoint (3, 4 and 13
+October), which does not expose the Hugging Face revision. The generated
+test texts follow in the repository after human review; predictions,
+grids and annotations are in `evidence/`.
 
 = 8. Next steps
 <next-steps>
@@ -483,8 +506,6 @@ follows after human review.
 - HIN connection (the IMAP import is tested against a local test server
   only) and practice software; a data protection impact assessment
   template @schweiz2020dsg.
-- For Germany and Austria, check the EU AI Act; it classifies the system
-  as high-risk only if it is a medical device @eu2024aiact.
 
 = License
 <license>

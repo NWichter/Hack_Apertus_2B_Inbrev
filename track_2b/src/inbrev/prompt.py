@@ -7,7 +7,7 @@ from datetime import datetime
 from . import taxonomy
 from .extract import parse_received
 
-PROMPT_VERSIONS = ("p2", "p3")
+PROMPT_VERSIONS = ("p2", "p3", "p4")
 PROMPT_VERSION = os.getenv("INBREV_PROMPT", "p3")
 if PROMPT_VERSION not in PROMPT_VERSIONS:
     raise ValueError(f"INBREV_PROMPT must be one of {PROMPT_VERSIONS}")
@@ -36,6 +36,20 @@ RULES_P3 = """
 - A request for a copy or transfer of medical records is "other", not "certificate_request", "report_received" or "referral_in". "certificate_request" needs a request for a certificate, attestation or confirmation that the doctor has to write.
 - "referral_in" only when a physician or hospital sends a patient TO this practice. A patient asking this practice for a referral elsewhere is "other".
 - A person who describes symptoms and asks what to do, without asking for an appointment, prescription or certificate, is "other"; the safety rules below still apply."""
+
+# p4 (14 Oct 2026): sharper boundaries for the most frequent confusions on the extended dev split
+# (insurer vs billing, insurer vs other for authorities, report_received vs other). Dev only.
+ROUTE_HINTS_P4 = {
+    **ROUTE_HINTS_P3,
+    "report_received": "a lab result, imaging report, discharge letter or specialist report ARRIVES for the doctor, i.e. the report itself is in or attached to the message (Befund, Laborbericht, Austrittsbericht; résultats, rapport, lettre de sortie; referto, rapporto)",
+    "insurer": "a health, accident, disability (IV/AI), daily-allowance or supplementary INSURER asks the practice for something: cost approval (Kostengutsprache), medical report, form, query about a case",
+    "billing": "invoice, payment reminder (Mahnung), billing question, from suppliers, patients or insurers; also an insurer asking about or disputing a specific invoice of this practice",
+}
+
+RULES_P4 = RULES_P3 + """
+- An insurer asking about, correcting or disputing a specific invoice of this practice is "billing", not "insurer".
+- "insurer" needs an insurer as sender. A request from another authority (health department, social services, court, tax office) is "other"; an employer or school asking for a sick note or confirmation is "certificate_request".
+- "report_received" needs the report or result itself in the message. A patient asking whether or when a result is ready, or what it means, is "other". A message that only describes acute symptoms is "other" (and safety_flag is true)."""
 
 SYSTEM_TEMPLATE = """You sort the inbox of a Swiss general practice. Messages are in German, French, Italian or English.
 Your job is ADMINISTRATIVE: decide the handling route, the administrative deadline and whether a human must look at the message at once. You never judge clinical severity and never give medical advice.
@@ -76,12 +90,12 @@ def extractable_fields() -> list[str]:
 
 def system_prompt(version: str | None = None) -> str:
     version = version or PROMPT_VERSION
-    hints = ROUTE_HINTS_P3 if version == "p3" else ROUTE_HINTS
+    hints = {"p3": ROUTE_HINTS_P3, "p4": ROUTE_HINTS_P4}.get(version, ROUTE_HINTS)
     routes = "\n".join(f"- {r}: {hints[r]}" for r in taxonomy.routes())
     text = SYSTEM_TEMPLATE.format(
         routes=routes,
         fields=", ".join(extractable_fields()),
-        extra_rules=RULES_P3 if version == "p3" else "",
+        extra_rules={"p3": RULES_P3, "p4": RULES_P4}.get(version, ""),
     )
     if VARIANT == "safety_first":
         old = '{"language":"<de|fr|it|en>","route_quote":"<quote>","route":"<route>","ambiguous":<true|false>,"safety_quote":<"quote" or null>,"safety_flag":<true|false>,'
@@ -218,10 +232,39 @@ FEWSHOT = [
 ]
 
 
+FEWSHOT_P4 = [
+    FEWSHOT[0],
+    (
+        "Received: Tuesday, 2026-03-10 11:20\nChannel: email\nFrom: Leistungen Krankenkasse Beispiel AG <leistungen@kk-beispiel.example>\n"
+        "Subject: Ihre Rechnung Nr. 26-1180\n\nSehr geehrte Damen und Herren, auf Ihrer Rechnung Nr. 26-1180 für Frau Ida Kern ist die "
+        "Position 00.0030 doppelt verrechnet. Bitte senden Sie uns eine korrigierte Rechnung. Freundliche Grüsse",
+        '{"language":"de","route_quote":"Bitte senden Sie uns eine korrigierte Rechnung","route":"billing","ambiguous":false,'
+        '"safety_quote":null,"safety_flag":false,"deadline_quote":null,"deadline_date":null,"deadline":"none",'
+        '"extracted":[{"field":"fields.invoice_number","value":"26-1180","quote":"Rechnung Nr. 26-1180"}]}',
+    ),
+    (
+        "Received: Wednesday, 2026-03-11 09:40\nChannel: fax\nFrom: Service de la santé publique, canton Exemple\n"
+        "Subject: Déclaration obligatoire\n\nNous vous prions de nous confirmer si le cas de Monsieur Paul Roux a été déclaré "
+        "selon la loi sur les épidémies. Merci de répondre d'ici le 25.03.2026.",
+        '{"language":"fr","route_quote":"Nous vous prions de nous confirmer si le cas","route":"other","ambiguous":false,'
+        '"safety_quote":null,"safety_flag":false,"deadline_quote":"d\'ici le 25.03.2026","deadline_date":"2026-03-25","deadline":"none",'
+        '"extracted":[{"field":"patient.name","value":"Paul Roux","quote":"Monsieur Paul Roux"}]}',
+    ),
+    (
+        "Received: Thursday, 2026-03-12 16:05\nChannel: web_form\nFrom: Formular\nSubject: Laborwerte\n\n"
+        "Name: Sara Meier\nAnliegen: Sind meine Blutwerte von letzter Woche schon da? Könnten Sie mir kurz Bescheid geben?",
+        '{"language":"de","route_quote":"Sind meine Blutwerte von letzter Woche schon da?","route":"other","ambiguous":false,'
+        '"safety_quote":null,"safety_flag":false,"deadline_quote":null,"deadline_date":null,"deadline":"none",'
+        '"extracted":[{"field":"patient.name","value":"Sara Meier","quote":"Sara Meier"}]}',
+    ),
+]
+
+
 def messages_for(message: dict, default_received: datetime) -> list[dict]:
     msgs = [{"role": "system", "content": system_prompt()}]
-    if VARIANT == "fewshot":
-        for user, answer in FEWSHOT:
+    shots = {"fewshot": FEWSHOT, "fewshot4": FEWSHOT_P4}.get(VARIANT, [])
+    if shots:
+        for user, answer in shots:
             msgs += [
                 {"role": "user", "content": user},
                 {"role": "assistant", "content": answer},

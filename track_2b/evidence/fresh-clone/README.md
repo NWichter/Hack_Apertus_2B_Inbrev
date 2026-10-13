@@ -21,18 +21,18 @@ Problems found and fixed on the way: `make run-local` was missing in the root Ma
 laptop (about 0.3 tokens/s) is far below the earlier offline run (`evidence/offline/`); no GPU was
 available.
 
-## Re-check on 2026-10-14 (commit `863087a`, after the second check became default)
+## Re-check on 2026-10-14 (commit `58ac3d8`)
 
-Same setup (`docker:27-dind`, fresh `git clone`, no local llama-server, `check-2026-10-14.sh`, log
-`fresh-clone-2026-10-14.log`, endpoint host masked). Clock in the log is UTC (22:29 on 13 Oct = 00:29 on 14 Oct CEST).
+Same setup (`docker:27-dind`, fresh `git clone`, no local llama-server; script `check-2026-10-14.sh`, log
+`fresh-clone-2026-10-14.log`, endpoint host masked; clock in the log is UTC).
 
 | Step | Result |
 | --- | --- |
 | clone | 0 untracked files; `track_2b/data/` 588 KB (limit 100 MB) |
-| `make test` | 25 passed |
-| `make run` with endpoint values in `track_2b/.env` | health 200 (`symptom_check: true`, `rules_gate: false`), `POST /v1/triage` on seed-001 correct (report_received, today, doctor), UI 200 |
-| `make run` **without** `track_2b/.env` | app starts, "Load" shows the 12 stored seed results (`data/demo/seed-predictions.jsonl`, default configuration, 1 taken out of automation), UI 200 |
+| `make test` | 29 passed |
+| `make run` with endpoint values in `track_2b/.env` | health 200 (`endpoint_configured: true`, `symptom_check: true`, `rules_gate: false`), `POST /v1/triage` on seed-001 correct (report_received, today, doctor), UI 200 |
+| `make run` **without** `track_2b/.env` | health says `endpoint_configured: false`; header "No endpoint configured · showing stored results" and a notice naming `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_NAME`; "Load" / "Sort inbox" show the 12 stored seed results marked "stored result" (`data/demo/seed-predictions.jsonl`, default configuration); `POST /v1/triage` answers 503 with the same explanation; no console errors (`no-endpoint-2026-10-14.png`) |
 
-Found on the way: without credentials the app used to start with nothing to show (`LLM_BASE_URL` falls back to
-`http://llm:8080`, which exists only in the local profile); fixed in `863087a` with stored seed results. Without
-credentials the header still says "local endpoint"; "Sort inbox" then fails until an endpoint is set.
+Found and fixed on the way: without credentials the app used to start empty and labelled itself "local endpoint"
+(Compose fell back to `http://llm:8080`, which exists only in the local profile); "Sort inbox" then failed without
+explanation. Fixed in `863087a`, `0b90bbc`, `58ac3d8`; covered by `tests/test_no_endpoint.py`.

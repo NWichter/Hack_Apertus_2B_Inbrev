@@ -43,8 +43,12 @@ cd /work
 (make run >/tmp/run2.log 2>&1 &)
 for i in $(seq 1 300); do curl -sf http://127.0.0.1:8000/v1/health >/tmp/health2.json 2>/dev/null && break; sleep 2; done
 echo "health: $(cat /tmp/health2.json)"
-echo "load seed with stored predictions: $(curl -s -X POST 'http://127.0.0.1:8000/v1/inbox/load/seed?with_predictions=true')"
+echo "load seed (without stored predictions): $(curl -s -X POST 'http://127.0.0.1:8000/v1/inbox/load/seed')"
+echo "sort without endpoint: $(curl -s -X POST http://127.0.0.1:8000/v1/inbox/sort)"
+echo "triage without endpoint: $(curl -s -o /tmp/t.json -w "HTTP %{http_code}" -X POST -H "Content-Type: application/json" --data @/s/body.json http://127.0.0.1:8000/v1/triage) $(cat /tmp/t.json)"
 python3 /s/inbox_count.py
 echo "web UI: HTTP $(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8000/)"
+IP=$(hostname -i | awk '{print $1}'); apk add --no-cache socat >/dev/null 2>&1; (socat TCP-LISTEN:8000,bind=$IP,fork,reuseaddr TCP:127.0.0.1:8000 &)
+echo "leaving app running for screenshot"; touch /tmp/ready; while [ ! -f /tmp/stop ]; do sleep 2; done
 cd /work/track_2b && docker compose down >/dev/null 2>&1
 echo "done $(date -u '+%H:%M:%S UTC')"

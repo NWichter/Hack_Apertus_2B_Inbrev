@@ -12,9 +12,9 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 | What | Where |
 | --- | --- |
 | Technical report (6 pages) | [`track_2b/Apertool_Report.pdf`](track_2b/Apertool_Report.pdf), source [`track_2b/technical_report.md`](track_2b/technical_report.md) |
-| Run it | `make run` from this folder (Docker). With `track_2b/.env` (`LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY`) the web app at http://127.0.0.1:8000 triages with your Apertus endpoint. **Without credentials** the app still starts: "Load" shows stored results for the 12 seed messages; "Sort inbox" needs an endpoint. |
+| Run it | `make run` from this folder (Docker). With `track_2b/.env` (`LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY`) the web app at http://127.0.0.1:8000 triages with your Apertus endpoint. **Without credentials** the app still starts, says so in its header and shows stored results for the 12 seed messages, marked as stored. |
 | Run it offline | `make run-local`: llama.cpp with local Apertus 8B Q4 weights and Inbrev on a Docker network without internet access ([`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md)); `make offline-eval` repeats the logged offline run |
-| Tests | `make test` (25 unit tests, `--network none`) |
+| Tests | `make test` (29 unit tests, `--network none`) |
 | Evidence for every number | [`track_2b/evidence/`](track_2b/evidence/): logs, predictions and reports per study (`offline`, `prompt-p3`, `challenge`, `agreement`, `gap`, `peers`, `fax`, `parhaf`, `native`, `value`, `fresh-clone`) |
 | Demo video (under 2 min) | `website/media/video.mp4` |
 

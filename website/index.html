@@ -304,6 +304,15 @@
                   and say what that costs (see the report)
                 </li>
                 <li class="done">
+                  Fresh hold-out (146 messages written by Gemma 4 31B, frozen
+                  with hashes before any run): Apertus 8B lets 5 wrong routes run
+                  automatically and sends 40 to a person, Qwen3.5-9B 0 and 24.
+                  Sharper route descriptions and examples alone change nothing.
+                  Optional for practices with 70B access (e.g. a Swiss cloud):
+                  Apertus 70B as second opinion when keyword rules disagree,
+                  3 wrong routes at 45 (<code>INBREV_SECOND_OPINION_MODEL</code>)
+                </li>
+                <li class="done">
                   Full run without internet: Apertus 8B (Q4 weights, checksum
                   logged) in llama.cpp and Inbrev on a Docker network with no
                   route outside; an egress test fails as it should (192 s per

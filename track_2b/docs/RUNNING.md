@@ -131,7 +131,8 @@ latency, with breakdowns by language, writing level, channel and generator.
 | `INBREV_SPLIT_SAMPLES` | `auto`               | `on`: one request per sample; `auto`: switch on HTTP 400 for `n` > 1 |
 | `INBREV_PRECOMPUTED`   | –                    | JSONL of stored predictions to show without a model |
 | `INBREV_MODE`          | `admin`              | `admin` (triage mode) or `clinical-triage` (research mode) |
-| `INBREV_PROMPT`        | `p3`                 | System prompt version; `p2` reproduces runs before 4 October 2026 (`evidence/prompt-p3/`) |
+| `INBREV_PROMPT`        | `p3`                 | System prompt version; `p2` reproduces runs before 4 October 2026 (`evidence/prompt-p3/`), `p4` (sharper route boundaries, route study 14 October, `evidence/route/`) is not the default |
+| `INBREV_PROMPT_VARIANT` | –                  | `fewshot4`: four few-shot examples for the route study (with `INBREV_PROMPT=p4`); `fewshot`, `safety_first`: gap-study variants (`evidence/gap/`) |
 | `INBREV_SYMPTOM_CHECK` | `1`                | Second 8B call per message that only asks whether someone describes a current complaint (verified quote); a yes takes the message out of automation. `0` reproduces runs before 13 October 2026 (`evidence/gap/`) |
 | `INBREV_RULES_GATE`  | `0`                | `1`: a person decides when the keyword rules choose another route than the model (fewer unnoticed wrong routes, many more messages to a person) |
 | `INBREV_SECOND_OPINION_MODEL` | – (off) | Optional second opinion for practices with 70B access (e.g. a Swiss cloud): set to `apertus-v1.5-70b` on the same endpoint. Only when the keyword rules choose another route for a message that would run automatically, the second model is asked (prompt p3, same number of samples); if it disagrees, a person decides. Hold-out 2: wrong routes that run automatically 5 → 3 with the default prompt (2 with p4 + few-shot), 26 of 146 messages asked (`evidence/route/`) |

@@ -43,3 +43,11 @@ log `fresh-clone-2026-10-14-f839acc.log` (endpoint host masked). Clone: 0 untrac
 `make test`: 34 passed. `make run` with endpoint values: health 200, seed-001 correct (report_received, today, doctor), UI 200.
 `make run` without `track_2b/.env`: `endpoint_configured: false`, 12 stored seed results, `POST /v1/triage` 503 with the
 explanation, UI 200.
+
+## Re-check on 2026-10-15 (commit `5c664a9`)
+
+After the fail-safe for the symptom pass, the switches in Compose and the published test sets; same script, log
+`fresh-clone-2026-10-15-5c664a9.log` (endpoint host masked). Clone: 0 untracked files, `track_2b/data/` 1.5 MB.
+`make test`: 35 passed. `make run` with endpoint values: health 200 (`symptom_check: true`), seed-001 correct, UI 200.
+`make run` without `track_2b/.env`: `endpoint_configured: false`, 12 stored seed results, `POST /v1/triage` 503 with the
+explanation, UI 200.

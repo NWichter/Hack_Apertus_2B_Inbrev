@@ -17,8 +17,9 @@ The header of the web app shows which mode is active.
 ## Quick start (Docker)
 
 ```bash
-cp .env.example .env        # set LLM_NAME, LLM_BASE_URL, LLM_API_KEY (any OpenAI-compatible Apertus endpoint)
-make run                    # web app on http://127.0.0.1:8000
+cp .env.example .env        # optional: set LLM_NAME, LLM_BASE_URL, LLM_API_KEY (any OpenAI-compatible Apertus endpoint)
+make run                    # web app on http://127.0.0.1:8000; without .env it shows stored results for the 12 seed messages
+make test                   # 34 unit tests, no network
 ```
 
 | Target               | What it does                                                                                               |
@@ -26,9 +27,8 @@ make run                    # web app on http://127.0.0.1:8000
 | `make run`           | Builds the image and starts the web app against `LLM_BASE_URL`                                             |
 | `make run-local`     | Starts `llama.cpp` with a local Apertus GGUF and Inbrev on an internal network without internet; a small nginx gateway is the only container that also sits on the host network, so the UI is reachable at http://127.0.0.1:8000 |
 | `make offline-eval`  | Full triage with the local GGUF on the internal network, egress test, SHA-256 of the weights, `docker inspect`, memory samples, evaluation (`scripts/run_offline_eval.sh`) |
-| `make test`          | Unit tests inside the image with `--network none`                                                          |
-| `make offline-check` | Tests plus the non-LLM baselines with `--network none`                                                     |
-| `make triage-seed`   | Triages the 12 seed messages against the configured endpoint                                               |
+| `make test`          | The 34 unit tests inside the image with `--network none` (no model call)                                   |
+| `make stop`          | Stops the containers of `make run-local`                                                                   |
 
 All targets also work from the repository root (`make run-local` there calls `make -C track_2b run-local`).
 Checked on a fresh clone in a Linux container (Docker 27, Alpine, GNU Make 4.4): `make test`, `make run` and
@@ -81,9 +81,12 @@ message (e-mail, HIN mail, fax PDF/image via Tesseract, web form)
        dates must match their quote; AHV numbers must appear in the text
        deadline computed in code from the quoted date and the received time; no quote -> no deadline
        fields outside the chosen route are dropped
-  -> vote over samples (route majority, field majority, safety = any sample OR lexical net)
+  -> vote over samples (route majority, field majority, safety = any sample OR lexical net
+     OR symptom pass: a second short 8B call that only asks for a current complaint, with a verified quote)
   -> abstain ("a person decides") if samples disagree, the model marks the message ambiguous,
      or no route evidence survives
+  -> optional second opinion (off by default): if the keyword rules choose another route,
+     Apertus 70B is asked; if it disagrees, a person decides
   -> sorted inbox, JSON result (data/schema/triage_result.schema.json), audit log (hash + decision, no text)
 ```
 

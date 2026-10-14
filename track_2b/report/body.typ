@@ -495,17 +495,17 @@ time to sort messages by hand versus with Inbrev.
 `make run` starts the web app against `LLM_BASE_URL`\; `make run-local`
 runs llama.cpp with local weights and Inbrev on an internal network;
 `make offline-eval` repeats the offline run with its log; `make test`
-and `make offline-check` run the tests and the non-LLM evaluation with
-`--network none`. `scripts/agreement.py`, `value_model.py`,
-`compare_hybrid.py`, `replay_k_samples.py` and `cost_model.py` recompute
-agreement, value, rules comparison, ablation and cost from stored runs
-and annotations; `python -m inbrev triage|replay|eval` reproduces the
-numbers from the stored runs, with 95 % Wilson intervals. Grids and
-cross-validation are seeded. Model runs use `apertus-v1.5-8b` and
-`apertus-v1.5-70b` as named by the Hack Apertus endpoint (3, 4 and 13
-October), which does not expose the Hugging Face revision. The generated
-test texts follow in the repository after human review; predictions,
-grids and annotations are in `evidence/`.
+runs the 34 unit tests with `--network none`. `scripts/agreement.py`,
+`value_model.py`, `compare_hybrid.py`, `replay_k_samples.py` and
+`cost_model.py` recompute agreement, value, rules comparison, ablation
+and cost from stored runs and annotations;
+`python -m inbrev triage|replay|eval` reproduces the numbers from the
+stored runs, with 95 % Wilson intervals. Grids and cross-validation are
+seeded. Model runs use `apertus-v1.5-8b` and `apertus-v1.5-70b` as named
+by the Hack Apertus endpoint (3, 4 and 13 October), which does not
+expose the Hugging Face revision. The generated test texts follow in the
+repository after human review; predictions, grids and annotations are in
+`evidence/`.
 
 = 8. Next steps
 <next-steps>

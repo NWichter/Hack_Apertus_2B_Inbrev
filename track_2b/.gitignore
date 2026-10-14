@@ -31,5 +31,3 @@ models/
 
 # Raw external datasets (download with scripts/adapt_external_data.py --download)
 data/external/
-# Internal notes
-docs/VIDEO.md

@@ -1,4 +1,4 @@
-.PHONY: run run-local offline-eval build test offline-check eval triage-seed stop
+.PHONY: run run-local offline-eval build test stop
 
 IMAGE ?= inbrev:latest
 
@@ -16,15 +16,6 @@ build:
 
 test: build
 	docker run --rm --network none $(IMAGE) python -m pytest -q -p no:cacheprovider
-
-offline-check: build
-	docker run --rm --network none $(IMAGE) sh -c "python -m pytest -q -p no:cacheprovider && python -m inbrev eval data/seed/messages.seed.jsonl --baselines"
-
-eval: build
-	docker run --rm --network none $(IMAGE) python -m inbrev eval data/seed/messages.seed.jsonl --baselines
-
-triage-seed: build
-	docker compose run --rm app python -m inbrev triage data/seed/messages.seed.jsonl --out /app/runs/seed.jsonl
 
 stop:
 	docker compose --profile local down

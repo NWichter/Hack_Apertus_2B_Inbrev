@@ -328,32 +328,32 @@ def main() -> None:
 
     if a.review:
         out = [
-            "# Prüfliste: strittige Labels (für Niklas)",
+            "# Review list: disputed labels",
             "",
-            "Zwei offene Modelle (keine Menschen) haben blind gelabelt. Hier stehen alle Nachrichten, bei denen mindestens ein Modell",
-            "vom Raster-Label abweicht – zuerst die, bei denen beide Modelle gegen das Raster stimmen. Bitte je Nachricht entscheiden:",
-            "Raster richtig / Modell richtig / Text passt nicht zur Spezifikation. Nichts wurde automatisch umgelabelt.",
+            "Two open-weights models (not people) labelled blind. Listed are all messages where at least one model",
+            "differs from the grid label, first those where both models disagree with the grid. Decide per message:",
+            "grid right / model right / text does not fit the specification. Nothing was relabelled automatically.",
             "",
         ]
         disputed.sort(key=lambda d: (not d[5], d[0], d[1]["message_id"]))
         for sname, r, x, y, why, both in disputed:
             g = r["label"]
             out += [
-                f"## {r['message_id']} ({sname}) – strittig: {', '.join(why)}{' – beide Modelle gegen Raster' if both else ''}",
+                f"## {r['message_id']} ({sname}) – disputed: {', '.join(why)}{' – both models against the grid' if both else ''}",
                 "",
-                "| Quelle | Route | Frist | klinisch | unklar |",
+                "| Source | Route | Deadline | Clinical | Ambiguous |",
                 "| --- | --- | --- | --- | --- |",
-                f"| Raster | {g['route']} | {g['deadline']} | {g['safety_flag']} | {g['abstain']} |",
+                f"| Grid | {g['route']} | {g['deadline']} | {g['safety_flag']} | {g['abstain']} |",
                 f"| {A} | {x['route']} | {x['deadline']} | {x['clinical_content']} | {x['ambiguous']} |",
                 f"| {Bn} | {y['route']} | {y['deadline']} | {y['clinical_content']} | {y['ambiguous']} |",
                 "",
-                f"Eingang {r.get('received_at')} · {r.get('channel')} · {r.get('sender')}",
+                f"Received {r.get('received_at')} · {r.get('channel')} · {r.get('sender')}",
                 "",
                 f"**{r.get('subject')}**",
                 "",
                 "\n".join("> " + ln for ln in (r.get("body") or "").splitlines()),
                 "",
-                "Entscheidung: [ ] Raster  [ ] Modell  [ ] Text passt nicht  · Notiz:",
+                "Decision: [ ] grid  [ ] model  [ ] text does not fit  · Note:",
                 "",
             ]
         a.review.parent.mkdir(parents=True, exist_ok=True)

@@ -62,8 +62,9 @@ def main() -> None:
     ]
     for path in a.api:
         t = [x for x in load(path) if not x.get("error")]
-        pin = statistics.mean(x["prompt_tokens"] for x in t)
-        pout = statistics.mean(x["completion_tokens"] for x in t)
+        # The symptom pass (default since 13 October) is a second call; its tokens count too.
+        pin = statistics.mean(x["prompt_tokens"] + (x.get("symptom_tokens") or [0, 0])[0] for x in t)
+        pout = statistics.mean(x["completion_tokens"] + (x.get("symptom_tokens") or [0, 0])[1] for x in t)
         c = (pin * v["infomaniak_70b_in_chf_mtok"] + pout * v["infomaniak_70b_out_chf_mtok"]) / 1000
         rows.append((f"Swiss token API at the Apertus 70B price, tokens measured in `{path.name}`", c, f"{pin:.0f} in / {pout:.0f} out tokens per message"))
     lines += ["| Setup | CHF per 1,000 messages | Basis |", "| --- | --- | --- |"]

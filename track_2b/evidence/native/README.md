@@ -16,6 +16,7 @@ Hardware: the same laptop, AMD Ryzen 7 PRO 8840U, Radeon 780M iGPU through Vulka
 | Docker Desktop, CPU, Q4, p2 (`../offline/`, 4 Oct) | 24/30 | 11/16 | 192 s |
 | Native, Vulkan iGPU, Q4, p3 (`gold30-q4-vulkan.log`) | 25/30 [0.66, 0.93] | 11/16 [0.44, 0.86] | **62.7 s** (median 67.9, p95 84.9) |
 | Endpoint BF16, p3, first sample only (replay) | 28/30 | 12/16 | – |
+| **Native, Vulkan iGPU, Q4, p3 + symptom pass (default), 15 Oct** (`gold30-q4-vulkan-sym.log`) | 25/30 [0.66, 0.93] | **16/16** [0.81, 1.00] | **71.8 s** (median 69.3, p95 87.4) |
 
 Paired Q4 (native) vs BF16 (one sample, p3): same route on 27 of 30, same clinical flag on 29 of 30
 (Q4 misses `syn-118` in addition). `cost-vulkan.md`: at 62.7 s per message one box sorts about 57 messages
@@ -40,3 +41,12 @@ rows with connection errors were removed and the run resumed (`*.part1-3.log`). 
 Paired Q4 vs BF16 one sample (`chl-compare.md`): route 0 vs 5 discordant (p = 0.06), clinical 1 vs 3 (p = 0.63).
 Quantisation costs a few routes (mostly "other": 5/20 vs 10/20) and possibly clinical cases; the deployable
 configuration catches 38 of 44 (keyword rules 31 of 44).
+
+## Default configuration on local Q4 (15 October)
+
+Same 30 messages, same native setup (llama.cpp b11382, Vulkan, `-c 4096`), prompt p3 with the symptom pass that is the
+default since 13 October (`INBREV_SYMPTOM_CHECK=1`, one sample per call, temperature 0): two calls per message.
+Clinical exclusion 16/16 (without the pass 11/16), route 25/30 (unchanged), 71.8 s per message wall time
+(+9 s against 62.7 s without the pass), no failed symptom call. The subset holds all 16 clinical gold messages, so the
+automatic share is low here (10 of 30; 4 of the 14 non-clinical messages go to a person). Files: `gold30-q4-vulkan-sym.jsonl`,
+`gold30-q4-vulkan-sym.log`, `gold30-sym-report.md` (both runs side by side).

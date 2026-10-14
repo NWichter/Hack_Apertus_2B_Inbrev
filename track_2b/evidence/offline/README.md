@@ -16,12 +16,14 @@ Each folder is one run of `scripts/run_offline_eval.sh` (`make offline-eval`). H
 | Time | 5,765 s wall for 30 messages = 192 s per message (median 163 s, p95 417 s); model load from the Docker volume about 17 min |
 | Memory | llama.cpp peak 6.2 GiB, Inbrev 167 MiB |
 
-| Same 30 messages | Route | Clinical exclusion | Today recall | Deadline | Coverage |
+| Same 30 messages | Route | Clinical exclusion | Today recall | Deadline | Not abstained |
 | --- | --- | --- | --- | --- | --- |
 | Offline, Q4 on CPU, 1 sample | 24/30 [0.63, 0.90] | 11/16 [0.44, 0.86] | 13/17 | 21/30 | 30/30 |
 | Endpoint, BF16, 1 sample (replay) | 23/30 [0.59, 0.88] | 12/16 [0.51, 0.90] | 13/17 | 19/30 | 29/30 |
 | Endpoint, BF16, 3 samples | 24/30 [0.63, 0.90] | 13/16 [0.57, 0.93] | 14/17 | 19/30 | 28/30 |
 | Keyword rules | 23/30 [0.59, 0.88] | 7/16 [0.23, 0.67] | 9/17 | 15/30 | 30/30 |
+
+The last column counts messages without abstention (older definition of "coverage"; `report.md` was written with it). In the report, coverage means neither abstained nor flagged: 16/30 for the offline Q4 run.
 
 Paired Q4 vs. BF16 (1 sample): same route on 28 of 30, same clinical flag on 29 of 30 (Q4 misses
 `syn-146`), same deadline on 26 of 30. The subset over-weights clinical cases, so its rates are not

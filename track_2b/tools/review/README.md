@@ -1,7 +1,7 @@
 # Label review tool
 
-A local page for checking the gold-set labels by hand. The labels in the gold set were written by the
-generator models and nobody has checked them yet. This tool records a human decision for each message
+A local page for checking the gold-set labels by hand. The labels in the gold set come from the seeded
+grid that was fixed before the texts were generated; as of 14 October nobody had checked them (a review, once done, is in `../../evidence/review/`). This tool records a human decision for each message
 and measures how far the human agrees with the generator labels and with themself.
 
 - `index.html`: the review page. It is one static file with no network access. Open it by double-click.

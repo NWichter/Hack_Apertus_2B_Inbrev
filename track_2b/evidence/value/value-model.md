@@ -15,7 +15,7 @@ Model: saved = messages × automatic share × (manual − review) − messages �
 | Assumption | cautious | base | favourable | unit | basis |
 | --- | --- | --- | --- | --- | --- |
 | `messages_per_day` | 30 | 60 | 120 | messages | assumption for a 2-3 doctor practice; to be asked in interviews |
-| `manual_s` | 30 | 60 | 120 | s per message | MPA reads, decides route and deadline, forwards; assumption, to be timed (guide part C) |
+| `manual_s` | 30 | 60 | 120 | s per message | MPA reads, decides route and deadline, forwards; assumption, to be timed in practice interviews |
 | `review_s` | 20 | 15 | 10 | s per message | MPA checks an automatic suggestion with its quote; assumption, to be timed |
 | `false_flag_doctor_s` | 60 | 30 | 15 | s per false flag | doctor glance at a message wrongly flagged as clinical; assumption |
 | `mpa_chf_h` | 40 | 50 | 60 | CHF per hour | MPA full employer cost; assumption (project spec), no sourced wage table |

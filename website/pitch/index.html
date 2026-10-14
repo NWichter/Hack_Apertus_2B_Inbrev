@@ -1219,8 +1219,8 @@
             <div class="tier"><b>Swiss cloud</b><span>option for single practices</span></div>
           </div>
           <div class="term">
-            <span class="p">Offline run, measured</span><br />egress dns / tcp / https:
-            <b>FAILED</b><br />Q4 weights, laptop CPU: 192 s / message
+            <span class="p">Docker, no network</span><br />egress dns / tcp / https:
+            <b>FAILED</b><br /><span class="p">Local Q4, laptop iGPU</span><br />71.8 s / message, 16/16 clinical out
           </div>
         </div>
       </section>
@@ -1228,7 +1228,7 @@
       <!-- 6 · Evaluation -->
       <section class="slide">
         <div class="eyebrow">Evaluation · Technical rigour</div>
-        <h1 style="font-size: 70px">No clinical message ran by itself.</h1>
+        <h1 style="font-size: 70px">No synthetic clinical message ran by itself.</h1>
         <div class="lead" style="margin-top: 18px">
           180 synthetic messages, labels in human check (results on 16 October).<!--[[NIKLAS-PRÜFUNG: pitch-gold – Folie Evaluation, Lead-Text]]-->
         </div>
@@ -1321,17 +1321,17 @@
           <div class="cost hl">
             <div class="k">On-prem mini PC</div>
             <div class="big">≈ CHF 12</div>
-            <div class="unit">at 60 messages a day, box and power</div>
+            <div class="unit">at 60 messages a day; box, power, CPU time before the symptom pass</div>
           </div>
           <div class="cost">
             <div class="k">Swiss cloud VM</div>
             <div class="big">CHF 2.39</div>
-            <div class="unit">billed while sorting</div>
+            <div class="unit">billed while sorting; same CPU time, other CPU not measured</div>
           </div>
           <div class="cost">
             <div class="k">Swiss token API</div>
-            <div class="big">CHF 2.59</div>
-            <div class="unit">reference, Apertus 70B list price</div>
+            <div class="big">CHF 3.13</div>
+            <div class="unit">Apertus 70B list price, tokens measured with the symptom pass</div>
           </div>
         </div>
         <div class="saves">
@@ -1341,7 +1341,7 @@
             60 messages × 78 % automatic × 45 s saved, minus rework of misroutes
           </div>
         </div>
-        <div class="foot">Prices excl. VAT, 4 Oct 2026. Model, sources and break-even: report §5.</div>
+        <div class="foot">Estimates, prices excl. VAT, 4 Oct 2026. Model, sources and break-even: report §5.</div>
       </section>
 
       <!-- 9 · Intended purpose -->
@@ -1350,7 +1350,7 @@
         <h1>Administrative by default. Clinical mode is research only.</h1>
         <div class="cols2">
           <div class="col do">
-            <h3>Inbrev does</h3>
+            <h3>Default mode: Inbrev does</h3>
             <ul>
               <li>Sort by path and deadline</li>
               <li>Extract fields, each with its quote</li>
@@ -1358,7 +1358,7 @@
             </ul>
           </div>
           <div class="col never">
-            <h3>Inbrev never does</h3>
+            <h3>Default mode: Inbrev never</h3>
             <ul>
               <li>Rank by clinical severity</li>
               <li>Assess symptoms or suggest care</li>

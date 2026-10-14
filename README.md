@@ -4,7 +4,7 @@ Team Apertool · Hack Apertus 2026 · Track 2B (Own Project). Project root: [`tr
 
 Inbrev sorts the inbox of a Swiss general practice with **Apertus**, on the practice's own hardware: nine
 administrative routes, the administrative deadline, the person in charge, and patient and case fields, each
-backed by a verbatim quote from the message. It never assesses clinical content: a message that may describe
+backed by a verbatim quote from the message. In its default mode it does not assess clinical content: a message that may describe
 symptoms leaves automation and goes to "A person decides", unranked, together with messages the model is unsure about.
 
 ## Judges start here
@@ -14,7 +14,8 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 | Technical report (6 pages) | [`track_2b/Apertool_Report.pdf`](track_2b/Apertool_Report.pdf), source [`track_2b/technical_report.md`](track_2b/technical_report.md) |
 | Run it | `make run` from this folder (Docker). With `track_2b/.env` (`LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY`) the web app at http://127.0.0.1:8000 triages with your Apertus endpoint. **Without credentials** the app still starts, says so in its header and shows stored results for the 12 seed messages, marked as stored. |
 | Run it offline | `make run-local`: llama.cpp with local Apertus 8B Q4 weights and Inbrev on a Docker network without internet access ([`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md)); `make offline-eval` repeats the logged offline run |
-| Tests | `make test` (34 unit tests, `--network none`) |
+| Tests | `make test` (35 unit tests, `--network none`) |
+| Test texts | [`track_2b/data/synthetic/`](track_2b/data/synthetic/): all 543 generated test messages with their grid labels (synthetic, **labels not reviewed by a person**, v0) |
 | Evidence for every number | [`track_2b/evidence/`](track_2b/evidence/): logs, predictions and reports per study (`offline`, `prompt-p3`, `challenge`, `agreement`, `gap`, `holdout2`, `route`, `peers`, `fax`, `parhaf`, `native`, `value`, `fresh-clone`) |
 | Demo video (under 2 min) | `website/media/video.mp4` |
 
@@ -22,19 +23,23 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 
 - Gold set (180 messages; the second check was chosen on a separate dev split and measured here once, the shipped
   default was then fixed after seeing this result, see the report): with the default configuration no message with clinical
-  content runs automatically (16 of 16 leave automation), 170 of 180 routes are right, 40 of 180 messages go to a person.
+  content ran automatically (16 of 16 synthetic cases leave automation, 95 % CI 0.81–1.00), 170 of 180 routes are right, 40 of 180 messages go to a person.
 - Keyword rules: 7 of 16 clinical messages; Apertus 8B beats them on routes 32 to 5 (McNemar p = 7·10⁻⁶).
 - Two other small open models in the same pipeline route better than Apertus 8B (177 vs 170 of 180); the report says
   what that costs and why we still use Apertus.
-- Offline: Q4 weights, no internet access, egress test logged; 192 s per message on a laptop CPU, 62.7 s on its integrated GPU.
+- Offline: Q4 weights, no internet access, egress test logged; 192 s per message on a laptop CPU, 62.7 s on its integrated GPU
+  (both before the symptom pass); with the symptom pass (default) the iGPU needs 71.8 s per message
+  and excludes 16 of 16 clinical messages on a 30-message subset (`track_2b/evidence/native/`).
 
 | Mode | What it does |
 | --- | --- |
-| **Second opinion** (`INBREV_SECOND_OPINION_MODEL=apertus-v1.5-70b`, off by default) | Available as an option for practices with 70B access (e.g. a Swiss cloud): when the keyword rules choose another route, Apertus 70B is asked; if it disagrees, a person decides. On hold-out 2 it lowers wrong routes that run automatically from 5 to 2–3 of 146 (`track_2b/evidence/route/`). |
+| **Second opinion** (`INBREV_SECOND_OPINION_MODEL=apertus-v1.5-70b`, off by default) | Available as an option for practices with 70B access (e.g. a Swiss cloud): when the keyword rules choose another route, Apertus 70B is asked; if it disagrees, a person decides. On hold-out 2 it lowers wrong routes that run automatically from 5 to 3 of 146, to 2 with prompt p4 and few-shot examples (`track_2b/evidence/route/`). |
 | **Triage mode** (default) | Administrative sorting only. **Safety net:** the model's flag, a multilingual keyword net and a second narrow 8B check for current complaints take a message out of automation; no ranking by severity. All reported numbers use this mode. |
 | **Clinical research mode** (`INBREV_MODE=clinical-triage`, off by default) | Adds a keyword-based urgency hint to flagged messages. Research prototype without an intended medical purpose, not validated, not certified. |
 
+All switches in [`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md) also work with `make run` (set them in `track_2b/.env`).
 The project website (`website/`) contains the pitch (`website/pitch/`) and the report as `website/report.pdf`.
+
 ## License
 
 All Hack Apertus projects are open-sourced. Please check our Terms & Conditions for specific licensing details (6. What you build is open source): https://hackapertus.ch/terms-and-conditions
@@ -45,7 +50,7 @@ Inbrev follows § 6 of these terms:
 | --- | --- | --- |
 | Code (`track_2b/src`, `track_2b/scripts`, `track_2b/tests`, website) | Apache-2.0 | [`LICENSE`](LICENSE) |
 | Documentation and technical report (`README.md`, `track_2b/technical_report.md`, `track_2b/report/`, `track_2b/docs/`) | CC-BY-4.0 | [`LICENSE-docs`](LICENSE-docs) |
-| Submitted dataset (`track_2b/data/`: seed messages, Swiss practice set, taxonomy, schema) | CDLA-Permissive-2.0 | [`track_2b/data/LICENSE`](track_2b/data/LICENSE) |
+| Submitted dataset (`track_2b/data/`: seed messages, Swiss practice set, generated test sets in `synthetic/`, taxonomy, schema) | CDLA-Permissive-2.0 | [`track_2b/data/LICENSE`](track_2b/data/LICENSE) |
 
 Third-party material keeps its own licence and is not relicensed:
 

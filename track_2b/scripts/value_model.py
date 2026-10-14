@@ -2,7 +2,7 @@
 
 Measured inputs come from a stored run (share handled without a person, share of false clinical
 flags). Everything else is an ASSUMPTION with a low / base / high value; the interviews and the
-time trial in the interview guide are meant to replace them. No model call.
+a timing trial in practices are meant to replace them. No model call.
 
     python scripts/value_model.py <gold.jsonl> <predictions.jsonl> [--report evidence/value/value-model.md]
 """
@@ -29,7 +29,7 @@ ASSUMPTIONS = {
         60,
         120,
         "s per message",
-        "MPA reads, decides route and deadline, forwards; assumption, to be timed (guide part C)",
+        "MPA reads, decides route and deadline, forwards; assumption, to be timed in practice interviews",
     ),
     "review_s": (
         20,

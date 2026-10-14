@@ -117,7 +117,7 @@
             <li>
               <b>Read.</b> E-mail (files or IMAP, tested on a local test
               server), web forms and fax PDFs (OCR; on 60 rendered fax pages 50 routes right, 56 on clean text) become
-              text; a HIN connection is planned. Apertus answers in an enforced JSON schema, three times per
+              text; a HIN connection is planned (not tested yet). Apertus answers in an enforced JSON schema, three times per
               message.
             </li>
             <li>
@@ -132,9 +132,9 @@
           </ol>
           <div class="grid two notes">
             <article class="note safety">
-              <h3>Routes, never triages</h3>
+              <h3>Routes, does not triage</h3>
               <p>
-                Inbrev does not assess clinical content. A message that may
+                In its default mode Inbrev does not assess clinical content. A message that may
                 contain symptoms is excluded from automation and lands with the
                 messages a person decides, in order of arrival and without any
                 ranking by severity. That keeps the tool administrative.
@@ -203,7 +203,7 @@
             <article>
               <h3>On-premise</h3>
               <p>
-                A mini PC in the practice. Measured on a laptop: 192 s per message on the CPU, 62.7 s on its integrated GPU (30 messages, before the second check); 60 messages a day fit either way, a GPU makes it faster.
+                A mini PC in the practice. Measured on a laptop before the symptom pass was added: 192 s per message on the CPU, 62.7 s on its integrated GPU (30 messages). With the symptom pass (default): 71.8 s on the integrated GPU, 16 of 16 clinical messages excluded (30 messages). 60 messages a day fit either way; sorting runs as mail arrives.
               </p>
             </article>
             <article>
@@ -316,14 +316,14 @@
                   Full run without internet: Apertus 8B (Q4 weights, checksum
                   logged) in llama.cpp and Inbrev on a Docker network with no
                   route outside; an egress test fails as it should (192 s per
-                  message on a laptop CPU). The same weights on the laptop's
+                  message on a laptop CPU, before the symptom pass). The same weights on the laptop's
                   integrated GPU: 62.7 s per message (30 messages), 38 of 44 clinical
-                  messages caught on the challenge set
+                  messages caught on the challenge set (both without the symptom pass)
                 </li>
                 <li class="done">
                   Cost (model calculation from the measured time and an
                   assumed box price): about CHF 12 per 1,000 messages on a mini
-                  PC at 60 messages a day. Staff time saved is an assumption
+                  PC at 60 messages a day (time measured before the symptom pass; the box, not the energy, dominates). Staff time saved is an assumption
                   model, not measured (base case about 32 minutes a day)
                 </li>
               </ul>
@@ -346,6 +346,7 @@
         <div class="wrap">
           <h2>Demo video</h2>
           <video controls preload="metadata" playsinline poster="media/poster.jpg" width="1280" height="720"><source src="media/video.mp4" type="video/mp4"><track kind="subtitles" srclang="en" label="English" src="media/video.vtt" default></video>
+          <p class="video-note">The video shows the default mode on synthetic messages. Not in the video: two other open models of the same size route better than Apertus 8B in the same pipeline (177 vs 170 of 180); the <a href="report.pdf">report</a> (§5) says what that costs and why we keep Apertus. “16 of 16” means 16 synthetic clinical messages (95 % CI 0.81–1.00).</p>
         </div>
       </section>
 
@@ -469,9 +470,9 @@
             ></p>
           </form>
           <p class="contact-privacy">
-            Your name, e-mail address and message are forwarded by e-mail to Team
-            Apertool, solely to answer you. The form does not store them and does not
-            pass them on.
+            Please do not send patient information. Your name, e-mail address and message are
+            forwarded to Team Apertool by e-mail only, solely to answer you; the form itself stores
+            nothing and passes nothing on. This site uses no analytics and sets no cookies.
           </p>
         </div>
       </section>

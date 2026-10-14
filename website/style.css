@@ -642,3 +642,10 @@ h3 {
   font-size: 0.88rem;
   color: var(--muted);
 }
+
+.video-note {
+  max-width: 52em;
+  margin: 16px 0 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}

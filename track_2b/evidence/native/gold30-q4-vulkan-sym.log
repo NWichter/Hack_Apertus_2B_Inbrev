@@ -1,0 +1,13 @@
+started   2026-10-14T23:51:36.9410477+02:00
+build     b11382 (vulkan)
+gguf      models\apertus-v1.5-8b-text-Q4_K_M.gguf sha256 a037df8d87ff6caacee794ee85f55342f2152e0d359b7389033300c3bee5f299
+server    llama-server -m models\apertus-v1.5-8b-text-Q4_K_M.gguf -c 4096 --parallel 1 --jinja --host 127.0.0.1 --port 8090 -ngl 99
+host      AMD Ryzen 7 PRO 8840U w/ Radeon 780M Graphics, 31 GB RAM
+Available devices:
+  Vulkan0: AMD Radeon 780M Graphics (16725 MiB, 15889 MiB free)
+loaded    16 s
+  10/30 in 2005s
+  20/30 in 2076s
+  30/30 in 2152s
+{"written": 30, "errors": 0, "out": "runs\\native\\gold30-q4-vulkan-sym.jsonl"}
+finished  2026-10-15T00:27:49.2004210+02:00: 30 new messages in 2153 s = 71.8 s per message (wall; rows already in the output are skipped)

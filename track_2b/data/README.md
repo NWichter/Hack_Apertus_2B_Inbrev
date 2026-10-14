@@ -25,7 +25,7 @@ hand". Rows carry no generator, date or review fields. Evidence quotes were chec
 be verbatim; no person has reviewed the labels. The seeds were used to develop prompt p2 and the
 checks, so they are a development set, not a held-out test set.
 
-## Gold set (planned, ~300 messages)
+## Gold set: original plan (superseded by the synthetic part v0 below)
 
 | Part           | Share | How it is made                                                                                                                                                                                                                                                   | Why                                             |
 | -------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
@@ -57,8 +57,8 @@ generates nor labels any of them.
   invalid, that e-mail domains are `.example` and phone numbers use the `000` block, and it looks
   for near-duplicates. Minimal fixes to generated rows carry `edited_by`. Rows whose label does
   not clearly follow from the text carry `review_flag` and `review_reason`; they are not relabelled.
-[[NIKLAS-PRÜFUNG: daten-status – Status der Labels im Daten-README]] The files live
-  outside the repository (`$DATA_DIR/gold-set/`).
+[[NIKLAS-PRÜFUNG: daten-status – Status der Labels im Daten-README]] The texts are
+  published unreviewed in `synthetic/gold-v0.jsonl` (see `synthetic/README.md`).
 
 Extra record fields in this part: `sender_type`, `received_at` (deadlines are relative to it),
 `meta` (grid variables), the generator fields above, and the optional review fields. Channel
@@ -147,6 +147,6 @@ Every `quote` must be a substring of `subject + "\n" + body`; the evaluation che
 
 ## Licence
 
-Data: CDLA-Permissive-2.0. Larger working files (scans, model outputs) are kept outside the repository and passed in via `DATA_DIR`.
+Data: CDLA-Permissive-2.0. Larger working files (scans, raw model outputs) are kept outside the repository and passed in via `DATA_DIR`.
 
-The full text is in [`LICENSE`](LICENSE). It covers the files of this folder that are in the repository. The external datasets above (`external/`, not in the repository) are not covered and keep the licences stated on their dataset cards.
+The full text is in [`LICENSE`](LICENSE). It covers the files of this folder that are in the repository, except `grascco/` and `parhaf/` (CC BY 4.0 / Etalab 2.0, see their READMEs). The external datasets above (`external/`, not in the repository) are not covered and keep the licences stated on their dataset cards.

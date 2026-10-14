@@ -14,11 +14,11 @@ No Inbrev model (Apertus or comparison) has seen these messages when this file w
   from the grid on route or clinical content; in 7 both models agree against the grid), listed in `disputed-ids.txt`;
   the 127 others in `undisputed-ids.txt`. Results are reported on all 146 and on the 127 undisputed messages.
   Nothing was relabelled.
-- The message texts stay outside the repository until a person has reviewed the labels (as for the other generated sets).
+- The message texts were kept outside the repository during the study; since 15 October they are published unreviewed as `../../data/synthetic/holdout2-v0.jsonl` (same SHA-256).
 
 | File | SHA-256 |
 | --- | --- |
-| `holdout2.jsonl` (texts and grid labels, outside the repository) | `306225ba66a5a10b864e1c9e0eb56fd2a3246e73fb06f90f42dcf2b0be0d6142` |
+| `holdout2.jsonl` (texts and grid labels; now `data/synthetic/holdout2-v0.jsonl`) | `306225ba66a5a10b864e1c9e0eb56fd2a3246e73fb06f90f42dcf2b0be0d6142` |
 | `grid-holdout2.jsonl` | `97d1ea7e0b066d21cefa452ce6f93ba2a8657c172749eaf7b0f39208315d7710` |
 | `ho2-nemotron-super.jsonl` | `253bf3b9b7d6a111c5099284f100ae8d292f28df2cd8678511e52673dc54e815` |
 | `ho2-gpt-oss-120b.jsonl` | `c79bdae5a720322ddd979606b8f6377dba2e26cfccf0c86a6e4d58e2780bad7d` |

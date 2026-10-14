@@ -69,7 +69,7 @@ changes the route of 3 of 180 gold messages (Nemotron 0/42, GraSCCo 0/40); p3 ch
 
 | File | Content |
 | --- | --- |
-| `dev-set/` | dev grid (labels), generator prompt, generation log with cost. The 60 texts stay with the gold set in `$DATA_DIR/dev-set/` until a person has checked them for real names (same rule as the gold and Nemotron sets) |
+| `dev-set/` | dev grid (labels), generator prompt, generation log with cost. The 60 texts are published unreviewed as `../../data/synthetic/dev-v0.jsonl` (automatic check for real names and numbers, 15 October) |
 | `predictions/` | all predictions with raw model output (`{set}-{p2,p3}-8b.jsonl`) |
 | `compare-p2-p3.md` | paired comparison per set |
 | `noise-p2-rerun.md` | stored p2 run vs. fresh p2 run |

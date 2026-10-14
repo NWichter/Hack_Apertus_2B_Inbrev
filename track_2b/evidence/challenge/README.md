@@ -17,7 +17,7 @@ medical traps, written after prompt p3, the checks and the lexical net were froz
   The free provider was often overloaded; 100 specs passed validation in the first run, 15 of the 20
   missing ones in a second run (`generation-log-part1.json`, `-part2.json`); 5 were dropped after
   three attempts. **115 messages: 44 with clinical content (17 explicit, 27 in passing), 39 traps,
-  32 plain.** The texts are not in the repository yet (same rule as the gold set: after human review).
+  32 plain.** The texts are in `../../data/synthetic/challenge-v1.jsonl` (labels unreviewed).
 - Apertus wrote no text and no label. [[NIKLAS-PRÜFUNG: challenge-readme – Satz zur menschlichen Prüfung im Challenge-README]] two open-weights models labelled
   the texts blind (`../agreement/`): clinical content agreed with the grid on 115/115 for both.
 

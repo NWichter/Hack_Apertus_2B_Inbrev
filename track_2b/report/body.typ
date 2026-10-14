@@ -291,10 +291,8 @@ half of the flags on this set are false alarms from the net (15 of 28
 for 8B), which costs a doctor a glance, not a missed case. Recall
 differs by generator (8B: 7/7 for texts by GPT-5.5, 6/9 by Claude), so
 the set partly measures its authors; the open-generator and challenge
-sets are the control. Field F1 is 0.73 for 8B and 0.83 for 70B (paired
-bootstrap p \< 0.001); the checks drop 15 % of the values 8B extracted.
-Mean latency per message was 3.0 s (8B) and 10.7 s (70B) on the shared
-endpoint.
+sets are the control. Field F1 is 0.73 for 8B and 0.83 for 70B; mean
+latency per message 3.0 s and 10.7 s on the shared endpoint.
 
 The baselines already route 79--83 % of the synthetic messages
 correctly, so the route alone does not justify a language model on this
@@ -385,14 +383,20 @@ rule, written before the hold-out run, picked the second check plus the
 rules gate; after seeing the hold-out we ship the second check alone as
 default and the gate as an option (`INBREV_RULES_GATE=1`), because the
 gate sends 69 instead of 40 of 180 messages to a person. Both results
-are reported (`evidence/gap/`). Local execution, the quote checks and
-the unranked safety net work with any open model and are no argument for
-Apertus. What is specific to Apertus: it was pretrained only on openly
-available data with robots.txt opt-outs applied retroactively and
-personal data filtered, all training artefacts are released
-@apertus2025, and the developers publish a dataset catalogue, an EU
-training-content summary and an EU Code of Practice statement
-(github.com/swiss-ai/apertus-data-transparency), the kind of
+are reported (`evidence/gap/`). A second round on a fresh hold-out (146
+messages written by Gemma 4 31B, frozen with hashes before any run, plan
+fixed on the earlier sets; `evidence/route/`) targeted the routes:
+sharper route descriptions and few-shot examples alone change nothing (5
+wrong routes run automatically, 40 messages to a person); asking 70B
+only when the keyword rules disagree lowers this to 2 at 43, which needs
+the 70B endpoint and is not the default. Qwen3.5-9B: 0 at 24. Local
+execution, the quote checks and the unranked safety net work with any
+open model and are no argument for Apertus. What is specific to Apertus:
+it was pretrained only on openly available data with robots.txt opt-outs
+applied retroactively and personal data filtered, all training artefacts
+are released @apertus2025, and the developers publish a dataset
+catalogue, an EU training-content summary and an EU Code of Practice
+statement (github.com/swiss-ai/apertus-data-transparency), the kind of
 documentation the EU AI Act asks of general-purpose model providers
 @eu2024aiact\; we did not check equivalent documents for the comparison
 models. A Swiss practice that must justify under the DSG and
@@ -434,11 +438,9 @@ one short call per message; its local cost is not measured yet.
 under load @kennedy2024box, about 2.1 kWh or CHF 0.52 per 1,000 messages
 at 192 s each @elcom2026. With the box (about CHF 700, three years) and
 idle power, a practice with 60 messages a day pays about CHF 12 per
-1,000 messages, roughly CHF 22 a month. A Swiss token API at the listed
-Apertus 70B price @infomaniak2026ai would cost CHF 2.59 per 1,000
-messages with the 8B token counts. #strong[Value.] Staff time saved is
-not measured. `scripts/value_model.py` multiplies measured shares of the
-default configuration (78 % automatic, 4.4 % automatic but wrongly
+1,000 messages, roughly CHF 22 a month. #strong[Value.] Staff time saved
+is not measured. `scripts/value_model.py` multiplies measured shares of
+the default configuration (78 % automatic, 4.4 % automatic but wrongly
 routed, 12.8 % false clinical flags) with assumed volumes and handling
 times (`evidence/value/`). At 60 messages a day, 60 s by hand and 15 s
 to check a suggestion, an MPA saves about 32 minutes a day, net CHF 349
@@ -446,10 +448,6 @@ a month after doctor time for false flags and running cost (all
 assumed); the cautious case loses CHF 242 a month; break-even is 33 s of
 manual handling per message. Practice interviews with a timing trial
 will replace the assumptions.
-
-On the 30 Swiss practice messages (`data/ood/`, 4 clinical) 8B routes 24
-(p3), 70B 27 (p2), the rules 25; all take the 4 clinical cases out of
-automation.
 
 Not measured yet: latency on an NVIDIA GPU
 (`scripts/run_native_llamacpp.ps1 -Backend cuda` is prepared) and the

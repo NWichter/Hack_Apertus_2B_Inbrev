@@ -10,6 +10,8 @@ services:
       LLM_BASE_URL: ${LLM_BASE_URL:-}
       LLM_API_KEY: ${LLM_API_KEY:-none}
       INBREV_SAMPLES: ${INBREV_SAMPLES:-3}
+      INBREV_CONCURRENCY: ${INBREV_CONCURRENCY:-3}
+      INBREV_SPLIT_SAMPLES: ${INBREV_SPLIT_SAMPLES:-auto}
       # Optional, off by default: e.g. apertus-v1.5-70b on the same endpoint (see docs/RUNNING.md).
       INBREV_SECOND_OPINION_MODEL: ${INBREV_SECOND_OPINION_MODEL:-}
       # Stored seed results so "Load" works without endpoint credentials; "Sort inbox" calls the model.
@@ -72,6 +74,7 @@ services:
       INBREV_SPLIT_SAMPLES: "on"
       INBREV_CONCURRENCY: "1"
       INBREV_TIMEOUT: "1800"
+      INBREV_SECOND_OPINION_MODEL: ${INBREV_SECOND_OPINION_MODEL:-}
       INBREV_PRECOMPUTED: ${INBREV_PRECOMPUTED:-}
       INBREV_AUDIT_LOG: /app/runs/audit.jsonl
       # Switches from docs/RUNNING.md; defaults are the shipped configuration.

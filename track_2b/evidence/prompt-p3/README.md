@@ -62,7 +62,7 @@ changes the route of 3 of 180 gold messages (Nemotron 0/42, GraSCCo 0/40); p3 ch
   test set only, not tuned.
 - About 6 of the 9 remaining dev errors are texts that fit the predicted route better than the grid
   label (e.g. "Richiesta certificato" labelled `other`): the generator does not always follow the
-  spec. Labels are still not checked by a human (κ open).
+  spec. Labels were not checked by a human at that time (4 October).
 - Nemotron set: the 3 `other` messages are still missed (0/3).
 
 ## Files

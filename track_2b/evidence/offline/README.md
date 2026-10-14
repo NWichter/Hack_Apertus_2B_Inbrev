@@ -23,6 +23,9 @@ Each folder is one run of `scripts/run_offline_eval.sh` (`make offline-eval`). H
 | Endpoint, BF16, 3 samples | 24/30 [0.63, 0.90] | 13/16 [0.57, 0.93] | 14/17 | 19/30 | 28/30 |
 | Keyword rules | 23/30 [0.59, 0.88] | 7/16 [0.23, 0.67] | 9/17 | 15/30 | 30/30 |
 
+Repeat this run: `GOLD=runs/offline/gold-subset30.jsonl INBREV_PROMPT=p2 INBREV_SYMPTOM_CHECK=0 make offline-eval`
+(subset: `python scripts/select_subset.py data/synthetic/gold-v0.jsonl --n 30 --seed 2026 --out runs/offline/gold-subset30.jsonl`; `make offline-eval` alone uses the 12 seed messages and the current default).
+
 The last column counts messages without abstention (older definition of "coverage"; `report.md` was written with it). In the report, coverage means neither abstained nor flagged: 16/30 for the offline Q4 run.
 
 Paired Q4 vs. BF16 (1 sample): same route on 28 of 30, same clinical flag on 29 of 30 (Q4 misses

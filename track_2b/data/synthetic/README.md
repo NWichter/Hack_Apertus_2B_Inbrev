@@ -1,8 +1,9 @@
-# Generated test sets (synthetic, labels unreviewed, v0)
+# Generated test sets (synthetic v0, published without human review)
 
 These are the message texts behind every reported number on generated data. **All messages are
 synthetic and fictional. The labels come from the seeded grid that was fixed before any text was
-written; no person has reviewed them.** Two open-weights models labelled the same texts blind as a
+written; no person had reviewed them when they were published on 15 October** (a later review, if any, is in
+`../../evidence/review/`; it does not change these files). Two open-weights models labelled the same texts blind as a
 consistency check (`../../evidence/agreement/`, `../../evidence/holdout2/`); nothing was relabelled.
 Apertus, the model under test, wrote no text and no label.
 
@@ -24,7 +25,9 @@ Generation prompts: `../generation/PROMPT.md` and `../../scripts/generate_openro
 
 - **No real personal data.** `scripts/validate.py` on all five files: 0 errors (AHV numbers with invalid
   check digits, e-mail domains `.example`, phone numbers in the fictional `000` block, no valid IBAN).
-  Warnings name real institutions only (for example Suva, a regional hospital), no real persons.
+  Warnings (`validation/`, one report per file): values without an evidence quote (24), AHV numbers not taken from the
+  grid but still with invalid check digits (5), names of real institutions such as Suva or a regional hospital (3),
+  near-duplicate openings (2), one language mismatch. No real persons.
 - **Redistribution of the generator outputs.** Anthropic (commercial terms) and OpenAI (terms of use)
   assign the outputs to the user; the NVIDIA Open Model License states that NVIDIA claims no ownership of
   outputs; Gemma 4 is released under Apache-2.0. None of the texts comes from an external dataset.

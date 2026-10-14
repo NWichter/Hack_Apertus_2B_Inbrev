@@ -1,5 +1,7 @@
 # Track 2 B: Own Project
 
+> Project README (Inbrev): [`../README.md`](../README.md). The text below is the challenge template.
+
 Bring your own idea and build a working Apertus prototype that tackles a problem you care about — any domain, any use case. The project must be new, started within the hackathon period.
 
 Submissions must use the Apertus model family.

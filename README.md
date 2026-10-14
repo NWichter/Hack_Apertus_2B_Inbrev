@@ -15,7 +15,7 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 | Run it | `make run` from this folder (Docker). With `track_2b/.env` (`LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY`) the web app at http://127.0.0.1:8000 triages with your Apertus endpoint. **Without credentials** the app still starts, says so in its header and shows stored results for the 12 seed messages, marked as stored. |
 | Run it offline | `make run-local`: llama.cpp with local Apertus 8B Q4 weights and Inbrev on a Docker network without internet access ([`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md)); `make offline-eval` repeats the logged offline run |
 | Tests | `make test` (35 unit tests, `--network none`) |
-| Test texts | [`track_2b/data/synthetic/`](track_2b/data/synthetic/): all 543 generated test messages with their grid labels (synthetic, **labels not reviewed by a person**, v0) |
+| Test texts | [`track_2b/data/synthetic/`](track_2b/data/synthetic/): all 543 generated test messages with their grid labels (synthetic v0, labels from the seeded grid, published without human review). The 367 messages that two open models labelled blind are the gold, open-generator, challenge and Swiss practice sets (180 + 42 + 115 + 30); hold-out 2 (146) was labelled blind separately, the dev split (60) not |
 | Evidence for every number | [`track_2b/evidence/`](track_2b/evidence/): logs, predictions and reports per study (`offline`, `prompt-p3`, `challenge`, `agreement`, `gap`, `holdout2`, `route`, `peers`, `fax`, `parhaf`, `native`, `value`, `fresh-clone`) |
 | Demo video (under 2 min) | `website/media/video.mp4` |
 
@@ -24,7 +24,7 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 - Gold set (180 messages; the second check was chosen on a separate dev split and measured here once, the shipped
   default was then fixed after seeing this result, see the report): with the default configuration no message with clinical
   content ran automatically (16 of 16 synthetic cases leave automation, 95 % CI 0.81–1.00), 170 of 180 routes are right, 40 of 180 messages go to a person.
-- Keyword rules: 7 of 16 clinical messages; Apertus 8B beats them on routes 32 to 5 (McNemar p = 7·10⁻⁶).
+- Keyword rules catch 7 of 16 clinical messages; Apertus 8B beats them on routes 32 to 5 (McNemar p = 7·10⁻⁶).
 - Two other small open models in the same pipeline route better than Apertus 8B (177 vs 170 of 180); the report says
   what that costs and why we still use Apertus.
 - Offline: Q4 weights, no internet access, egress test logged; 192 s per message on a laptop CPU, 62.7 s on its integrated GPU
@@ -37,7 +37,7 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 | **Triage mode** (default) | Administrative sorting only. **Safety net:** the model's flag, a multilingual keyword net and a second narrow 8B check for current complaints take a message out of automation; no ranking by severity. All reported numbers use this mode. |
 | **Clinical research mode** (`INBREV_MODE=clinical-triage`, off by default) | Adds a keyword-based urgency hint to flagged messages. Research prototype without an intended medical purpose, not validated, not certified. |
 
-All switches in [`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md) also work with `make run` (set them in `track_2b/.env`).
+The switches in [`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md) also work with `make run` (set them in `track_2b/.env`; exceptions are listed there).
 The project website (`website/`) contains the pitch (`website/pitch/`) and the report as `website/report.pdf`.
 
 ## License

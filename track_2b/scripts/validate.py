@@ -1,6 +1,7 @@
 """Validate gold-set JSONL files and write a Markdown report.
 
-python scripts/validate.py --grid grid.jsonl --report validation-report.md claude.jsonl codex.jsonl
+python scripts/validate.py --grid grid.jsonl claude.jsonl codex.jsonl                    # report to stdout
+python scripts/validate.py --grid grid.jsonl --report runs/validation.md claude.jsonl  # or to a file (runs/ is ignored)
 
 Errors: schema, label differs from grid, evidence not verbatim, required evidence
 missing, deadline_date inconsistent, valid AHV check digit, non-fictitious e-mail
@@ -343,7 +344,7 @@ def check_duplicates(
     return pairs
 
 
-def write_report(path: Path, files: list[Path], rows: list[dict], rep: Report) -> None:
+def write_report(path: Path | None, files: list[Path], rows: list[dict], rep: Report) -> None:
     lines = [
         "# Validation report",
         "",
@@ -396,7 +397,12 @@ def write_report(path: Path, files: list[Path], rows: list[dict], rep: Report) -
         for mid, check, msg in sorted(items):
             lines.append(f"| {mid} | {check} | {msg.replace('|', '/')} |")
         lines.append("")
-    path.write_text("\n".join(lines), encoding="utf-8")
+    text = "\n".join(lines)
+    if path is None:
+        sys.stdout.write(text + "\n")
+    else:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
 
 
 def main() -> int:
@@ -404,7 +410,7 @@ def main() -> int:
     ap.add_argument("files", nargs="+", type=Path)
     ap.add_argument("--grid", type=Path, required=True)
     ap.add_argument("--schema", type=Path, default=SCHEMA_PATH)
-    ap.add_argument("--report", type=Path, default=Path("validation-report.md"))
+    ap.add_argument("--report", type=Path, default=None, help="Markdown report file (default: stdout)")
     ap.add_argument("--near-dup", type=float, default=0.5)
     args = ap.parse_args()
 
@@ -433,7 +439,8 @@ def main() -> int:
     check_duplicates(rows, rep, args.near_dup)
     write_report(args.report, args.files, rows, rep)
     print(
-        f"{len(rows)} rows, {len(rep.errors)} errors, {len(rep.warnings)} warnings -> {args.report}"
+        f"{len(rows)} rows, {len(rep.errors)} errors, {len(rep.warnings)} warnings -> {args.report or 'stdout'}",
+        file=sys.stderr,
     )
     return 1 if rep.errors else 0
 

@@ -17,7 +17,7 @@ The header of the web app shows which mode is active.
 ## Quick start (Docker)
 
 ```bash
-cp .env.example .env        # optional: set LLM_NAME, LLM_BASE_URL, LLM_API_KEY (any OpenAI-compatible Apertus endpoint)
+cp track_2b/.env.example track_2b/.env   # optional, from the repository root: set LLM_NAME, LLM_BASE_URL, LLM_API_KEY (any OpenAI-compatible Apertus endpoint)
 make run                    # web app on http://127.0.0.1:8000; without .env it shows stored results for the 12 seed messages
 make test                   # 35 unit tests, no network
 ```
@@ -40,7 +40,10 @@ Checked on a fresh clone in a Linux container (Docker 27, Alpine, GNU Make 4.4):
 mkdir -p models
 curl -L -o models/apertus-v1.5-8b-text-Q4_K_M.gguf   https://huggingface.co/Colby/apertus-v1.5-8b-text-Q4_K_M-GGUF/resolve/248ec68a63e219e3f061e4c946fc8a20d63b9975/apertus-v1.5-8b-text-q4_k_m.gguf
 sha256sum models/*.gguf    # a037df8d87ff6caacee794ee85f55342f2152e0d359b7389033300c3bee5f299
-make offline-eval          # seed set; GOLD=path/to/messages.jsonl for another file
+make offline-eval          # 12 seed messages with the shipped default (p3, symptom pass)
+# the logged run of 4 October (evidence/offline/): 30 gold messages, prompt p2, before the symptom pass
+python scripts/select_subset.py data/synthetic/gold-v0.jsonl --n 30 --seed 2026 --out runs/offline/gold-subset30.jsonl
+GOLD=runs/offline/gold-subset30.jsonl INBREV_PROMPT=p2 INBREV_SYMPTOM_CHECK=0 make offline-eval
 ```
 
 The GGUF is a community Q4_K_M quantisation of the text weights of `swiss-ai/Apertus-v1.5-8B`
@@ -121,8 +124,12 @@ latency, with breakdowns by language, writing level, channel and generator.
 
 ## Configuration
 
-All variables below work with `python -m inbrev` and with `make run` / `make run-local`: `docker-compose.yml` passes them
-through with the shipped defaults (set them in `track_2b/.env`). `INBREV_SAMPLES` in `make run-local` is `LOCAL_INBREV_SAMPLES`.
+The variables below work with `python -m inbrev` and with `make run`: `docker-compose.yml` passes them through with the
+shipped defaults (set them in `track_2b/.env`). `make run-local` fixes `INBREV_CONCURRENCY=1`, `INBREV_SPLIT_SAMPLES=on`
+and a long timeout for llama.cpp on a CPU; its sample count is `LOCAL_INBREV_SAMPLES`.
+
+Symptom pass: a "yes" counts only with a quote that is in the message; no parseable answer at all sends the message to a
+person. Replays of traces recorded before 13 October have no symptom answers; replay them with `INBREV_SYMPTOM_CHECK=0`.
 
 | Variable               | Default              | Meaning                                             |
 | ---------------------- | -------------------- | --------------------------------------------------- |

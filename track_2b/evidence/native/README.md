@@ -47,6 +47,6 @@ configuration catches 38 of 44 (keyword rules 31 of 44).
 Same 30 messages, same native setup (llama.cpp b11382, Vulkan, `-c 4096`), prompt p3 with the symptom pass that is the
 default since 13 October (`INBREV_SYMPTOM_CHECK=1`, one sample per call, temperature 0): two calls per message.
 Clinical exclusion 16/16 (without the pass 11/16), route 25/30 (unchanged), 71.8 s per message wall time
-(+9 s against 62.7 s without the pass), no failed symptom call. The subset holds all 16 clinical gold messages, so the
+(+9 s against 62.7 s without the pass; `gold30-sym-report.md` lists 64.0 s, the mean latency of the main call only), no failed symptom call. The subset holds all 16 clinical gold messages, so the
 automatic share is low here (10 of 30; 4 of the 14 non-clinical messages go to a person). Files: `gold30-q4-vulkan-sym.jsonl`,
 `gold30-q4-vulkan-sym.log`, `gold30-sym-report.md` (both runs side by side).

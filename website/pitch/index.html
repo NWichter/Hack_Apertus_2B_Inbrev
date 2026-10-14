@@ -1071,6 +1071,16 @@
       .s-arch .tier b { color: #8fd3c1; min-width: 230px; }
       .s-arch .term { background: var(--dark); font-size: 26px; }
       .s-close .eyebrow { margin-bottom: 18px; }
+      .demo { display: grid; grid-template-columns: 1090px 1fr; gap: 64px; margin-top: 36px; align-items: center; }
+      .demo .shot { position: relative; }
+      .demo .shot img { width: 100%; display: block; border-radius: 18px; border: 2px solid var(--line); box-shadow: 0 14px 40px rgba(15, 76, 92, 0.16); }
+      .pin { display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 28px; font-weight: 700; box-shadow: 0 0 0 5px var(--bg); flex: none; }
+      .shot .pin { position: absolute; transform: translate(-50%, -50%); }
+      .notes { display: flex; flex-direction: column; gap: 44px; }
+      .note { display: flex; gap: 20px; align-items: flex-start; }
+      .note b { display: block; font-size: 32px; color: var(--ink); }
+      .cap { font-size: 24px; line-height: 1.4; color: var(--muted); }
+      .note p { font-size: 27px; line-height: 1.4; color: var(--text); margin-top: 8px; }
     </style>
     <meta name="robots" content="noindex" />
     <link rel="icon" href="../assets/inbrev-favicon.svg" type="image/svg+xml" />
@@ -1101,7 +1111,7 @@
         </div>
         <div class="row">
           <div style="display: flex; gap: 24px">
-            <a class="btn primary" href="../#video"
+            <a class="btn primary" href="https://inbrev.apertool.ch/#video"
               >&#9654;&nbsp;Watch the 2-min demo</a
             >
             <a class="btn ghost" href="https://github.com/NWichter/Hack_Apertus_2B_Inbrev"
@@ -1170,13 +1180,18 @@
       <!-- 4 · Demo moment -->
       <section class="slide">
         <div class="eyebrow">Demo</div>
-        <h1 style="font-size: 64px">One click. What needs a person goes to a person.</h1>
-        <div class="shots2">
-          <img src="../assets/app-detail-admin.webp" alt="Inbrev web inbox: prescription request routed to the assistant with quoted medication and a fixed reply template" />
-          <img src="../assets/app-detail.webp" alt="Inbrev web inbox: appointment request mentioning shortness of breath is not processed and goes to a person" />
-        </div>
-        <div class="foot" style="margin-top: 18px">
-          Left: handled automatically, each value with its quote. Right: breathlessness in passing, so a person reads it.
+        <h1 style="font-size: 64px">One fax, sorted. Every value shows where it came from.</h1>
+        <div class="demo">
+          <div class="shot">
+            <img src="../assets/app-demo.webp" alt="Inbrev web app: insurer fax routed to admin with deadline 8 October; route, deadline and extracted values are highlighted as quotes in the original text" />
+            <span class="pin" style="left: 0%; top: 37%">1</span>
+            <span class="pin" style="left: 0%; top: 85.6%">2</span>
+          </div>
+          <div class="notes">
+            <div class="note"><span class="pin">1</span><div><b>Route and deadline</b><p>Insurer, admin, by 8 Oct. The date comes from the quote, the deadline from code.</p></div></div>
+            <div class="note"><span class="pin">2</span><div><b>Quote or drop</b><p>Each highlighted value is verbatim in the fax. No quote, no value.</p></div></div>
+            <p class="cap">Running app, stored Apertus 8B result, fictional fax. Possible symptoms would go to a person instead.</p>
+          </div>
         </div>
       </section>
 
@@ -1434,7 +1449,7 @@
             ><a
               class="btn primary"
               style="font-size: 24px; padding: 12px 22px"
-              href="../#video"
+              href="https://inbrev.apertool.ch/#video"
               >&#9654;&nbsp;2-min video</a
             ></span
           >

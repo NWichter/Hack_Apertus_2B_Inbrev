@@ -8,4 +8,5 @@ COPY assets /usr/share/nginx/html/assets
 COPY media /usr/share/nginx/html/media
 COPY pitch/index.html pitch/og.png pitch/pitch.pdf /usr/share/nginx/html/pitch/
 COPY pitch/png /usr/share/nginx/html/pitch/png
+COPY pitch/fonts /usr/share/nginx/html/pitch/fonts
 EXPOSE 80

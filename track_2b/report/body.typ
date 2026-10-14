@@ -1,7 +1,7 @@
 - #strong[Demo video (under 2 min):] `website/media/video.mp4` in the
   repository; public link in the submission form
 
-#emph[Version of 14 October 2026. Every number is measured or cited;
+#emph[Version of 16 October 2026. Every number is measured or cited;
 what is not measured yet is named as such. Measured numbers come from
 synthetic data whose labels have not yet been reviewed by a person.]
 
@@ -21,10 +21,11 @@ Inbrev sorts the inbox of a Swiss practice locally with Apertus. It
 assigns each message to one of nine administrative routes, derives the
 administrative deadline and the person in charge, extracts patient and
 case fields, and backs every decision with a verbatim quote from the
-message. It never assesses clinical content: a message that may describe
-symptoms leaves automation and goes to a person, in the same queue as
-messages the model is unsure about, without any ranking by severity.
-Results (Apertus 8B; synthetic data, labels not reviewed by a person):
+message. In its default mode it does not rate or rank clinical content:
+a message that may describe symptoms leaves automation and goes to a
+person, in the same queue as messages the model is unsure about, without
+any ranking by severity. Results (Apertus 8B; synthetic data, labels not
+reviewed by a person):
 
 - #strong[Gold set, 180 messages, default configuration] (prompt p3 plus
   a second, narrow 8B check for current complaints, chosen on a dev
@@ -47,10 +48,10 @@ Results (Apertus 8B; synthetic data, labels not reviewed by a person):
   Clinical reports written by people are routed right (GraSCCo 40/40,
   PARHAF 37/38).
 - #strong[Offline and cost:] with local Q4 weights Inbrev runs on a
-  Docker network without internet access (192 s per message on a laptop
-  CPU, 62.7 s natively on its integrated GPU before the symptom pass,
-  71.8 s with it); a mini PC costs about CHF 12 per 1,000 messages at 60
-  a day.
+  Docker network without internet access (logged Docker run on a laptop
+  CPU before the symptom pass: 192 s per message; natively on its
+  integrated GPU 62.7 s, 71.8 s with the symptom pass); a mini PC costs
+  about CHF 12 per 1,000 messages at 60 a day.
 
 = 2. Architecture
 <architecture>
@@ -519,6 +520,3 @@ are open-sourced. Code: Apache-2.0. Data (`data/`, including the
 generated test sets): CDLA-Permissive-2.0, except the GraSCCo and PARHAF
 letters (CC BY 4.0). External datasets used only for local checks are
 not redistributed and keep their own licences.
-
-= References
-<references>

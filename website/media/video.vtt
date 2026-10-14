@@ -34,97 +34,98 @@ Swiss family doctors spend
 One click sorts 30 messages.
 
 8
-00:00:30.398 --> 00:00:33.142
-Inbrev never judges clinical content.
+00:00:30.398 --> 00:00:33.569
+Inbrev does not rate
+or rank clinical content.
 
 9
-00:00:33.742 --> 00:00:39.443
+00:00:34.029 --> 00:00:39.703
 Any message that may need a clinician
 leaves automation and goes to a person –
 
 10
-00:00:39.443 --> 00:00:41.124
+00:00:39.703 --> 00:00:41.376
 no rank, no assessment.
 
 11
-00:00:41.724 --> 00:00:45.522
+00:00:41.976 --> 00:00:45.774
 Everything else is sorted
 by who handles it, and by when.
 
 12
-00:00:46.122 --> 00:00:51.578
+00:00:46.374 --> 00:00:51.828
 Open the insurer fax: every field
 carries the exact words it came from.
 
 13
-00:00:52.178 --> 00:00:55.343
+00:00:52.428 --> 00:00:55.593
 When Inbrev isn't sure, it doesn't guess.
 
 14
-00:00:55.545 --> 00:00:59.138
+00:00:55.795 --> 00:00:59.388
 It says: you decide.
 French and Italian work the same way.
 
 15
-00:00:59.738 --> 00:01:04.791
+00:00:59.988 --> 00:01:05.041
 A separate clinical mode adds
 an urgency hint, for research only:
 
 16
-00:01:04.791 --> 00:01:07.978
+00:01:05.041 --> 00:01:08.228
 off by default, and not a medical device.
 
 17
-00:01:08.578 --> 00:01:13.659
+00:01:08.828 --> 00:01:13.909
 Apertus and Inbrev run on a network
 with no way out – we checked:
 
 18
-00:01:13.659 --> 00:01:16.942
+00:01:13.909 --> 00:01:17.192
 every attempt to reach the internet fails.
 
 19
-00:01:17.542 --> 00:01:19.158
+00:01:17.792 --> 00:01:19.408
 Inbrev keeps sorting.
 
 20
-00:01:19.758 --> 00:01:21.276
+00:01:20.008 --> 00:01:21.526
 No server in the practice?
 
 21
-00:01:21.875 --> 00:01:24.752
+00:01:22.125 --> 00:01:25.002
 The same container can
 run at a Swiss provider,
 
 22
-00:01:24.752 --> 00:01:29.035
+00:01:25.002 --> 00:01:29.285
 engaged by the practice as an auxiliary
 bound to professional secrecy.
 
 23
-00:01:29.635 --> 00:01:34.025
+00:01:29.885 --> 00:01:34.275
 On a first synthetic
 test set of 180 messages,
 
 24
-00:01:34.025 --> 00:01:39.369
+00:01:34.275 --> 00:01:39.619
 Inbrev routes 94 % correctly with 8B,
 and 96 % with 70B.
 
 25
-00:01:39.369 --> 00:01:42.045
+00:01:39.619 --> 00:01:42.295
 With a second symptom check,
 
 26
-00:01:42.045 --> 00:01:47.685
+00:01:42.295 --> 00:01:47.935
 all 16 messages with clinical
 content now leave automation.
 
 27
-00:01:48.285 --> 00:01:53.092
+00:01:48.535 --> 00:01:53.342
 Inbrev. Your practice inbox,
 sorted where it belongs:
 
 28
-00:01:53.092 --> 00:01:56.093
+00:01:53.342 --> 00:01:56.343
 in the practice, or in the Swiss cloud.

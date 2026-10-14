@@ -51,3 +51,6 @@ After the fail-safe for the symptom pass, the switches in Compose and the publis
 `make test`: 35 passed. `make run` with endpoint values: health 200 (`symptom_check: true`), seed-001 correct, UI 200.
 `make run` without `track_2b/.env`: `endpoint_configured: false`, 12 stored seed results, `POST /v1/triage` 503 with the
 explanation, UI 200.
+
+Re-check at `5143ef5` (cycle 2: validator, Compose switches, local pitch fonts, video v8): same results, `make test` 35 passed,
+`make run` with and without endpoint as above (`fresh-clone-2026-10-15-5143ef5.log`, `data/` 1.6 MB).

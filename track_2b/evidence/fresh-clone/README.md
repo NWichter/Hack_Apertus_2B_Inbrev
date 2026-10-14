@@ -36,3 +36,10 @@ Same setup (`docker:27-dind`, fresh `git clone`, no local llama-server; script `
 Found and fixed on the way: without credentials the app used to start empty and labelled itself "local endpoint"
 (Compose fell back to `http://llm:8080`, which exists only in the local profile); "Sort inbox" then failed without
 explanation. Fixed in `863087a`, `0b90bbc`, `58ac3d8`; covered by `tests/test_no_endpoint.py`.
+## Re-check on 2026-10-14, evening (commit `f839acc`)
+
+After removing internal helper scripts and the make targets `eval`, `offline-check` and `triage-seed`; same script and setup,
+log `fresh-clone-2026-10-14-f839acc.log` (endpoint host masked). Clone: 0 untracked files, `track_2b/data/` 588 KB.
+`make test`: 34 passed. `make run` with endpoint values: health 200, seed-001 correct (report_received, today, doctor), UI 200.
+`make run` without `track_2b/.env`: `endpoint_configured: false`, 12 stored seed results, `POST /v1/triage` 503 with the
+explanation, UI 200.

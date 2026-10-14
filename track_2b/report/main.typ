@@ -11,4 +11,5 @@
 
 #include "body.typ"
 
+= References
 #bibliography("refs.bib", style: "apa")

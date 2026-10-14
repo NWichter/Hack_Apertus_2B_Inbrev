@@ -35,3 +35,9 @@ messages, too few for a new safety claim; all configurations take all 14 out of 
 
 Costs (paid open models via OpenRouter, from token prices): generation USD 0.049, second labels USD 0.010, Qwen comparison
 USD 0.083. Apertus calls on the Hack Apertus endpoint: 4 × 146 runs plus the dev runs (2 × 427 with 8B).
+
+**Built into the code (14 October):** `INBREV_SECOND_OPINION_MODEL` (off by default; e.g. `apertus-v1.5-70b`), available as
+an option for practices with 70B access (e.g. a Swiss cloud). `scripts/replay_second_opinion.py` feeds the stored 70B
+samples through the built-in path and reproduces the table above exactly (default 3 / 45, p4 2 / 48, p4 + few-shot 2 / 43;
+26, 25 and 26 messages asked). Live smoke test against the Hack Apertus endpoint on 4 triggering messages:
+`second-opinion-live-smoke.jsonl` (three 70B samples each, all four agreed). Unit tests: `tests/test_second_opinion.py`.

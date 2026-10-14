@@ -172,6 +172,7 @@ def health() -> dict:
         "safety_mode": opts.safety_mode,
         "symptom_check": opts.symptom_check,
         "rules_gate": opts.rules_gate,
+        "second_opinion_model": opts.second_opinion_model or None,
         "demo_sets": list(_demo_sets()),
         "precomputed": os.getenv("INBREV_PRECOMPUTED", ""),
     }

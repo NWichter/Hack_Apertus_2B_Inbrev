@@ -29,6 +29,7 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 
 | Mode | What it does |
 | --- | --- |
+| **Second opinion** (`INBREV_SECOND_OPINION_MODEL=apertus-v1.5-70b`, off by default) | Available as an option for practices with 70B access (e.g. a Swiss cloud): when the keyword rules choose another route, Apertus 70B is asked; if it disagrees, a person decides. On hold-out 2 it lowers wrong routes that run automatically from 5 to 2–3 of 146 (`track_2b/evidence/route/`). |
 | **Triage mode** (default) | Administrative sorting only. **Safety net:** the model's flag, a multilingual keyword net and a second narrow 8B check for current complaints take a message out of automation; no ranking by severity. All reported numbers use this mode. |
 | **Clinical research mode** (`INBREV_MODE=clinical-triage`, off by default) | Adds a keyword-based urgency hint to flagged messages. Research prototype without an intended medical purpose, not validated, not certified. |
 

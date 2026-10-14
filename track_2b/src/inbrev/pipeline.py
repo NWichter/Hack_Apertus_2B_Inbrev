@@ -10,7 +10,7 @@ import json
 import os
 import re
 from collections import Counter
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from datetime import datetime
 
 from . import prompt, taxonomy
@@ -46,6 +46,10 @@ class Options:
     symptom_min_votes: int = 1
     # Optional: a person decides when the keyword rules pick a different route than the model.
     rules_gate: bool = False
+    # Optional second opinion (e.g. apertus-v1.5-70b on the same endpoint): asked only when the keyword
+    # rules pick another route for a message that would run automatically; disagreement -> a person.
+    # It always uses prompt p3 without few-shot and without the symptom pass, as measured (evidence/route/).
+    second_opinion_model: str = ""
 
     @classmethod
     def from_env(cls, cfg: Settings) -> "Options":
@@ -58,6 +62,7 @@ class Options:
             symptom_check=os.getenv("INBREV_SYMPTOM_CHECK", "1") == "1",
             symptom_min_votes=int(os.getenv("INBREV_SYMPTOM_MIN_VOTES", "1")),
             rules_gate=os.getenv("INBREV_RULES_GATE", "0") == "1",
+            second_opinion_model=os.getenv("INBREV_SECOND_OPINION_MODEL", "").strip(),
         )
 
 
@@ -228,7 +233,64 @@ async def triage(message: dict, client: LLMClient, opts: Options) -> dict:
         except LLMError as e:
             call["symptom_raw"] = []
             call["symptom_error"] = str(e)
-    return assemble(message, raw, finish, opts, call)
+    out = assemble(message, raw, finish, opts, call)
+    if opts.second_opinion_model and needs_second_opinion(message, out["result"]):
+        so = {"model": opts.second_opinion_model, "prompt_version": SECOND_OPINION_PROMPT}
+        try:
+            sc = await _second_client(client, opts.second_opinion_model).chat(
+                prompt.messages_for(message, received, SECOND_OPINION_PROMPT, ""),
+                schema=prompt.output_schema() if opts.use_schema else None,
+                n=opts.samples,
+                temperature=opts.temperature if opts.samples > 1 else 0.0,
+            )
+            so.update(raw=sc.contents, finish=sc.finish_reasons, tokens=[sc.prompt_tokens, sc.completion_tokens])
+        except LLMError as e:
+            so.update(raw=[], finish=[], error=str(e))
+        out = apply_second_opinion(message, out, so, opts)
+    return out
+
+
+SECOND_OPINION_PROMPT = "p3"
+_second_clients: dict[str, LLMClient] = {}
+
+
+def _second_client(client: LLMClient, model: str) -> LLMClient:
+    if model not in _second_clients:
+        _second_clients[model] = LLMClient(client.cfg, model=model)
+    return _second_clients[model]
+
+
+def needs_second_opinion(message: dict, result: dict) -> bool:
+    """Low confidence: the message would run automatically and the keyword rules choose another route."""
+    from .baselines import keyword_route
+
+    if result["abstain"] or result["safety_flag"]:
+        return False
+    return keyword_route(source_text(message.get("subject"), message.get("body"))) != result["route"]
+
+
+def apply_second_opinion(message: dict, out: dict, so: dict, opts: "Options") -> dict:
+    """Pure: combine the first result with the second model's raw samples (also used by replay)."""
+    so_opts = replace(opts, symptom_check=False, rules_gate=False, second_opinion_model="")
+    second = assemble(message, so.get("raw") or [], so.get("finish") or [], so_opts, {"model": so.get("model")})["result"]
+    res = dict(out["result"])
+    reasons = list(out["trace"].get("abstain_reasons") or [])
+    if second["safety_flag"]:
+        res["safety_flag"] = True
+        res["deadline"] = "today"
+        res["assignee"] = taxonomy.assignee_for(res["route"], True)
+        res["reply_draft"] = None
+        verdict = "second model flags clinical content"
+    elif second["abstain"] or second["route"] != res["route"]:
+        res["abstain"] = True
+        res["reply_draft"] = None
+        reasons.append(f"second opinion ({so.get('model')}) disagrees: {second['route']}")
+        verdict = "disagrees"
+    else:
+        verdict = "agrees"
+    trace = dict(out["trace"], abstain_reasons=reasons)
+    trace["second_opinion"] = {**so, "route": second["route"], "verdict": verdict}
+    return {**out, "result": res, "trace": trace}
 
 
 def symptom_votes(raw: list[str] | None, text: str) -> tuple[int, str | None]:
@@ -443,5 +505,8 @@ def replay(row: dict, message: dict, opts: Options) -> dict:
     if trace.get("symptom_raw") is not None:
         call["symptom_raw"] = trace["symptom_raw"]
     out = assemble(message, raw, finish, opts, call)
+    so = trace.get("second_opinion")
+    if opts.second_opinion_model and so is not None and needs_second_opinion(message, out["result"]):
+        out = apply_second_opinion(message, out, so, opts)
     out["run"] = row.get("run", {})
     return out

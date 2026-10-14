@@ -10,6 +10,8 @@ services:
       LLM_BASE_URL: ${LLM_BASE_URL:-}
       LLM_API_KEY: ${LLM_API_KEY:-none}
       INBREV_SAMPLES: ${INBREV_SAMPLES:-3}
+      # Optional, off by default: e.g. apertus-v1.5-70b on the same endpoint (see docs/RUNNING.md).
+      INBREV_SECOND_OPINION_MODEL: ${INBREV_SECOND_OPINION_MODEL:-}
       # Stored seed results so "Load" works without endpoint credentials; "Sort inbox" calls the model.
       INBREV_PRECOMPUTED: ${INBREV_PRECOMPUTED:-/app/data/demo/seed-predictions.jsonl}
       INBREV_AUDIT_LOG: /app/runs/audit.jsonl

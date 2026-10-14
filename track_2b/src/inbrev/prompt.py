@@ -260,9 +260,16 @@ FEWSHOT_P4 = [
 ]
 
 
-def messages_for(message: dict, default_received: datetime) -> list[dict]:
-    msgs = [{"role": "system", "content": system_prompt()}]
-    shots = {"fewshot": FEWSHOT, "fewshot4": FEWSHOT_P4}.get(VARIANT, [])
+def messages_for(
+    message: dict,
+    default_received: datetime,
+    version: str | None = None,
+    variant: str | None = None,
+) -> list[dict]:
+    msgs = [{"role": "system", "content": system_prompt(version)}]
+    shots = {"fewshot": FEWSHOT, "fewshot4": FEWSHOT_P4}.get(
+        VARIANT if variant is None else variant, []
+    )
     if shots:
         for user, answer in shots:
             msgs += [

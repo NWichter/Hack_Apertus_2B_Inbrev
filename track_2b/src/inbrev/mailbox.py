@@ -36,7 +36,7 @@ class ImapConfig:
             user=os.getenv("INBREV_IMAP_USER", ""),
             password=os.getenv("INBREV_IMAP_PASSWORD", ""),
             port=int(
-                os.getenv("INBREV_IMAP_PORT", "993" if security == "ssl" else "143")
+                os.getenv("INBREV_IMAP_PORT") or ("993" if security == "ssl" else "143")
             ),
             security=security,
             folder=os.getenv("INBREV_IMAP_FOLDER", "INBOX"),

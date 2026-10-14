@@ -15,6 +15,21 @@ services:
       # Stored seed results so "Load" works without endpoint credentials; "Sort inbox" calls the model.
       INBREV_PRECOMPUTED: ${INBREV_PRECOMPUTED:-/app/data/demo/seed-predictions.jsonl}
       INBREV_AUDIT_LOG: /app/runs/audit.jsonl
+      # Switches from docs/RUNNING.md; defaults are the shipped configuration.
+      INBREV_SYMPTOM_CHECK: ${INBREV_SYMPTOM_CHECK:-1}
+      INBREV_RULES_GATE: ${INBREV_RULES_GATE:-0}
+      INBREV_MODE: ${INBREV_MODE:-admin}
+      INBREV_PROMPT: ${INBREV_PROMPT:-p3}
+      INBREV_PROMPT_VARIANT: ${INBREV_PROMPT_VARIANT:-}
+      INBREV_ABSTAIN_BELOW: ${INBREV_ABSTAIN_BELOW:-0.99}
+      INBREV_SAFETY_MODE: ${INBREV_SAFETY_MODE:-or}
+      INBREV_TEMPERATURE: ${INBREV_TEMPERATURE:-0.7}
+      INBREV_IMAP_HOST: ${INBREV_IMAP_HOST:-}
+      INBREV_IMAP_USER: ${INBREV_IMAP_USER:-}
+      INBREV_IMAP_PASSWORD: ${INBREV_IMAP_PASSWORD:-}
+      INBREV_IMAP_PORT: ${INBREV_IMAP_PORT:-}
+      INBREV_IMAP_SECURITY: ${INBREV_IMAP_SECURITY:-ssl}
+      INBREV_IMAP_FOLDER: ${INBREV_IMAP_FOLDER:-INBOX}
     volumes:
       - runs:/app/runs
     networks:
@@ -59,6 +74,21 @@ services:
       INBREV_TIMEOUT: "1800"
       INBREV_PRECOMPUTED: ${INBREV_PRECOMPUTED:-}
       INBREV_AUDIT_LOG: /app/runs/audit.jsonl
+      # Switches from docs/RUNNING.md; defaults are the shipped configuration.
+      INBREV_SYMPTOM_CHECK: ${INBREV_SYMPTOM_CHECK:-1}
+      INBREV_RULES_GATE: ${INBREV_RULES_GATE:-0}
+      INBREV_MODE: ${INBREV_MODE:-admin}
+      INBREV_PROMPT: ${INBREV_PROMPT:-p3}
+      INBREV_PROMPT_VARIANT: ${INBREV_PROMPT_VARIANT:-}
+      INBREV_ABSTAIN_BELOW: ${INBREV_ABSTAIN_BELOW:-0.99}
+      INBREV_SAFETY_MODE: ${INBREV_SAFETY_MODE:-or}
+      INBREV_TEMPERATURE: ${INBREV_TEMPERATURE:-0.7}
+      INBREV_IMAP_HOST: ${INBREV_IMAP_HOST:-}
+      INBREV_IMAP_USER: ${INBREV_IMAP_USER:-}
+      INBREV_IMAP_PASSWORD: ${INBREV_IMAP_PASSWORD:-}
+      INBREV_IMAP_PORT: ${INBREV_IMAP_PORT:-}
+      INBREV_IMAP_SECURITY: ${INBREV_IMAP_SECURITY:-ssl}
+      INBREV_IMAP_FOLDER: ${INBREV_IMAP_FOLDER:-INBOX}
     volumes:
       - runs:/app/runs
     networks:

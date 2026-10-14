@@ -19,7 +19,7 @@ The header of the web app shows which mode is active.
 ```bash
 cp .env.example .env        # optional: set LLM_NAME, LLM_BASE_URL, LLM_API_KEY (any OpenAI-compatible Apertus endpoint)
 make run                    # web app on http://127.0.0.1:8000; without .env it shows stored results for the 12 seed messages
-make test                   # 34 unit tests, no network
+make test                   # 35 unit tests, no network
 ```
 
 | Target               | What it does                                                                                               |
@@ -27,7 +27,7 @@ make test                   # 34 unit tests, no network
 | `make run`           | Builds the image and starts the web app against `LLM_BASE_URL`                                             |
 | `make run-local`     | Starts `llama.cpp` with a local Apertus GGUF and Inbrev on an internal network without internet; a small nginx gateway is the only container that also sits on the host network, so the UI is reachable at http://127.0.0.1:8000 |
 | `make offline-eval`  | Full triage with the local GGUF on the internal network, egress test, SHA-256 of the weights, `docker inspect`, memory samples, evaluation (`scripts/run_offline_eval.sh`) |
-| `make test`          | The 34 unit tests inside the image with `--network none` (no model call)                                   |
+| `make test`          | The 35 unit tests inside the image with `--network none` (no model call)                                   |
 | `make stop`          | Stops the containers of `make run-local`                                                                   |
 
 All targets also work from the repository root (`make run-local` there calls `make -C track_2b run-local`).
@@ -74,7 +74,7 @@ In the web app, set `INBREV_IMAP_HOST`, `INBREV_IMAP_USER`, `INBREV_IMAP_PASSWOR
 ## Pipeline
 
 ```
-message (e-mail, HIN mail, fax PDF/image via Tesseract, web form)
+message (e-mail, IMAP, HIN mail via an IMAP bridge (untested), fax PDF/image via Tesseract, web form)
   -> Apertus, JSON schema enforced, n = 3 samples in one call
   -> deterministic checks per sample
        quotes must exist in the message (exact, normalised or >= 90 % similar; the shown evidence is always the original text)
@@ -82,7 +82,8 @@ message (e-mail, HIN mail, fax PDF/image via Tesseract, web form)
        deadline computed in code from the quoted date and the received time; no quote -> no deadline
        fields outside the chosen route are dropped
   -> vote over samples (route majority, field majority, safety = any sample OR lexical net
-     OR symptom pass: a second short 8B call that only asks for a current complaint, with a verified quote)
+     OR symptom pass: a second short 8B call that only asks for a current complaint, with a verified quote;
+     if that call fails or gives no answer, a person decides)
   -> abstain ("a person decides") if samples disagree, the model marks the message ambiguous,
      or no route evidence survives
   -> optional second opinion (off by default): if the keyword rules choose another route,
@@ -120,10 +121,13 @@ latency, with breakdowns by language, writing level, channel and generator.
 
 ## Configuration
 
+All variables below work with `python -m inbrev` and with `make run` / `make run-local`: `docker-compose.yml` passes them
+through with the shipped defaults (set them in `track_2b/.env`). `INBREV_SAMPLES` in `make run-local` is `LOCAL_INBREV_SAMPLES`.
+
 | Variable               | Default              | Meaning                                             |
 | ---------------------- | -------------------- | --------------------------------------------------- |
 | `LLM_NAME`             | `apertus-v1.5-8b`    | Model name at the endpoint                          |
-| `LLM_BASE_URL`         | `http://llm:8080/v1` | OpenAI-compatible endpoint                          |
+| `LLM_BASE_URL`         | empty in `make run` (stored results); `http://llm:8080/v1` in `make run-local`; `http://localhost:8080/v1` for `python -m inbrev` | OpenAI-compatible endpoint |
 | `LLM_API_KEY`          | `none`               | Key for the endpoint                                |
 | `INBREV_SAMPLES`       | `3`                  | Samples per message (self-consistency)              |
 | `LOCAL_INBREV_SAMPLES` | `1`                  | Samples per message in `make run-local` / `make offline-eval` (CPU; the one-sample ablation in the report) |

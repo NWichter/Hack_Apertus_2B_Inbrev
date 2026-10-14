@@ -60,3 +60,21 @@ def test_rules_gate_abstains_on_disagreement():
         "result"
     ]
     assert res["abstain"]
+
+
+def test_failed_symptom_pass_sends_message_to_a_person():
+    clean = dict(MSG, body="Bitte ein neues Rezept für Metformin 500 mg.")
+    ok = assemble(
+        clean, [MAIN] * 3, ["stop"] * 3, Options(symptom_check=True),
+        {"symptom_raw": [sym(False, None)] * 3},
+    )["result"]
+    assert not ok["abstain"]
+    for call in (
+        {"symptom_raw": [], "symptom_error": "HTTP 500"},
+        {"symptom_raw": ["not json", ""]},
+    ):
+        res = assemble(
+            clean, [MAIN] * 3, ["stop"] * 3, Options(symptom_check=True), dict(call)
+        )
+        assert res["result"]["abstain"]
+        assert "symptom check failed" in res["trace"]["abstain_reasons"]

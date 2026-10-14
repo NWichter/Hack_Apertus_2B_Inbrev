@@ -310,6 +310,19 @@ def symptom_votes(raw: list[str] | None, text: str) -> tuple[int, str | None]:
     return votes, quote
 
 
+def symptom_answers(raw: list[str] | None) -> int:
+    """Number of symptom-pass samples that parse to an answer (yes or no)."""
+    n = 0
+    for r in raw or []:
+        try:
+            obj = json.loads(r.split("<|inner_suffix|>")[-1].strip())
+        except (json.JSONDecodeError, AttributeError):
+            continue
+        if isinstance(obj, dict) and "current_symptom" in obj:
+            n += 1
+    return n
+
+
 def assemble(
     message: dict, raw: list[str], finish: list[str], opts: Options, call: dict
 ) -> dict:
@@ -356,6 +369,13 @@ def assemble(
             reasons.append("model marks message as ambiguous")
         if not any(s.route_quote for s in majority):
             reasons.append("no verifiable evidence for route")
+        if (
+            opts.symptom_check
+            and "symptom_raw" in call
+            and symptom_answers(call.get("symptom_raw")) == 0
+        ):
+            # Fail safe: without an answer from the symptom pass a person decides.
+            reasons.append("symptom check failed")
         if opts.rules_gate:
             from .baselines import keyword_route
 

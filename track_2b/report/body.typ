@@ -48,8 +48,9 @@ Results (Apertus 8B; synthetic data, labels not reviewed by a person):
   PARHAF 37/38).
 - #strong[Offline and cost:] with local Q4 weights Inbrev runs on a
   Docker network without internet access (192 s per message on a laptop
-  CPU, 62.7 s natively on its integrated GPU); a mini PC costs about CHF
-  12 per 1,000 messages at 60 a day.
+  CPU, 62.7 s natively on its integrated GPU before the symptom pass,
+  71.8 s with it); a mini PC costs about CHF 12 per 1,000 messages at 60
+  a day.
 
 = 2. Architecture
 <architecture>
@@ -59,8 +60,9 @@ the model does only what rules cannot: read free text in four languages
 and point to the passage that supports a decision.
 
 + #strong[Intake.] E-mail (`.eml` or IMAP, read-only, including PDF
-  attachments), HIN mail, fax pages as PDF or image (Tesseract OCR for
-  German, French and Italian), web forms.
+  attachments), HIN mail through an IMAP bridge (untested), fax pages as
+  PDF or image (Tesseract OCR for German, French and Italian), web
+  forms.
 + #strong[Apertus with an enforced JSON schema]
   @willard2023outlines@geng2023grammar. The schema orders each quote
   before its decision (route quote → route, safety quote → flag,
@@ -76,9 +78,9 @@ and point to the passage that supports a decision.
   removed.
 + #strong[Rules instead of model judgement where possible.] The deadline
   category is computed in code from the quoted date and the time of
-  receipt; without a quoted date or time there is no deadline. The
-  assignee follows from the route. A safety flag always means "doctor,
-  today".
+  receipt; without a quoted date or time there is no deadline, except
+  that flagged messages and received reports are due today. The assignee
+  follows from the route. A safety flag always means "doctor, today".
 + #strong[Vote and abstention.] Route and fields by majority over the
   samples; the safety flag is raised if any sample or a multilingual
   lexical net fires. Agreement across samples is used as the uncertainty
@@ -87,9 +89,10 @@ and point to the passage that supports a decision.
   (default since 13 October) asks only whether someone describes a
   current complaint and must quote it; one verified yes out of three
   samples also raises the flag (not for reports, which go to the doctor
-  anyway). If the samples disagree, the model marks the message as
-  ambiguous, or no route evidence survives, Inbrev abstains: a person
-  decides @wen2025abstention.
+  anyway); if this call fails or returns no answer, a person decides. If
+  the samples disagree, the model marks the message as ambiguous, or no
+  route evidence survives, Inbrev abstains: a person decides
+  @wen2025abstention.
 + #strong[Output.] A sorted inbox (web UI: "a person decides" for unsure
   messages and messages with clinical content, by time of receipt and
   without a ranking among them; then today, this week, no deadline), a
@@ -153,10 +156,10 @@ run is in `evidence/offline/`.
   measured offline on a CPU (§2, §5)
 
 Settings: temperature 0.7 for the three samples, at most 900 output
-tokens, thinking off by default because it lowers instruction following
-@wiegand2026apertusbench\; thinking is measured as an ablation. The
-system prompt (p2; p3 since 4 October, see section 5) lists the routes
-with short multilingual cues, the rules for safety, deadlines and
+tokens, thinking off because it lowers instruction following
+@wiegand2026apertusbench\; we did not measure thinking mode ourselves.
+The system prompt (p2; p3 since 4 October, see section 5) lists the
+routes with short multilingual cues, the rules for safety, deadlines and
 quotes, and an output format with placeholders only.
 
 = 4. Data
@@ -384,39 +387,39 @@ messages to a person. A second round on a fresh hold-out (146 messages
 written by Gemma 4 31B, frozen with hashes before any run, plan fixed on
 the earlier sets; `evidence/route/`) targeted the routes: sharper route
 descriptions and few-shot examples alone change nothing (5 wrong routes
-run automatically, 39--42 to a person); with them, asking 70B when the
-keyword rules disagree lowers this to 2 at 43, available as an option
-for practices with 70B access (`INBREV_SECOND_OPINION_MODEL`, off by
-default). Qwen3.5-9B: 0 at 24. Local execution, the quote checks and the
-unranked safety net work with any open model and are no argument for
-Apertus. What is specific to Apertus: it was pretrained only on openly
-available data with robots.txt opt-outs applied retroactively and
-personal data filtered, all training artefacts are released
-@apertus2025, and the developers publish a dataset catalogue, an EU
-training-content summary and an EU Code of Practice statement
-(github.com/swiss-ai/apertus-data-transparency), the kind of
-documentation the EU AI Act asks of general-purpose model providers
-@eu2024aiact\; we did not check equivalent documents for the comparison
-models. A Swiss practice that must justify under the DSG and
+run automatically, 39--42 to a person); with them (`INBREV_PROMPT=p4`,
+`INBREV_PROMPT_VARIANT=fewshot4`), asking 70B when the keyword rules
+disagree lowers this to 2 at 43 (3 at 45 with the default prompt),
+available as an option for practices with 70B access
+(`INBREV_SECOND_OPINION_MODEL`, off by default). Qwen3.5-9B: 0 at 24.
+Local execution, the quote checks and the unranked safety net work with
+any open model and are no argument for Apertus. What is specific to
+Apertus: it was pretrained only on openly available data with robots.txt
+opt-outs applied retroactively and personal data filtered, all training
+artefacts are released @apertus2025, and the developers publish a
+dataset catalogue, an EU training-content summary and an EU Code of
+Practice statement (github.com/swiss-ai/apertus-data-transparency), the
+kind of documentation the EU AI Act asks of general-purpose model
+providers @eu2024aiact\; we did not check equivalent documents for the
+comparison models. A Swiss practice that must justify under the DSG and
 professional secrecy which model reads patient mail @schweiz2020dsg can
 point to this provenance. That is a trade-off, not a free choice: the
 measured price is 7 more wrong routes in 180 that reach automation, or
 more human work to catch them. Inbrev talks to any OpenAI-compatible
 endpoint, so a practice can choose otherwise; with Apertus we recommend
-70B where the hardware allows it. This is not legal advice.
+70B where the hardware allows it.
 
 #strong[Prompt p3 for "other".] p3 only sharpens route boundaries
 ("other": copy of records, referral elsewhere, symptoms only). It was
 developed on a separate dev set (60 Nemotron messages; "other" p2 0/20,
 p3 11/20), frozen after one dev run, then run once on every test set:
-gold route 158 → 170/180 (McNemar p = 0.002; two p2 runs differ on 3
-routes), no clinical case lost (`evidence/prompt-p3/`).
+gold route 158 → 170/180 (McNemar p = 0.002), no clinical case lost
+(`evidence/prompt-p3/`).
 
 #strong[One sample is nearly as good as three.] Replaying the stored 8B
-run with only the first sample (checks, net and abstention kept) gives
-route 157/180 and clinical exclusion 12/16 against 159/180 and 13/16
-(`scripts/replay_k_samples.py`). The gain over a raw answer (9/16) comes
-mostly from checks and net, so local deployments use one sample.
+run (p2) with only the first sample gives route 157/180 and 12/16
+against 159/180 and 13/16 (`scripts/replay_k_samples.py`), so local
+deployments use one sample.
 
 #strong[Offline on a CPU.] On 30 of the 180 messages (all 16 clinical
 plus 14), the offline Docker stack with Q4 weights and one sample (p2)
@@ -428,21 +431,27 @@ and weights natively on the laptop's integrated GPU (Vulkan,
 on the challenge set this configuration (Q4, one sample, without the
 symptom pass) excludes 38 of 44 clinical messages against 40/44 for one
 BF16 sample (`evidence/native/`). These native runs measure speed and
-quality; the air-gap proof remains the Docker run. The symptom pass adds
-one short call per message; its local cost is not measured yet.
+quality; the air-gap proof remains the Docker run. With the symptom pass
+(default) the same native setup needs 71.8 s per message and excludes
+16/16 on these 30 messages (route 25/30).
 
 #strong[Cost.] From measured time and cited prices (excl. VAT;
 `scripts/cost_model.py`): a mini PC with the same CPU draws 38--39 W
 under load @kennedy2024box, about 2.1 kWh or CHF 0.52 per 1,000 messages
 at 192 s each @elcom2026. With the box (about CHF 700, three years) and
 idle power, a practice with 60 messages a day pays about CHF 12 per
-1,000 messages, roughly CHF 22 a month. #strong[Value.] Staff time saved
-is not measured. `scripts/value_model.py` multiplies measured shares of
-the default configuration (78 % automatic, 4.4 % automatic but wrongly
-routed, 12.8 % false clinical flags) with assumed volumes and handling
-times (`evidence/value/`). At 60 messages a day, 60 s by hand and 15 s
-to check a suggestion, an MPA saves about 32 minutes a day, net CHF 349
-a month after doctor time for false flags and running cost (all
+1,000 messages, roughly CHF 22 a month; at 71.8 s per message (iGPU,
+default), 60 messages a day are about 72 minutes of machine time, so
+sorting can run as mail arrives. A Swiss token API at the listed Apertus
+70B price costs CHF 3.13 per 1,000 messages in the default configuration
+(tokens measured with the symptom pass,
+`evidence/value/cost-default-config.md`). #strong[Value.] Staff time
+saved is not measured. `scripts/value_model.py` multiplies measured
+shares of the default configuration (78 % automatic, 4.4 % automatic but
+wrongly routed, 12.8 % false clinical flags) with assumed volumes and
+handling times (`evidence/value/`). At 60 messages a day, 60 s by hand
+and 15 s to check a suggestion, an MPA saves about 32 minutes a day, net
+CHF 349 a month after doctor time for false flags and running cost (all
 assumed); the cautious case loses CHF 242 a month; break-even is 33 s of
 manual handling per message. Practice interviews with a timing trial
 will replace the assumptions.
@@ -474,32 +483,26 @@ time to sort messages by hand versus with Inbrev.
   automatically. The final classification depends on the written
   intended purpose; this is not legal advice.
 - #strong[Optional research mode.] `--mode clinical-triage` (off by
-  default; the app then shows a labelled research hint) adds a
-  keyword-based hint in the style of the Emergency Severity Index to
-  flagged messages. It is an optional research mode without an intended
-  medical purpose and not certified; it has not been validated. Any
-  clinical use would require an MDR/MDSW conformity assessment first.
-  All numbers in this report use the default administrative mode.
-- No measurement on real practice data; US inbox figures transfer only
-  partly. The GraSCCo letters are real-style clinical text, but German
-  and Austrian; the Nemotron set reuses our label grid and prompt.
-- The offline numbers come from a quantised model (Q4\_K\_M) on a shared
-  laptop CPU; the BF16 numbers from the hackathon endpoint. Both are
-  reported side by side on the same messages.
+  default) adds a keyword-based urgency hint to flagged messages: no
+  intended medical purpose, not validated, not certified; clinical use
+  would need an MDR/MDSW conformity assessment. All numbers use the
+  default mode.
+- No measurement on real practice data; the GraSCCo letters are German
+  and Austrian, the Nemotron set reuses our grid and prompt.
 
 = 7. Reproducibility
 <reproducibility>
 `make run` starts the web app, `make run-local` the offline stack,
 `make offline-eval` repeats the logged offline run, `make test` runs the
-34 unit tests with `--network none`. Scripts in `scripts/` recompute
+35 unit tests with `--network none`. Scripts in `scripts/` recompute
 agreement, value, rules comparison, ablation and cost from stored runs;
 `python -m inbrev triage|replay|eval` reproduces the numbers from the
 stored runs, with 95 % Wilson intervals. Grids and cross-validation are
 seeded. Model runs use `apertus-v1.5-8b` and `apertus-v1.5-70b` as named
 by the Hack Apertus endpoint (3, 4 and 13 October), which does not
-expose the Hugging Face revision. The generated test texts follow in the
-repository after human review; predictions, grids and annotations are in
-`evidence/`.
+expose the Hugging Face revision. The generated test texts are in
+`data/synthetic/` (synthetic, labels unreviewed); predictions, grids and
+annotations are in `evidence/`.
 
 = 8. Next steps
 <next-steps>
@@ -512,9 +515,10 @@ repository after human review; predictions, grids and annotations are in
 = License
 <license>
 Creative Commons Attribution 4.0 (CC-BY-4.0). All HackApertus projects
-are open-sourced. Code: Apache-2.0. Data (seed and Swiss practice
-messages in `data/`): CDLA-Permissive-2.0. External datasets used only
-for local checks are not redistributed and keep their own licences.
+are open-sourced. Code: Apache-2.0. Data (`data/`, including the
+generated test sets): CDLA-Permissive-2.0, except the GraSCCo and PARHAF
+letters (CC BY 4.0). External datasets used only for local checks are
+not redistributed and keep their own licences.
 
 = References
 <references>

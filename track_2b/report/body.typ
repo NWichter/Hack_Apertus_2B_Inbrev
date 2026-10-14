@@ -387,9 +387,9 @@ are reported (`evidence/gap/`). A second round on a fresh hold-out (146
 messages written by Gemma 4 31B, frozen with hashes before any run, plan
 fixed on the earlier sets; `evidence/route/`) targeted the routes:
 sharper route descriptions and few-shot examples alone change nothing (5
-wrong routes run automatically, 40 messages to a person); asking 70B
-only when the keyword rules disagree lowers this to 2 at 43, available
-as an option for practices with 70B access (e.g.~a Swiss cloud;
+wrong routes run automatically, 39--42 to a person); with them, asking
+70B when the keyword rules disagree lowers this to 2 at 43, available as
+an option for practices with 70B access (e.g.~a Swiss cloud;
 `INBREV_SECOND_OPINION_MODEL`, off by default). Qwen3.5-9B: 0 at 24.
 Local execution, the quote checks and the unranked safety net work with
 any open model and are no argument for Apertus. What is specific to

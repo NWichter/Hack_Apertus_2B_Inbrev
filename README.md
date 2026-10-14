@@ -18,7 +18,7 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 | Evidence for every number | [`track_2b/evidence/`](track_2b/evidence/): logs, predictions and reports per study (`offline`, `prompt-p3`, `challenge`, `agreement`, `gap`, `holdout2`, `route`, `peers`, `fax`, `parhaf`, `native`, `value`, `fresh-clone`) |
 | Demo video (under 2 min) | `website/media/video.mp4` |
 
-**Key results** (synthetic test data, labels not reviewed by a person; details and intervals in the report):
+**Key results** (synthetic test data, [[NIKLAS-PRÜFUNG: readme-ergebnisse – Klammer über den Key results]]; details and intervals in the report):
 
 - Gold set (180 messages; the second check was chosen on a separate dev split and measured here once, the shipped
   default was then fixed after seeing this result, see the report): with the default configuration no message with clinical

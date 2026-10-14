@@ -57,7 +57,7 @@ generates nor labels any of them.
   invalid, that e-mail domains are `.example` and phone numbers use the `000` block, and it looks
   for near-duplicates. Minimal fixes to generated rows carry `edited_by`. Rows whose label does
   not clearly follow from the text carry `review_flag` and `review_reason`; they are not relabelled.
-- **Status: human review pending.** No label has been checked by a person yet. The files live
+[[NIKLAS-PRÜFUNG: daten-status – Status der Labels im Daten-README]] The files live
   outside the repository (`$DATA_DIR/gold-set/`).
 
 Extra record fields in this part: `sender_type`, `received_at` (deadlines are relative to it),

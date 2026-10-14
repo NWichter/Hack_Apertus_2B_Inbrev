@@ -21,7 +21,7 @@ Problems found and fixed on the way: `make run-local` was missing in the root Ma
 laptop (about 0.3 tokens/s) is far below the earlier offline run (`evidence/offline/`); no GPU was
 available.
 
-## Re-check on 2026-10-14 (commit `58ac3d8`)
+## Re-check on 2026-10-14 (commit `04071fd`; screenshot from the run at `58ac3d8`)
 
 Same setup (`docker:27-dind`, fresh `git clone`, no local llama-server; script `check-2026-10-14.sh`, log
 `fresh-clone-2026-10-14.log`, endpoint host masked; clock in the log is UTC).
@@ -29,8 +29,8 @@ Same setup (`docker:27-dind`, fresh `git clone`, no local llama-server; script `
 | Step | Result |
 | --- | --- |
 | clone | 0 untracked files; `track_2b/data/` 588 KB (limit 100 MB) |
-| `make test` | 29 passed |
-| `make run` with endpoint values in `track_2b/.env` | health 200 (`endpoint_configured: true`, `symptom_check: true`, `rules_gate: false`), `POST /v1/triage` on seed-001 correct (report_received, today, doctor), UI 200 |
+| `make test` | 34 passed |
+| `make run` with endpoint values in `track_2b/.env` | health 200 (`endpoint_configured: true`, `symptom_check: true`, `rules_gate: false`, `second_opinion_model: null`), `POST /v1/triage` on seed-001 correct (report_received, today, doctor), UI 200 |
 | `make run` **without** `track_2b/.env` | health says `endpoint_configured: false`; header "No endpoint configured · showing stored results" and a notice naming `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_NAME`; "Load" / "Sort inbox" show the 12 stored seed results marked "stored result" (`data/demo/seed-predictions.jsonl`, default configuration); `POST /v1/triage` answers 503 with the same explanation; no console errors (`no-endpoint-2026-10-14.png`) |
 
 Found and fixed on the way: without credentials the app used to start empty and labelled itself "local endpoint"

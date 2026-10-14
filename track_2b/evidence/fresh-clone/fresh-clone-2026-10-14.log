@@ -1,24 +1,26 @@
-Fresh-clone check: 2026-10-13 22:58:09 UTC
-commit: 58ac3d8 fix(web): Hinweis ohne Endpunkt schon beim Start sichtbar
+Fresh-clone check: 2026-10-14 02:41:02 UTC
+commit: 04071fd fix(website): Hold-out 2 und optionale 70B-Zweitmeinung auf Webseite und Pitch
 host: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64; Alpine Linux v3.21; Docker version 27.5.1, build 9f9e405; Docker Compose version v2.33.0; GNU Make 4.4.1
 untracked files after clone: 0
 data/ tracked size: 588.0K
 
 === 1. make test (from repo root) ===
-29 passed, 1 warning in 1.13s
+34 passed, 1 warning in 3.69s
 
 === 2. make run (from repo root), endpoint from track_2b/.env, no local llama-server ===
-health after 3 polls: {"version":"0.1.0","model":"apertus-v1.5-8b","mode":"admin","prompt_version":"p3","mailbox":false,"endpoint_configured":true,"endpoint_host":"<hack-apertus-endpoint>","endpoint_local":false,"samples":3,"safety_mode":"or","symptom_check":true,"rules_gate":false,"demo_sets":["seed"],"precomputed":"/app/data/demo/seed-predictions.jsonl"}
+health after 4 polls: {"version":"0.1.0","model":"apertus-v1.5-8b","mode":"admin","prompt_version":"p3","mailbox":false,"endpoint_configured":true,"endpoint_host":"<hack-apertus-endpoint>","endpoint_local":false,"samples":3,"safety_mode":"or","symptom_check":true,"rules_gate":false,"second_opinion_model":null,"demo_sets":["seed"],"precomputed":"/app/data/demo/seed-predictions.jsonl"}
 triage seed-001 {'route': 'report_received', 'deadline': 'today', 'assignee': 'doctor', 'safety_flag': False, 'abstain': False}
 gold    {'route': 'report_received', 'deadline': 'today', 'assignee': 'doctor', 'safety_flag': False}
-evidence: [{'field': 'route', 'quote': 'Befund: Hämatologie, Patient Weber Lukas'}, {'field': 'fields.report_type', 'quote': 'Hämatologie'}, {'field': 'patient.name', 'quote': 'Lukas Weber'}, {'field': 'patient.birth_date', 'quote': '14.03.1971'}, {'field': 'fields.examination_date', 'quote': '29.09.2026'}]
+evidence: [{'field': 'route', 'quote': 'Befund: Hämatologie, Patient Weber Lukas'}, {'field': 'fields.report_type', 'quote': 'Hämatologie'}, {'field': 'patient.name', 'quote': 'Weber Lukas'}, {'field': 'patient.birth_date', 'quote': '14.03.1971'}, {'field': 'fields.examination_date', 'quote': '29.09.2026'}]
 web UI: HTTP 200
 
 === 3. make run WITHOUT track_2b/.env (no credentials) ===
-health: {"version":"0.1.0","model":"apertus-v1.5-8b","mode":"admin","prompt_version":"p3","mailbox":false,"endpoint_configured":false,"endpoint_host":"","endpoint_local":false,"samples":3,"safety_mode":"or","symptom_check":true,"rules_gate":false,"demo_sets":["seed"],"precomputed":"/app/data/demo/seed-predictions.jsonl"}
+health: {"version":"0.1.0","model":"apertus-v1.5-8b","mode":"admin","prompt_version":"p3","mailbox":false,"endpoint_configured":false,"endpoint_host":"","endpoint_local":false,"samples":3,"safety_mode":"or","symptom_check":true,"rules_gate":false,"second_opinion_model":null,"demo_sets":["seed"],"precomputed":"/app/data/demo/seed-predictions.jsonl"}
 load seed (without stored predictions): {"loaded":12}
 sort without endpoint: {"queued":0,"stored":12,"not_sorted":0,"endpoint_configured":false,"message":"No model endpoint is configured. Set LLM_BASE_URL, LLM_API_KEY and LLM_NAME (for example in track_2b/.env, then run `make run` again), or start the offline stack with `make run-local`. Showing 12 stored results instead (marked as stored)."}
 triage without endpoint: HTTP 503 {"detail":"No model endpoint is configured. Set LLM_BASE_URL, LLM_API_KEY and LLM_NAME (for example in track_2b/.env, then run `make run` again), or start the offline stack with `make run-local`."}
 inbox items: 12 with stored result: 12 taken out of automation (flag or abstain): 1
 web UI: HTTP 200
-leaving app running for screenshot
+done 02:45:26 UTC
+
+[exited with code 0]

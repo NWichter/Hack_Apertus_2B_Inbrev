@@ -1031,6 +1031,47 @@
         align-items: center;
       }
     </style>
+    <style>
+      /* Overrides after pitch review 15 Oct: contrast >= 4.5:1, one hero per slide */
+      .eyebrow { opacity: 1; color: #2f6f7d; }
+      .dark .eyebrow { color: #8fd3c1; }
+      .card .k, .tl .when { color: #2f7a6a; }
+      .card p { font-size: 32px; }
+      .stat .what { font-size: 32px; }
+      .heronum { font-size: 132px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+      .herosub { font-size: 28px; line-height: 1.4; color: var(--muted); margin-top: 14px; }
+      .side ul { margin-top: 40px; }
+      .side li { font-size: 27px; }
+      table { font-size: 31px; }
+      th { font-size: 23px; }
+      td { padding: 18px 12px; }
+      .col li { font-size: 36px; }
+      .col { padding: 48px 52px; }
+      .cols2 { margin-top: 64px; }
+      .card h3 { font-size: 52px; }
+      .card p { font-size: 34px; }
+      .band { font-size: 32px; margin-top: 52px; }
+      .col h3 { font-size: 38px; }
+      .cost { padding: 34px 38px 36px; }
+      .cost .k { margin-bottom: 18px; }
+      .cost .big { font-size: 76px; }
+      .cost .unit { font-size: 26px; }
+      .saves { display: flex; gap: 48px; align-items: center; margin-top: 56px; }
+      .kv { font-size: 31px; row-gap: 28px; }
+      .tl .what { font-size: 30px; }
+      .tl { padding-bottom: 34px; }
+      .s-arch .hero { font-size: 104px; line-height: 1.02; }
+      .s-arch .boundary { margin-top: 60px; border-color: #8fd3c1; }
+      .s-arch .boundary .label { background: var(--ink); color: #8fd3c1; }
+      .s-arch .step { padding: 30px 20px; text-align: center; }
+      .s-arch .step .h { font-size: 34px; }
+      .s-arch .step.ai { background: var(--dark); border-color: #8fd3c1; }
+      .s-arch .arrow { color: #8fd3c1; width: 48px; font-size: 40px; }
+      .s-arch .tier { font-size: 30px; color: var(--on-dark); }
+      .s-arch .tier b { color: #8fd3c1; min-width: 230px; }
+      .s-arch .term { background: var(--dark); font-size: 26px; }
+      .s-close .eyebrow { margin-bottom: 18px; }
+    </style>
     <meta name="robots" content="noindex" />
     <link rel="icon" href="../assets/inbrev-favicon.svg" type="image/svg+xml" />
   </head>
@@ -1076,41 +1117,24 @@
         <div class="eyebrow">The problem</div>
         <h1>Before the first patient, there is the inbox.</h1>
         <div class="lead">
-          Lab reports, refill requests, insurer forms, referrals and faxes in
-          German, French and Italian all land in one queue. A medical practice
-          assistant (MPA) reads them one by one.
+          Lab reports, refills, insurer forms and faxes in three languages land
+          in one queue. A practice assistant (MPA) reads them one by one.
         </div>
         <div class="stats">
           <div class="stat">
             <div class="num">9.5<small>h / week</small></div>
-            <div class="what">
-              of administration for Swiss GPs and paediatricians in 2025, up
-              from 8.6 h in 2020.
-            </div>
-            <div class="src">
-              Zeller, Fischer, Hernandez, <i>Praxis</i> 2026 · 5th Workforce
-              Study, n = 1,776
-            </div>
+            <div class="what">of administration for Swiss GPs, up from 8.6 h in 2020</div>
+            <div class="src">Workforce Study, <i>Praxis</i> 2026 · n = 1,776</div>
           </div>
           <div class="stat">
             <div class="num">54<small>min / day</small></div>
-            <div class="what">
-              that practice-based doctors spend on requests from authorities and
-              insurers alone.
-            </div>
-            <div class="src">gfs.bern for FMH, 2025 · N = 1,532 doctors</div>
+            <div class="what">on requests from authorities and insurers alone</div>
+            <div class="src">gfs.bern for FMH, 2025 · N = 1,532</div>
           </div>
           <div class="stat">
             <div class="num">Art.&nbsp;321</div>
-            <div class="what">
-              Swiss Criminal Code: professional secrecy binds doctors
-              <b>and their assistants</b>. Every message in that inbox is
-              covered.
-            </div>
-            <div class="src">
-              SCC, SR 311.0 · health data are sensitive personal data under FADP
-              Art. 5
-            </div>
+            <div class="what">Professional secrecy binds doctors <b>and their assistants</b></div>
+            <div class="src">Swiss Criminal Code · FADP Art. 5</div>
           </div>
         </div>
       </section>
@@ -1118,142 +1142,71 @@
       <!-- 3 · Solution -->
       <section class="slide">
         <div class="eyebrow">How it works · Purposeful use of AI</div>
-        <h1>
-          Sorted by who handles it and by when. Every field quotes its source.
-        </h1>
+        <h1>Sorted by who handles it and by when.</h1>
         <div class="cards">
           <div class="card">
             <div class="k">01 · READ</div>
             <h3>Mail, forms, faxes</h3>
-            <p>
-              E-mail files and IMAP (tested on a local test server), web
-              forms, fax PDFs via OCR (tested); HIN planned.
-              German, French, Italian and English.
-            </p>
+            <p>E-mail, IMAP, web forms, fax via OCR. German, French, Italian, English.</p>
           </div>
           <div class="card">
             <div class="k">02 · ROUTE</div>
             <h3>9 handling paths</h3>
-            <p>
-              Report, appointment, refill, insurer, referral, certificate,
-              billing, marketing, other. Plus an administrative deadline and who
-              takes it: MPA, doctor or admin.
-            </p>
+            <p>Plus the administrative deadline and who takes it.</p>
           </div>
           <div class="card">
             <div class="k">03 · PROVE</div>
             <h3>Quote or drop</h3>
-            <p>
-              Every field carries the exact words it came from. Code checks that
-              the quote is in the original. If Inbrev is unsure,
-              <b>a human decides</b>.
-            </p>
+            <p>Every field quotes its source. No quote in the original, no field.</p>
           </div>
         </div>
         <div class="band">
           <b>Clinical content</b
-          ><span
-            >A message that may contain symptoms is excluded from automation and
-            goes to a person, like any message Inbrev is unsure about. Inbrev
-            does not judge it and does not rank it.</span
-          >
+          ><span>Possible symptoms leave automation and go to a person. Not judged, not ranked.</span>
         </div>
-        <div class="foot">
-          Apertus reads free text in four languages. Everything code can check
-          (AHV numbers, dates, quotes) is checked by code. Small
-          local models do best on narrowly cut tasks (Xu et al.,
-          <i>JMIR</i> 2026, CHUV).
-        </div>
+        <div class="foot">Code checks what code can check: AHV numbers, dates, quotes.</div>
       </section>
 
       <!-- 4 · Demo moment -->
       <section class="slide">
         <div class="eyebrow">Demo</div>
-        <h1 style="font-size: 64px">
-          One click. Sorted by path and deadline; what needs a person goes to a
-          person.
-        </h1>
+        <h1 style="font-size: 64px">One click. What needs a person goes to a person.</h1>
         <div class="shots2">
           <img src="../assets/app-detail-admin.webp" alt="Inbrev web inbox: prescription request routed to the assistant with quoted medication and a fixed reply template" />
           <img src="../assets/app-detail.webp" alt="Inbrev web inbox: appointment request mentioning shortness of breath is not processed and goes to a person" />
         </div>
         <div class="foot" style="margin-top: 18px">
-          Screenshots of the running app with stored Apertus 8B results on
-          fictional test messages. Left: handled automatically, every value
-          with its quote. Right: shortness of breath mentioned in passing, so
-          a person reads it; no ranking.
+          Left: handled automatically, each value with its quote. Right: breathlessness in passing, so a person reads it.
         </div>
       </section>
 
-      <!-- 5 · Architecture -->
-      <section class="slide">
+      <!-- 5 · Architecture (dark statement) -->
+      <section class="slide dark s-arch">
         <div class="eyebrow">Architecture · Sovereign deployability</div>
-        <h1>Pull the cable. Inbrev keeps sorting.</h1>
+        <h1 class="hero">Pull the cable.<br />Inbrev keeps sorting.</h1>
         <div class="boundary">
-          <div class="label">
-            Inside the practice · no outbound connection at run time
-          </div>
+          <div class="label">Inside the practice · no outbound connection</div>
           <div class="flow">
-            <div class="step">
-              <div class="h">Inbox</div>
-              <div class="d">.eml, HIN mail, web form, fax PDF</div>
-            </div>
+            <div class="step"><div class="h">Inbox</div></div>
             <div class="arrow">&rsaquo;</div>
-            <div class="step">
-              <div class="h">Parse + OCR</div>
-              <div class="d">pdfplumber, Tesseract deu / fra / ita</div>
-            </div>
+            <div class="step"><div class="h">Parse + OCR</div></div>
             <div class="arrow">&rsaquo;</div>
-            <div class="step">
-              <div class="h">Rule extractors</div>
-              <div class="d">AHV no., dates, received time</div>
-            </div>
+            <div class="step ai"><div class="h">Apertus 8B</div></div>
             <div class="arrow">&rsaquo;</div>
-            <div class="step ai">
-              <div class="h">Apertus v1.5 8B</div>
-              <div class="d">forced JSON schema, thinking off</div>
-            </div>
+            <div class="step"><div class="h">Quote check</div></div>
             <div class="arrow">&rsaquo;</div>
-            <div class="step">
-              <div class="h">Quote checker</div>
-              <div class="d">quote not in original → field dropped</div>
-            </div>
-            <div class="arrow">&rsaquo;</div>
-            <div class="step">
-              <div class="h">3 runs agree?</div>
-              <div class="d">no → “you decide”</div>
-            </div>
-            <div class="arrow">&rsaquo;</div>
-            <div class="step">
-              <div class="h">Sorted inbox</div>
-              <div class="d">web UI, JSON, local audit log</div>
-            </div>
+            <div class="step"><div class="h">Sorted inbox</div></div>
           </div>
         </div>
         <div class="lower">
           <div class="tiers">
-            <div class="tier">
-              <b>On-prem box</b
-              ><span>Mini PC in the practice; CPU or small GPU</span>
-            </div>
-            <div class="tier">
-              <b>Air-gapped</b
-              ><span>Model host offline; a mail gateway hands messages in</span>
-            </div>
-            <div class="tier">
-              <b>Swiss cloud</b
-              ><span>Option for single practices, Swiss hosting</span>
-            </div>
-            <div class="tier">
-              <b>Local Q4</b><span>Offline in Docker on CPU: 19 messages / hour; same weights on the laptop GPU: 62.7 s / message</span>
-            </div>
+            <div class="tier"><b>On-prem</b><span>mini PC in the practice</span></div>
+            <div class="tier"><b>Air-gapped</b><span>mail gateway hands messages in</span></div>
+            <div class="tier"><b>Swiss cloud</b><span>option for single practices</span></div>
           </div>
           <div class="term">
-            <span class="p">Offline run, measured</span><br />network practice
-            <b>internal: true</b><br />egress dns / tcp / https:
-            <b>FAILED</b><br />weights sha256 a037df8d… = HF<br />30 messages,
-            Q4 on a 28-W laptop CPU<br />route 24/30 · endpoint 23/30<br />192 s / message ·
-            RAM 6.2 GiB
+            <span class="p">Offline run, measured</span><br />egress dns / tcp / https:
+            <b>FAILED</b><br />Q4 weights, laptop CPU: 192 s / message
           </div>
         </div>
       </section>
@@ -1261,13 +1214,9 @@
       <!-- 6 · Evaluation -->
       <section class="slide">
         <div class="eyebrow">Evaluation · Technical rigour</div>
-        <h1 style="font-size: 70px">
-          Measured: what leaves automation, and what still runs by itself.
-        </h1>
+        <h1 style="font-size: 70px">No clinical message ran by itself.</h1>
         <div class="lead" style="margin-top: 18px">
-          180 synthetic messages, [[NIKLAS-PRÜFUNG: pitch-gold – Folie Evaluation, Lead-Text]] Symptom pass
-          chosen on a dev split, measured once here. Challenge set, 44 clinical:
-          8B 41/44 with p3 (dev for the second check), 70B 44/44, rules 31/44.
+          180 synthetic messages, [[NIKLAS-PRÜFUNG: pitch-gold – Folie Evaluation, Lead-Text]]
         </div>
         <div class="split">
           <div>
@@ -1275,290 +1224,174 @@
               <thead>
                 <tr>
                   <th>Setup</th>
-                  <th>Macro-F1<br />9 paths</th>
-                  <th>Clinical<br />exclusion recall</th>
-                  <th>Recall<br />“today”</th>
-                  <th>Runs<br />automatically</th>
+                  <th>Routes right</th>
+                  <th>Clinical out</th>
+                  <th>Runs by itself</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Keyword rules + lexical net</td>
-                  <td>0.76</td>
-                  <td>0.44 (7/16)</td>
-                  <td>0.76</td>
+                  <td>0.79</td>
+                  <td>7/16</td>
                   <td>88 %</td>
                 </tr>
                 <tr>
-                  <td>TF-IDF + log. regression</td>
-                  <td>0.82</td>
-                  <td>0.13 (2/16)</td>
-                  <td>0.66</td>
-                  <td>99 %</td>
-                </tr>
-                <tr>
                   <td>Apertus 8B, one answer, no checks</td>
-                  <td>0.84</td>
-                  <td>0.56 (9/16)</td>
-                  <td>0.70</td>
+                  <td>0.87</td>
+                  <td>9/16</td>
                   <td>95 %</td>
                 </tr>
                 <tr>
                   <td>Inbrev with Apertus 70B</td>
                   <td>0.96</td>
-                  <td>0.94 (15/16)</td>
-                  <td>0.94</td>
+                  <td>15/16</td>
                   <td>82 %</td>
-                </tr>
-                <tr>
-                  <td>Inbrev 8B, before 13 Oct</td>
-                  <td>0.94</td>
-                  <td>0.81 (13/16)</td>
-                  <td>0.88</td>
-                  <td>84 %</td>
                 </tr>
                 <tr class="ours">
                   <td>Inbrev 8B + symptom pass</td>
                   <td>0.94</td>
-                  <td>1.00 (16/16)</td>
-                  <td>0.94</td>
+                  <td>16/16</td>
                   <td>78 %</td>
                 </tr>
               </tbody>
             </table>
             <div class="foot" style="margin-top: 22px">
-              Prompt p3, built on a separate dev set. Runs automatically =
-              neither unsure nor flagged. Paired on the 180, 8B beats the rules
-              32 to 5 (p = 7·10⁻⁶). With the symptom pass 41 % of flags are clinical (16 of 39). Fax pages
-              via OCR: route 50/60 (clean 56/60). Other open models: next slide.
+              Paired on 180: 8B beats the rules 32 to 5 (p = 7·10⁻⁶). Details and all rows: report §5.
             </div>
           </div>
           <div class="side">
-            <h3>Test set v0: 180 fictional messages</h3>
+            <div class="heronum">16/16</div>
+            <div class="herosub">clinical messages out of automation<br />95 % CI 0.81–1.00 (Wilson)</div>
             <ul>
-              <li>Labels are fixed before any text is written.</li>
+              <li>Labels fixed before any text; Apertus never writes or labels test data.</li>
               <li>
-                Text by two other model families (Claude, GPT-5.5), 90 each,
-                plus 42 by an open model (Nemotron) as a control. Apertus
-                never writes or labels test data.
+                Two open models (not people) relabelled 367 messages blind: κ 0.93 route,
+                0.97–0.98 clinical. [[NIKLAS-PRÜFUNG: pitch-labels – Folie Daten, Zweitlabel-Punkt]]
               </li>
-              <li>
-                Two open models (not people) relabelled all 367 test messages
-                blind: κ 0.93 route, 0.97–0.98 clinical. [[NIKLAS-PRÜFUNG: pitch-labels – Folie Daten, Zweitlabel-Punkt]]
-              </li>
-              <li>
-                Reports written by people: GraSCCo 40/40, PARHAF (French)
-                37/38 routed correctly.
-              </li>
-              
             </ul>
           </div>
         </div>
       </section>
 
-      <!-- 6b · Why Apertus -->
+      <!-- 7 · Why Apertus -->
       <section class="slide">
         <div class="eyebrow">Purposeful use of AI · model choice</div>
         <h1 style="font-size: 66px">Why Apertus, and what it costs.</h1>
         <div class="cols2">
           <div class="col never">
-            <h3>Measured: same pipeline, 180 messages</h3>
+            <h3>Measured, same pipeline</h3>
             <ul>
-              <li>Qwen3.5-9B and Ministral 8B: route 177/180, clinical 16/16</li>
-              <li>Apertus 8B: route 170/180, clinical 13/16; 70B 172, 15/16</li>
-              <li>
-                Unnoticed (wrong route + clinical): 8B 9 + 3, Qwen 1 + 0
-              </li>
-              <li>
-                Fix chosen on a dev split, measured once: symptom pass → 8B
-                8 + 0 at 40/180 to a person (Qwen 1 + 0 at 38). Clinical gap
-                closed, route gap only narrowed (4 + 0 with a rules gate, 69/180)
-              </li>
+              <li>Qwen3.5-9B, Ministral 8B: 177/180 routes</li>
+              <li>Apertus 8B: 170/180 · 70B: 172/180</li>
+              <li>Fresh hold-out: 5 wrong routes run by themselves (Qwen 0); 70B second opinion: 3</li>
             </ul>
           </div>
           <div class="col do">
-            <h3>Why we still choose Apertus</h3>
+            <h3>Why Apertus anyway</h3>
             <ul>
-              <li>
-                Pretrained only on openly available data, robots.txt opt-outs
-                applied retroactively, personal data filtered (arXiv 2509.14233)
-              </li>
-              <li>
-                Published dataset catalogue, EU training-content summary and EU
-                Code of Practice statement (swiss-ai/apertus-data-transparency)
-              </li>
-              <li>Developed in Switzerland; all training artefacts released</li>
-              <li>
-                Local run, quote checks and the unranked safety net work with
-                any open model: no argument for Apertus
-              </li>
+              <li>Only openly available training data, opt-outs applied, personal data filtered</li>
+              <li>Published data catalogue and EU training-content summary</li>
+              <li>Local run and quote checks work with any model: no argument</li>
             </ul>
           </div>
         </div>
-        <div class="law">
-          <b>A trade-off, not a free choice.</b> Fresh hold-out (146, Gemma 4,
-          frozen before any run): 8B 5 wrong routes run automatically at 40 to a
-          person, Qwen 0 at 24; better prompts alone change nothing. Option for
-          practices with 70B access (e.g. Swiss cloud): 70B second opinion when
-          rules disagree, 3 at 45. A practice that must justify which model reads
-          patient mail can point to Apertus' documented provenance. Not legal advice.
-        </div>
+        <div class="foot"><b>A trade-off, not a free choice.</b> Sources and hold-out details: report §5.</div>
       </section>
 
-      <!-- 7 · Cost -->
+      <!-- 8 · Cost -->
       <section class="slide">
         <div class="eyebrow">Value, cost &amp; scalability</div>
         <h1>Swiss francs per 1,000 messages, on hardware the practice owns.</h1>
         <div class="costs">
           <div class="cost hl">
-            <div class="k">On-prem, CPU only · model calculation</div>
-            <h3>Apertus 8B Q4 · mini PC</h3>
+            <div class="k">On-prem mini PC</div>
             <div class="big">≈ CHF 12</div>
-            <div class="unit">per 1,000 messages at 60 a day (box, power)</div>
-            <div class="rows">
-              Measured: 192 s / message offline, 1 sample. Assumed: box CHF 700
-              over 3 years. Up to 450 messages a day; energy alone CHF 0.52
-            </div>
+            <div class="unit">at 60 messages a day, box and power</div>
           </div>
           <div class="cost">
             <div class="k">Swiss cloud VM</div>
-            <h3>8 vCPU, Swiss provider</h3>
             <div class="big">CHF 2.39</div>
-            <div class="unit">per 1,000 messages, billed while sorting</div>
-            <div class="rows">
-              CHF 0.0448 / h (Infomaniak list price)<br />CHF 32 / month if
-              always on · other CPU, not measured
-            </div>
+            <div class="unit">billed while sorting</div>
           </div>
           <div class="cost">
-            <div class="k">Reference</div>
-            <h3>Swiss token API</h3>
+            <div class="k">Swiss token API</div>
             <div class="big">CHF 2.59</div>
-            <div class="unit">
-              per 1,000 messages at the listed Apertus 70B price
-            </div>
-            <div class="rows">
-              Tokens measured: 1,398 in, 644 out (8B, p2)<br />CHF 0.70 / 2.50 per
-              million tokens (Infomaniak)
-            </div>
-            <div class="note">
-              Prices excl. VAT, 4 Oct 2026. Power: mini PC with the same CPU,
-              38–39 W (ServeTheHome); ElCom 2026 median.
-            </div>
+            <div class="unit">reference, Apertus 70B list price</div>
           </div>
         </div>
-        <div class="assume">
-          <span class="target">assumption</span
-          ><span
-            >What it buys (assumption model, not measured): 60 messages a day,
-            60 s by hand vs 15 s to check a suggestion ≈ 32 MPA minutes a day,
-            net ≈ CHF 350 a month; break-even at 33 s per message. Interviews pending.</span
-          >
+        <div class="saves">
+          <div class="heronum">≈ 32 min</div>
+          <div class="herosub">
+            MPA time saved a day <span class="target">assumption</span><br />
+            60 messages × 78 % automatic × 45 s saved, minus rework of misroutes
+          </div>
         </div>
+        <div class="foot">Prices excl. VAT, 4 Oct 2026. Model, sources and break-even: report §5.</div>
       </section>
 
-      <!-- 8 · Intended purpose -->
+      <!-- 9 · Intended purpose -->
       <section class="slide">
         <div class="eyebrow">Intended purpose · Implementation feasibility</div>
-        <h1>Administrative by default. The clinical mode is research only.</h1>
+        <h1>Administrative by default. Clinical mode is research only.</h1>
         <div class="cols2">
           <div class="col do">
-            <h3>Default mode: Inbrev does</h3>
+            <h3>Inbrev does</h3>
             <ul>
-              <li>Sort by handling path and administrative deadline</li>
-              <li>Extract patient and case fields, each with its quote</li>
-              <li>Hand clinical content to a person, unassessed and unranked</li>
-              <li>Say “you decide” when it is unsure</li>
+              <li>Sort by path and deadline</li>
+              <li>Extract fields, each with its quote</li>
+              <li>Say “you decide” when unsure</li>
             </ul>
           </div>
           <div class="col never">
-            <h3>Default mode: Inbrev never does</h3>
+            <h3>Inbrev never does</h3>
             <ul>
-              <li>Rank messages by clinical severity</li>
+              <li>Rank by clinical severity</li>
               <li>Assess symptoms or suggest care</li>
-              <li>Make a decision a person has not seen</li>
-              <li>Send patient data out of the practice (local mode)</li>
+              <li>Send patient data out (local mode)</li>
             </ul>
           </div>
         </div>
-        <div class="law">
-          <b>Two modes:</b> the default triage with a safety net (all reported
-          numbers) and an optional clinical mode, off by default and not in the
-          web inbox: a keyword hint on urgency for research, not validated and
-          not certified; it would need classification before any clinical use.<br /><b>Why the line sits here:</b> MDCG 2019-11 Rev.1 (2025) treats
-          software that automatically reprioritises by clinical criticality
-          based on patient data as medical device software; software that only
-          stores, communicates or searches is not. Switzerland classifies via
-          MepV Art. 15 → EU MDR Annex VIII. Privacy: FADP Art. 5, 7 and 22, and
-          SCC Art. 321.
-        </div>
+        <div class="foot">Clinical research mode: off by default, not validated, not certified (MDCG 2019-11, MepV Art. 15).</div>
       </section>
 
-      <!-- 9 · Business + roadmap -->
+      <!-- 10 · Business + roadmap -->
       <section class="slide">
         <div class="eyebrow">Business model &amp; roadmap</div>
         <h1>A module for the software practices already use.</h1>
         <div class="biz">
           <dl class="kv">
-            <dt>Who uses it</dt>
+            <dt>User</dt>
             <dd>The MPA, first thing in the morning</dd>
-            <dt>Who pays</dt>
-            <dd>The practice owner or the doctors' network</dd>
+            <dt>Buyer</dt>
+            <dd>Practice owner or doctors' network</dd>
             <dt>Price</dt>
-            <dd>
-              CHF 150–250 per practice and month
-              <span class="target">hypothesis</span>
-            </dd>
+            <dd>CHF 150–250 / month <span class="target">hypothesis</span></dd>
             <dt>Channel</dt>
-            <dd>
-              As a module inside HIN mail or practice software, not one more
-              window
-            </dd>
-            <dt>Open core</dt>
-            <dd>
-              Hackathon code Apache-2.0. Revenue from operation, connectors,
-              support and updates
-            </dd>
-            <dt>Later</dt>
-            <dd>
-              Germany and Austria: same workflow, after checking their secrecy
-              and AI Act rules
-            </dd>
+            <dd>Module in HIN mail or practice software</dd>
           </dl>
           <div class="timeline">
             <div class="tl now">
-              <div class="when">OCT 2026 · HACK APERTUS</div>
-              <div class="what">
-                Full evaluation, offline proof, CHF per 1,000 messages; gold set
-                published after human review
-              </div>
+              <div class="when">OCT 2026</div>
+              <div class="what">Evaluation, offline proof, cost</div>
             </div>
             <div class="tl">
               <div class="when">NOV – DEC 2026</div>
-              <div class="what">
-                5–10 interviews with MPAs and practice owners: real volumes,
-                categories, fax share
-              </div>
+              <div class="what">5–10 interviews with MPAs and owners</div>
             </div>
             <div class="tl">
               <div class="when">Q1 2027</div>
-              <div class="what">
-                Pilot in one group practice on its own box; mail and
-                practice-software connectors
-              </div>
+              <div class="what">Pilot in one group practice</div>
             </div>
             <div class="tl">
               <div class="when">Q2 2027</div>
-              <div class="what">
-                Written intended purpose, impact assessment, classification
-                review before first sale
-              </div>
+              <div class="what">Classification review before first sale</div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 10 · Team + close -->
+      <!-- 11 · Ask + close -->
       <section class="slide dark s-close">
         <div
           class="row"
@@ -1582,12 +1415,10 @@
         </div>
         <div class="close-grid">
           <div>
-            <div class="claim">
-              Run locally, the practice inbox never leaves the practice.
-            </div>
+            <div class="eyebrow">Our ask</div>
+            <div class="claim">Pilot Inbrev in one Swiss group practice.</div>
             <div class="ask">
-              We are looking for one Swiss group practice to pilot Inbrev on its
-              own hardware in Q1 2027.<small
+              On its own box, from Q1 2027. Your inbox stays in your practice.<small
                 >Contact: hello@apertool.ch</small
               >
             </div>
@@ -1610,10 +1441,6 @@
           <span
             ><b>Code</b
             ><a style="color: inherit" href="https://github.com/NWichter/Hack_Apertus_2B_Inbrev">github.com/NWichter/Hack_Apertus_2B_Inbrev</a></span
-          >
-          <span
-            ><b>Data</b
-            ><span>seed and Swiss sets in track_2b/data; gold set after review</span></span
           >
         </div>
       </section>

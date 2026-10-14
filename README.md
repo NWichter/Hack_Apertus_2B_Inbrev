@@ -14,13 +14,14 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 | Technical report (6 pages) | [`track_2b/Apertool_Report.pdf`](track_2b/Apertool_Report.pdf), source [`track_2b/technical_report.md`](track_2b/technical_report.md) |
 | Run it | `make run` from this folder (Docker). With `track_2b/.env` (`LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY`) the web app at http://127.0.0.1:8000 triages with your Apertus endpoint. **Without credentials** the app still starts, says so in its header and shows stored results for the 12 seed messages, marked as stored. |
 | Run it offline | `make run-local`: llama.cpp with local Apertus 8B Q4 weights and Inbrev on a Docker network without internet access ([`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md)); `make offline-eval` repeats the logged offline run |
-| Tests | `make test` (29 unit tests, `--network none`) |
-| Evidence for every number | [`track_2b/evidence/`](track_2b/evidence/): logs, predictions and reports per study (`offline`, `prompt-p3`, `challenge`, `agreement`, `gap`, `peers`, `fax`, `parhaf`, `native`, `value`, `fresh-clone`) |
+| Tests | `make test` (34 unit tests, `--network none`) |
+| Evidence for every number | [`track_2b/evidence/`](track_2b/evidence/): logs, predictions and reports per study (`offline`, `prompt-p3`, `challenge`, `agreement`, `gap`, `holdout2`, `route`, `peers`, `fax`, `parhaf`, `native`, `value`, `fresh-clone`) |
 | Demo video (under 2 min) | `website/media/video.mp4` |
 
 **Key results** (synthetic test data, labels not reviewed by a person; details and intervals in the report):
 
-- Gold set (180 messages, held out for the latest change): with the default configuration no message with clinical
+- Gold set (180 messages; the second check was chosen on a separate dev split and measured here once, the shipped
+  default was then fixed after seeing this result, see the report): with the default configuration no message with clinical
   content runs automatically (16 of 16 leave automation), 170 of 180 routes are right, 40 of 180 messages go to a person.
 - Keyword rules: 7 of 16 clinical messages; Apertus 8B beats them on routes 32 to 5 (McNemar p = 7·10⁻⁶).
 - Two other small open models in the same pipeline route better than Apertus 8B (177 vs 170 of 180); the report says

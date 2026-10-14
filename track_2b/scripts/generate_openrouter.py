@@ -109,7 +109,8 @@ GRID_DEV = {
 }
 # Clinical-exclusion challenge set (seed 5151, prefix "chl"), written on 13 October 2026:
 # 48 messages with clinical content, 40 medical traps, more typos and dialect.
-# Held out: prompt, checks and lexical net were frozen before it was generated.
+# Unseen for prompt p3: prompt, checks and lexical net were frozen before it was generated
+# (later part of the dev split for the symptom pass, so not a hold-out for that).
 GRID_CHALLENGE = {
     "ROUTE_COUNTS": {
         "report_received": 10,
@@ -184,7 +185,12 @@ GRID_HOLDOUT2 = {
     "MIXED_N": 15,
     "ABSTAIN_N": 7,
 }
-PRESETS = {"45": GRID_45, "dev": GRID_DEV, "challenge": GRID_CHALLENGE, "holdout2": GRID_HOLDOUT2}
+PRESETS = {
+    "45": GRID_45,
+    "dev": GRID_DEV,
+    "challenge": GRID_CHALLENGE,
+    "holdout2": GRID_HOLDOUT2,
+}
 
 PROMPT_EDITS = [
     (
@@ -440,7 +446,9 @@ def cmd_generate(args: argparse.Namespace) -> None:
                 raw["generator_model"] = args.model
                 raw["generated_at"] = today
                 raw["prompt_version"] = pv
-                rec = assemble.assemble(raw, by_id[mid], args.generator_name, args.model, today)
+                rec = assemble.assemble(
+                    raw, by_id[mid], args.generator_name, args.model, today
+                )
                 errs = check(rec, by_id[mid], validator, args.strict)
                 if errs:
                     feedback[mid] = errs

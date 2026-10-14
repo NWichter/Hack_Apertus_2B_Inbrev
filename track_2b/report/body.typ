@@ -129,17 +129,16 @@ the model auditable @riedemann2024open@apertus2025.
 
 #strong[Offline run with local weights.] `make offline-eval`
 (`scripts/run_offline_eval.sh`) starts llama.cpp with a community
-Q4\_K\_M GGUF of the Apertus 8B text weights (Apache-2.0; Track 2 allows
-GGUF builds) and Inbrev on a Docker network with `internal: true`\; only
-an optional nginx gateway for the web UI also sits on the host network.
-The log records the SHA-256 of the loaded weights (equal to the Hugging
-Face LFS hash, revision `248ec68`), `docker inspect` of both containers,
-an egress test from the Inbrev container (DNS, TCP to 1.1.1.1:443 and
-HTTPS all fail) and a control on the default network (all succeed),
-memory samples and the evaluation. llama.cpp rejects `n` \> 1 (HTTP
-400), so Inbrev falls back to one request per sample. On a 28-W laptop
-CPU (Ryzen 7 PRO 8840U, Docker Desktop) the model needs 6.2 GiB RAM and
-Inbrev 167 MiB; results are in §5. The run is in `evidence/offline/`.
+Q4\_K\_M GGUF of the Apertus 8B text weights (Apache-2.0) and Inbrev on
+a Docker network with `internal: true`\; only an optional nginx gateway
+for the web UI also sits on the host network. The log records the
+SHA-256 of the loaded weights (equal to the Hugging Face LFS hash,
+revision `248ec68`), `docker inspect` of both containers, an egress test
+from the Inbrev container (DNS, TCP to 1.1.1.1:443 and HTTPS all fail)
+and a control on the default network (all succeed), memory samples and
+the evaluation. On a 28-W laptop CPU (Ryzen 7 PRO 8840U, Docker Desktop)
+the model needs 6.2 GiB RAM and Inbrev 167 MiB; results are in §5. The
+run is in `evidence/offline/`.
 
 = 3. Use of Apertus
 <use-of-apertus>
@@ -353,10 +352,9 @@ automation, as on clean text (`evidence/fax/`).
 
 #strong[Label source.] Two open-weights models labelled all 367 messages
 of the four generated sets blind (§4). Cohen's κ with our grid labels is
-0.93 for the route and 0.97--0.98 for clinical content (gold and
-challenge: no disagreement on clinical content), 0.60--0.90 for the
-deadline and 0.40--0.42 for "ambiguous". Scored against either model or
-the majority of three, Inbrev 8B routes 167--169 of 180 gold messages
+0.93 for the route and 0.97--0.98 for clinical content, 0.60--0.90 for
+the deadline and 0.40--0.42 for "ambiguous". Scored against either model
+or the majority of three, Inbrev 8B routes 167--169 of 180 gold messages
 (170 against the grid) and keeps 13/16; on every set the ranking against
 the keyword rules is unchanged (`evidence/agreement/`).
 
@@ -364,43 +362,42 @@ the keyword rules is unchanged (`evidence/agreement/`).
 pipeline (prompt p3, checks, three samples) on the gold set, Qwen3.5-9B
 and Ministral 8B both route 177/180 and exclude 16/16 clinical messages,
 against 170/180 and 13/16 for Apertus 8B (route p = 0.04, clinical p =
-0.25) and 172/180 and 15/16 for Apertus 70B (Llama 3.1 8B: provider rate
-limit, no result; `evidence/peers/`), although the prompt was developed
-with Apertus. With prompt p3 alone, errors that pass automation
-unnoticed (wrong route, or clinical content without a flag) are 9 + 3
-for Apertus 8B, 8 + 1 for 70B and 1 + 0 for both comparison models. We
-then tried to close this gap with Apertus only, choosing on a dev split
-(175 messages, rule fixed before the hold-out run, `evidence/gap/`): a
-safety-first schema order (worse), five samples (no effect) and few-shot
-examples (partial) were dropped; the symptom pass above reached 0
-unnoticed clinical messages on dev. Measured once on the gold set,
-Apertus 8B with the symptom pass lets through 8 + 0 at 40 messages for a
-person (Qwen 1 + 0 at 38); adding a gate that sends a message to a
-person when keyword rules choose another route gives 4 + 0 at 69. The
-clinical part of the gap is closed, the route part only narrowed, and
-only by more human work. #strong[Deviation from the fixed rule:] the
-rule, written before the hold-out run, picked the second check plus the
-rules gate; after seeing the hold-out we ship the second check alone as
-default and the gate as an option (`INBREV_RULES_GATE=1`), because the
-gate sends 69 instead of 40 of 180 messages to a person. Both results
-are reported (`evidence/gap/`). A second round on a fresh hold-out (146
-messages written by Gemma 4 31B, frozen with hashes before any run, plan
-fixed on the earlier sets; `evidence/route/`) targeted the routes:
-sharper route descriptions and few-shot examples alone change nothing (5
-wrong routes run automatically, 39--42 to a person); with them, asking
-70B when the keyword rules disagree lowers this to 2 at 43, available as
-an option for practices with 70B access (e.g.~a Swiss cloud;
-`INBREV_SECOND_OPINION_MODEL`, off by default). Qwen3.5-9B: 0 at 24.
-Local execution, the quote checks and the unranked safety net work with
-any open model and are no argument for Apertus. What is specific to
-Apertus: it was pretrained only on openly available data with robots.txt
-opt-outs applied retroactively and personal data filtered, all training
-artefacts are released @apertus2025, and the developers publish a
-dataset catalogue, an EU training-content summary and an EU Code of
-Practice statement (github.com/swiss-ai/apertus-data-transparency), the
-kind of documentation the EU AI Act asks of general-purpose model
-providers @eu2024aiact\; we did not check equivalent documents for the
-comparison models. A Swiss practice that must justify under the DSG and
+0.25) and 172/180 and 15/16 for Apertus 70B (`evidence/peers/`),
+although the prompt was developed with Apertus. With prompt p3 alone,
+errors that pass automation unnoticed (wrong route, or clinical content
+without a flag) are 9 + 3 for Apertus 8B, 8 + 1 for 70B and 1 + 0 for
+both comparison models. We then tried to close this gap with Apertus
+only, choosing on a dev split (175 messages, rule fixed before the
+hold-out run, `evidence/gap/`): a safety-first schema order (worse),
+five samples (no effect) and few-shot examples (partial) were dropped;
+the symptom pass above reached 0 unnoticed clinical messages on dev.
+Measured once on the gold set, Apertus 8B with the symptom pass lets
+through 8 + 0 at 40 messages for a person (Qwen 1 + 0 at 38); adding a
+gate that sends a message to a person when keyword rules choose another
+route gives 4 + 0 at 69. The clinical part of the gap is closed, the
+route part only narrowed, and only by more human work. #strong[Deviation
+from the fixed rule:] the rule, written before the hold-out run, picked
+the second check plus the rules gate; after seeing the hold-out we ship
+the second check alone as default and the gate as an option
+(`INBREV_RULES_GATE=1`), because the gate sends 69 instead of 40 of 180
+messages to a person. A second round on a fresh hold-out (146 messages
+written by Gemma 4 31B, frozen with hashes before any run, plan fixed on
+the earlier sets; `evidence/route/`) targeted the routes: sharper route
+descriptions and few-shot examples alone change nothing (5 wrong routes
+run automatically, 39--42 to a person); with them, asking 70B when the
+keyword rules disagree lowers this to 2 at 43, available as an option
+for practices with 70B access (`INBREV_SECOND_OPINION_MODEL`, off by
+default). Qwen3.5-9B: 0 at 24. Local execution, the quote checks and the
+unranked safety net work with any open model and are no argument for
+Apertus. What is specific to Apertus: it was pretrained only on openly
+available data with robots.txt opt-outs applied retroactively and
+personal data filtered, all training artefacts are released
+@apertus2025, and the developers publish a dataset catalogue, an EU
+training-content summary and an EU Code of Practice statement
+(github.com/swiss-ai/apertus-data-transparency), the kind of
+documentation the EU AI Act asks of general-purpose model providers
+@eu2024aiact\; we did not check equivalent documents for the comparison
+models. A Swiss practice that must justify under the DSG and
 professional secrecy which model reads patient mail @schweiz2020dsg can
 point to this provenance. That is a trade-off, not a free choice: the
 measured price is 7 more wrong routes in 180 that reach automation, or
@@ -492,13 +489,10 @@ time to sort messages by hand versus with Inbrev.
 
 = 7. Reproducibility
 <reproducibility>
-`make run` starts the web app against `LLM_BASE_URL`\; `make run-local`
-runs llama.cpp with local weights and Inbrev on an internal network;
-`make offline-eval` repeats the offline run with its log; `make test`
-runs the 34 unit tests with `--network none`. `scripts/agreement.py`,
-`value_model.py`, `compare_hybrid.py`, `replay_k_samples.py` and
-`cost_model.py` recompute agreement, value, rules comparison, ablation
-and cost from stored runs and annotations;
+`make run` starts the web app, `make run-local` the offline stack,
+`make offline-eval` repeats the logged offline run, `make test` runs the
+34 unit tests with `--network none`. Scripts in `scripts/` recompute
+agreement, value, rules comparison, ablation and cost from stored runs;
 `python -m inbrev triage|replay|eval` reproduces the numbers from the
 stored runs, with 95 % Wilson intervals. Grids and cross-validation are
 seeded. Model runs use `apertus-v1.5-8b` and `apertus-v1.5-70b` as named

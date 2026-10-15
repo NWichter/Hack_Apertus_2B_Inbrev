@@ -419,8 +419,11 @@ gold route 158 → 170/180 (McNemar p = 0.002), no clinical case lost
 
 #strong[One sample is nearly as good as three.] Replaying the stored 8B
 run (p2) with only the first sample gives route 157/180 and 12/16
-against 159/180 and 13/16 (`scripts/replay_k_samples.py`), so local
-deployments use one sample.
+against 159/180 and 13/16 in the stored run of 3 October
+(`scripts/replay_k_samples.py`\; the shipped p2 rerun `gold-p2-8b.jsonl`
+gives 158/180, hence the 158 baseline for p3 above, see
+`evidence/prompt-p3/noise-p2-rerun.md`), so local deployments use one
+sample.
 
 #strong[Offline on a CPU.] On 30 of the 180 messages (all 16 clinical
 plus 14), the offline Docker stack with Q4 weights and one sample (p2)

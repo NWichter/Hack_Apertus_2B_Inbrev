@@ -494,8 +494,9 @@ time to sort messages by hand versus with Inbrev.
 = 7. Reproducibility
 <reproducibility>
 `make run` starts the web app, `make run-local` the offline stack,
-`make offline-eval` repeats the logged offline run, `make test` runs the
-35 unit tests with `--network none`. Scripts in `scripts/` recompute
+`make offline-eval` reruns the offline pipeline (command for the logged
+run: `evidence/offline/`), `make test` runs the 35 unit tests with
+`--network none`. Scripts in `scripts/` recompute
 agreement, value, rules comparison, ablation and cost from stored runs;
 `python -m inbrev triage|replay|eval` reproduces the numbers from the
 stored runs, with 95 % Wilson intervals. Grids and cross-validation are

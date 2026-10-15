@@ -1,7 +1,7 @@
 # Running Inbrev
 
 Inbrev sorts the inbox of a Swiss general practice by handling route and administrative
-deadline. It never assesses clinical content: a message that may contain symptoms is excluded
+deadline. It does not rate or rank clinical content: a message that may contain symptoms is excluded
 from automation (`safety_flag`) and lands in "A person decides", together with messages Inbrev is
 unsure about, ordered by time of receipt and without any ranking by severity.
 
@@ -37,6 +37,7 @@ Checked on a fresh clone in a Linux container (Docker 27, Alpine, GNU Make 4.4):
 ## Offline run with local weights
 
 ```bash
+cd track_2b                # the paths below are relative to track_2b/
 mkdir -p models
 curl -L -o models/apertus-v1.5-8b-text-Q4_K_M.gguf   https://huggingface.co/Colby/apertus-v1.5-8b-text-Q4_K_M-GGUF/resolve/248ec68a63e219e3f061e4c946fc8a20d63b9975/apertus-v1.5-8b-text-q4_k_m.gguf
 sha256sum models/*.gguf    # a037df8d87ff6caacee794ee85f55342f2152e0d359b7389033300c3bee5f299

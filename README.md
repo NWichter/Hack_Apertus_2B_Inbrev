@@ -13,7 +13,7 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 | --- | --- |
 | Technical report (6 pages) | [`track_2b/Apertool_Report.pdf`](track_2b/Apertool_Report.pdf), source [`track_2b/technical_report.md`](track_2b/technical_report.md) |
 | Run it | `make run` from this folder (Docker). With `track_2b/.env` (`LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY`) the web app at http://127.0.0.1:8000 triages with your Apertus endpoint. **Without credentials** the app still starts, says so in its header and shows stored results for the 12 seed messages, marked as stored. |
-| Run it offline | `make run-local`: llama.cpp with local Apertus 8B Q4 weights and Inbrev on a Docker network without internet access ([`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md)); `make offline-eval` repeats the logged offline run |
+| Run it offline | `make run-local`: llama.cpp with local Apertus 8B Q4 weights and Inbrev on a Docker network without internet access ([`track_2b/docs/RUNNING.md`](track_2b/docs/RUNNING.md)); `make offline-eval` runs the same offline pipeline on the 12 seed messages (command for the logged 30-message run: [`track_2b/evidence/offline/README.md`](track_2b/evidence/offline/README.md)) |
 | Tests | `make test` (35 unit tests, `--network none`) |
 | Test texts | [`track_2b/data/synthetic/`](track_2b/data/synthetic/): all 543 generated test messages with their grid labels (synthetic v0, labels from the seeded grid, published without human review). The 367 messages that two open models labelled blind are the gold, open-generator, challenge and Swiss practice sets (180 + 42 + 115 + 30); hold-out 2 (146) was labelled blind separately, the dev split (60) not |
 | Evidence for every number | [`track_2b/evidence/`](track_2b/evidence/): logs, predictions and reports per study (`offline`, `prompt-p3`, `challenge`, `agreement`, `gap`, `holdout2`, `route`, `peers`, `fax`, `parhaf`, `native`, `value`, `fresh-clone`) |
@@ -27,7 +27,7 @@ symptoms leaves automation and goes to "A person decides", unranked, together wi
 - Keyword rules catch 7 of 16 clinical messages; Apertus 8B beats them on routes 32 to 5 (McNemar p = 7·10⁻⁶).
 - Two other small open models in the same pipeline route better than Apertus 8B (177 vs 170 of 180); the report says
   what that costs and why we still use Apertus.
-- Offline: Q4 weights, no internet access, egress test logged; 192 s per message on a laptop CPU, 62.7 s on its integrated GPU
+- Offline: Q4 weights, no internet access, egress test logged in the Docker CPU run; 192 s per message on a laptop CPU, 62.7 s on its integrated GPU
   (both before the symptom pass); with the symptom pass (default) the iGPU needs 71.8 s per message
   and excludes 16 of 16 clinical messages on a 30-message subset (`track_2b/evidence/native/`).
 

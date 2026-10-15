@@ -126,7 +126,7 @@ Not measured yet: latency on an NVIDIA GPU (`scripts/run_native_llamacpp.ps1 -Ba
 
 ## 7. Reproducibility
 
-`make run` starts the web app, `make run-local` the offline stack, `make offline-eval` repeats the logged offline run, `make test` runs the 35 unit tests with `--network none`. Scripts in `scripts/` recompute agreement, value, rules comparison, ablation and cost from stored runs; `python -m inbrev triage|replay|eval` reproduces the numbers from the stored runs, with 95 % Wilson intervals. Grids and cross-validation are seeded. Model runs use `apertus-v1.5-8b` and `apertus-v1.5-70b` as named by the Hack Apertus endpoint (3, 4 and 13 October), which does not expose the Hugging Face revision. The generated test texts are in `data/synthetic/` (synthetic, labels unreviewed); predictions, grids and annotations are in `evidence/`.
+`make run` starts the web app, `make run-local` the offline stack, `make offline-eval` reruns the offline pipeline (command for the logged run: `evidence/offline/`), `make test` runs the 35 unit tests with `--network none`. Scripts in `scripts/` recompute agreement, value, rules comparison, ablation and cost from stored runs; `python -m inbrev triage|replay|eval` reproduces the numbers from the stored runs, with 95 % Wilson intervals. Grids and cross-validation are seeded. Model runs use `apertus-v1.5-8b` and `apertus-v1.5-70b` as named by the Hack Apertus endpoint (3, 4 and 13 October), which does not expose the Hugging Face revision. The generated test texts are in `data/synthetic/` (synthetic, labels unreviewed); predictions, grids and annotations are in `evidence/`.
 
 ## 8. Next steps
 

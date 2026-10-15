@@ -1,8 +1,8 @@
 # Route study (14 October 2026)
 
 Question: with the clinical gap closed, can Inbrev let fewer wrong routes run automatically, using Apertus only?
-Plan and selection rule were committed before any hold-out run (`PREREGISTRATION.md`, commit `7a7e3fd`); the hold-out
-was frozen with hashes before that (`../holdout2/FREEZE.md`, commit `d9867d8`).
+Plan and selection rule were committed before any hold-out run (`PREREGISTRATION.md`, commit `df93f2b`); the hold-out
+was frozen with hashes before that (`../holdout2/FREEZE.md`, commit `0697201`).
 
 **Dev split** (427 messages, all earlier sets; `dev-study.md`). The most frequent confusions were boundary questions,
 not uncertainty: an insurer asking about an invoice (grid `billing`, model `insurer`), requests from authorities (grid

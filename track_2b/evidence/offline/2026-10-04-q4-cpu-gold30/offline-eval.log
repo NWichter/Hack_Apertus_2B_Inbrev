@@ -1,6 +1,6 @@
 Inbrev offline evaluation: Apertus GGUF in llama.cpp, internal Docker network
 date: 2026-10-04 12:05:30 UTC
-git: 7321885 (dirty)
+git: d541e07 (dirty)
 docker: Docker version 28.3.3, build 980b856
 host: Docker Desktop, 16 CPUs, 16062279680 bytes RAM for Docker
 input: runs/offline/gold-subset30.jsonl (30 messages)

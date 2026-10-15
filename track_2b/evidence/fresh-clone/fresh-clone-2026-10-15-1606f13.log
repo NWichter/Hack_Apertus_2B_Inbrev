@@ -1,5 +1,5 @@
 Fresh-clone check: 2026-10-14 23:37:48 UTC
-commit: 5143ef5 build: Bericht neu gebaut (6 Seiten), Demo-Video v8 mit „does not rate or rank clinical content“
+commit: 1606f13 build: Bericht neu gebaut (6 Seiten), Demo-Video v8 mit „does not rate or rank clinical content“
 host: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64; Alpine Linux v3.21; Docker version 27.5.1, build 9f9e405; Docker Compose version v2.33.0; GNU Make 4.4.1
 untracked files after clone: 0
 data/ tracked size: 1.6M

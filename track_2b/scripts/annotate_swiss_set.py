@@ -35,7 +35,7 @@ NEUTRALISE = {
 }
 
 # What the Codex session changed per row (diff of the unedited first version in the
-# gitignored data/external/swiss_practice_inbox.jsonl against commit fecd8d2).
+# gitignored data/external/swiss_practice_inbox.jsonl against commit bfb9ba2).
 CODEX_EDITS = {
     "0001": "e-mail domain",
     "0002": "pharma brand name removed",
@@ -94,7 +94,7 @@ def provenance(mid: str) -> dict:
                 if CODEX_EDITS[mid[-4:]]
                 else " (no change in this row)"
             ),
-            "evidence": "git-ai authorship note on commit fecd8d2 (codex session 01a1039c, model gpt-6.1-sol)",
+            "evidence": "git-ai authorship note on commit bfb9ba2 (codex session 01a1039c, model gpt-6.1-sol)",
         }
     ]
     if mid in NEUTRALISE:

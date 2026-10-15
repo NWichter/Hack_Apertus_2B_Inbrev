@@ -1,5 +1,5 @@
 Fresh-clone check: 2026-10-14 02:41:02 UTC
-commit: 04071fd fix(website): Hold-out 2 und optionale 70B-Zweitmeinung auf Webseite und Pitch
+commit: 92ab75b fix(website): Hold-out 2 und optionale 70B-Zweitmeinung auf Webseite und Pitch
 host: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64; Alpine Linux v3.21; Docker version 27.5.1, build 9f9e405; Docker Compose version v2.33.0; GNU Make 4.4.1
 untracked files after clone: 0
 data/ tracked size: 588.0K

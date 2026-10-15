@@ -11,17 +11,17 @@ WSL2, CPU only). Nothing from the working copy was used except `track_2b/.env` f
 | clone | 0 untracked files | `fresh-clone.log` |
 | `make test` (repo root) | 22 passed | `fresh-clone.log` |
 | `make run` (repo root) | health 200, `POST /v1/triage` on seed-001 end to end (report_received, today, doctor), UI 200 | `fresh-clone.log` |
-| `make run-local` (repo root), commit `0536ccd` | stack up after 184 s, app only on the internal network, egress blocked (DNS, TCP, HTTPS), model loaded after 1,254 s; **the triage request hit the gateway timeout (504 after 900 s)**: three samples on this CPU took longer | `fresh-clone.log` |
-| fix `621c3e9` | local stack uses `LOCAL_INBREV_SAMPLES` (default 1, as the report argues for CPU), gateway and client wait 1,800 s | – |
-| `make run-local` again | seed-001 correct with 1 sample (report_received, today, doctor), 757 s for the request; the model container from the first attempt was still busy with the abandoned three-sample request, because `make stop` did not stop the `local` profile (fixed in `647bd30`) | `fresh-clone-recheck.log` |
+| `make run-local` (repo root), commit `f4c4b5a` | stack up after 184 s, app only on the internal network, egress blocked (DNS, TCP, HTTPS), model loaded after 1,254 s; **the triage request hit the gateway timeout (504 after 900 s)**: three samples on this CPU took longer | `fresh-clone.log` |
+| fix `58fd190` | local stack uses `LOCAL_INBREV_SAMPLES` (default 1, as the report argues for CPU), gateway and client wait 1,800 s | – |
+| `make run-local` again | seed-001 correct with 1 sample (report_received, today, doctor), 757 s for the request; the model container from the first attempt was still busy with the abandoned three-sample request, because `make stop` did not stop the `local` profile (fixed in `3695369`) | `fresh-clone-recheck.log` |
 
 Problems found and fixed on the way: `make run-local` was missing in the root Makefile
-(`No rule to make target`, fixed in `0536ccd`); pytest cache warning in the read-only image
+(`No rule to make target`, fixed in `f4c4b5a`); pytest cache warning in the read-only image
 (`-p no:cacheprovider`); the 504 and `make stop` above. The CPU speed in nested Docker on a busy
 laptop (about 0.3 tokens/s) is far below the earlier offline run (`evidence/offline/`); no GPU was
 available.
 
-## Re-check on 2026-10-14 (commit `04071fd`; screenshot from the run at `58ac3d8`)
+## Re-check on 2026-10-14 (commit `92ab75b`; screenshot from the run at `4005663`)
 
 Same setup (`docker:27-dind`, fresh `git clone`, no local llama-server; script `check-2026-10-14.sh`, log
 `fresh-clone-2026-10-14.log`, endpoint host masked; clock in the log is UTC).
@@ -35,22 +35,22 @@ Same setup (`docker:27-dind`, fresh `git clone`, no local llama-server; script `
 
 Found and fixed on the way: without credentials the app used to start empty and labelled itself "local endpoint"
 (Compose fell back to `http://llm:8080`, which exists only in the local profile); "Sort inbox" then failed without
-explanation. Fixed in `863087a`, `0b90bbc`, `58ac3d8`; covered by `tests/test_no_endpoint.py`.
-## Re-check on 2026-10-14, evening (commit `f839acc`)
+explanation. Fixed in `f8f9fee`, `7cd70a8`, `4005663`; covered by `tests/test_no_endpoint.py`.
+## Re-check on 2026-10-14, evening (commit `90eea48`)
 
 After removing internal helper scripts and the make targets `eval`, `offline-check` and `triage-seed`; same script and setup,
-log `fresh-clone-2026-10-14-f839acc.log` (endpoint host masked). Clone: 0 untracked files, `track_2b/data/` 588 KB.
+log `fresh-clone-2026-10-14-90eea48.log` (endpoint host masked). Clone: 0 untracked files, `track_2b/data/` 588 KB.
 `make test`: 34 passed. `make run` with endpoint values: health 200, seed-001 correct (report_received, today, doctor), UI 200.
 `make run` without `track_2b/.env`: `endpoint_configured: false`, 12 stored seed results, `POST /v1/triage` 503 with the
 explanation, UI 200.
 
-## Re-check on 2026-10-15 (commit `5c664a9`)
+## Re-check on 2026-10-15 (commit `c71d57c`)
 
 After the fail-safe for the symptom pass, the switches in Compose and the published test sets; same script, log
-`fresh-clone-2026-10-15-5c664a9.log` (endpoint host masked). Clone: 0 untracked files, `track_2b/data/` 1.5 MB.
+`fresh-clone-2026-10-15-c71d57c.log` (endpoint host masked). Clone: 0 untracked files, `track_2b/data/` 1.5 MB.
 `make test`: 35 passed. `make run` with endpoint values: health 200 (`symptom_check: true`), seed-001 correct, UI 200.
 `make run` without `track_2b/.env`: `endpoint_configured: false`, 12 stored seed results, `POST /v1/triage` 503 with the
 explanation, UI 200.
 
-Re-check at `5143ef5` (cycle 2: validator, Compose switches, local pitch fonts, video v8): same results, `make test` 35 passed,
-`make run` with and without endpoint as above (`fresh-clone-2026-10-15-5143ef5.log`, `data/` 1.6 MB).
+Re-check at `1606f13` (cycle 2: validator, Compose switches, local pitch fonts, video v8): same results, `make test` 35 passed,
+`make run` with and without endpoint as above (`fresh-clone-2026-10-15-1606f13.log`, `data/` 1.6 MB).

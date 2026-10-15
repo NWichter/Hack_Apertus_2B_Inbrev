@@ -73,7 +73,7 @@ stamp) for the OCR path. Dependencies: `scripts/requirements.txt`.
 `gemini-3.8-flash`, not Apertus) on 2026-10-03 at 04:54 UTC (06:54 CEST); the generation prompt
 was not recorded. Evidence: the session transcript (`write_to_file` steps at 04:54:13Z and
 04:54:43Z) and the model name in the session's conversation database. On the evening of
-2026-10-03 a Codex session (`gpt-6.1-sol`, per the git-ai authorship note of commit `fecd8d2`)
+2026-10-03 a Codex session (`gpt-6.1-sol`, per the git-ai authorship note of commit `bfb9ba2`)
 replaced real e-mail domains and insurer, hospital and IV-office names with fictitious ones
 (`KV Beispiel AG`, `*.example`). On 2026-10-04 `scripts/annotate_swiss_set.py` replaced the last
 four real Swiss organisation names (a pharmacy chain, a hospital, a laboratory and a pharmacy;

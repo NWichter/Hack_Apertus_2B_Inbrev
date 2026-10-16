@@ -57,7 +57,7 @@ generates nor labels any of them.
   invalid, that e-mail domains are `.example` and phone numbers use the `000` block, and it looks
   for near-duplicates. Minimal fixes to generated rows carry `edited_by`. Rows whose label does
   not clearly follow from the text carry `review_flag` and `review_reason`; they are not relabelled.
-[[NIKLAS-PRÜFUNG: daten-status – Status der Labels im Daten-README]] The texts are
+- **Status: partly reviewed.** One person from the team labelled a fixed sample of 60 test messages blind and decided 36 of the 36 disputed messages (`evidence/review/`); no label was changed. The texts are
   published unreviewed in `synthetic/gold-v0.jsonl` (see `synthetic/README.md`).
 
 Extra record fields in this part: `sender_type`, `received_at` (deadlines are relative to it),

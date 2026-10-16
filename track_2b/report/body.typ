@@ -2,8 +2,8 @@
   repository; public link in the submission form
 
 #emph[Version of 16 October 2026. Every number is measured or cited;
-what is not measured yet is named as such. Measured numbers come from
-synthetic data whose labels have not yet been reviewed by a person.]
+what is not measured yet is named as such. Data are synthetic; labels
+re-checked by one person (§4).]
 
 = 1. Summary
 <summary>
@@ -24,8 +24,8 @@ case fields, and backs every decision with a verbatim quote from the
 message. In its default mode it does not rate or rank clinical content:
 a message that may describe symptoms leaves automation and goes to a
 person, in the same queue as messages the model is unsure about, without
-any ranking by severity. Results (Apertus 8B; synthetic data, labels not
-reviewed by a person):
+any ranking by severity. Results (Apertus 8B; synthetic data, labels
+checked by one person on 60 messages):
 
 - #strong[Gold set, 180 messages, default configuration] (prompt p3 plus
   a second, narrow 8B check for current complaints, chosen on a dev
@@ -40,8 +40,8 @@ reviewed by a person):
 - #strong[Labels:] two open-weights models labelled all 367 test
   messages blind; they agree with our labels on clinical content (κ
   0.97--0.98) and route (κ 0.93), and scoring against their labels does
-  not change the ranking against the keyword rules. No person has
-  reviewed labels yet.
+  not change the ranking against the keyword rules. A person from the
+  team re-labelled 60 blind: κ 0.98 route, 1.00 clinical (§4).
 - #strong[Other models:] Qwen3.5-9B and Ministral 8B in the identical
   pipeline route better than Apertus 8B (177 vs 170 of 180, wrong routes
   that run automatically 1 vs 8); §5 says why we still use Apertus.
@@ -212,17 +212,19 @@ data is used. Licence: CDLA-Permissive-2.0.
   (fictitious cases written by resident physicians; CC BY 4.0 / Etalab
   2.0), verbatim behind a fixed cover note, same rule as GraSCCo
   (`data/parhaf/`).
-- #strong[External datasets] (Hugging Face) were downloaded only for
-  local stress tests, are not redistributed and give no reported number;
-  `data/README.md` lists each source and why it is or is not used.
-- #strong[Label check without people (yet):] two open-weights models,
-  Nemotron 3 Super and gpt-oss-120b, labelled all 367 test messages
-  blind from the written rules, seeing only the message
-  (`scripts/annotate_open_models.py`, USD 0.06). They are not human
-  annotators: agreement shows that the rules can be applied
-  consistently, not that labels are right. The 36 disputed messages are
-  the review queue for a person; `tools/review/` (Cohen's κ
-  @cohen1960kappa) is ready, the human review has not happened yet.
+- #strong[External datasets] (Hugging Face) served only local stress
+  tests; they are not redistributed and give no reported number
+  (`data/README.md`).
+- #strong[Label check by two models and one person:] two open-weights
+  models, Nemotron 3 Super and gpt-oss-120b, labelled all 367 test
+  messages blind from the written rules, seeing only the message
+  (`scripts/annotate_open_models.py`, USD 0.06). Their agreement shows
+  that the rules can be applied consistently, not that labels are right.
+  One person from the team (not a clinician) re-labelled 60 gold
+  messages blind: Cohen's κ @cohen1960kappa 0.98 \[0.94, 1.00\] route,
+  1.00 deadline, 1.00 clinical. Of 36 disputed messages, our label was
+  right in 27, the model in 9; no label was changed
+  (`evidence/review/`).
 
 Closed models (Claude, GPT-5.5 via Codex, Gemini via Antigravity) wrote
 or edited test data and code during development only, and reviewed
@@ -471,7 +473,8 @@ time to sort messages by hand versus with Inbrev.
   written by people (practice staff or patients) would be the stronger
   test; none are in the evaluation yet
   @long2024synthetic@panickssery2024selfpref.
-- No person has reviewed the labels yet. The second labels come from two
+- Labels were re-checked only by one person from the team (not a
+  clinician), on a sample of 60 (§4). The second labels come from two
   open-weights models (§4, §5), which measure whether the written rules
   are applied consistently, not clinical correctness; one is from the
   same family as the generator of two sets.
@@ -499,8 +502,8 @@ time to sort messages by hand versus with Inbrev.
 `make run` starts the web app, `make run-local` the offline stack,
 `make offline-eval` reruns the offline pipeline (command for the logged
 run: `evidence/offline/`), `make test` runs the 35 unit tests with
-`--network none`. Scripts in `scripts/` recompute
-agreement, value, rules comparison, ablation and cost from stored runs;
+`--network none`. Scripts in `scripts/` recompute agreement, value,
+rules comparison, ablation and cost from stored runs;
 `python -m inbrev triage|replay|eval` reproduces the numbers from the
 stored runs, with 95 % Wilson intervals. Grids and cross-validation are
 seeded. Model runs use `apertus-v1.5-8b` and `apertus-v1.5-70b` as named

@@ -1,6 +1,8 @@
 # Label agreement with two open-weights model annotators
 
-Date: 2026-10-13. **The annotators are language models, not people.** [[NIKLAS-PRÜFUNG: agreement-readme – Satz zur menschlichen Prüfung im Agreement-README]]
+Date: 2026-10-13. **The annotators are language models, not people.** One person from the team then
+labelled a fixed sample of 60 test messages blind and decided 36 of the 36 disputed messages (`../review/`); the review list
+itself stays outside the repository because it contains the message texts.
 
 - Annotator A: `nvidia/nemotron-3-super-120b-a12b:free` (open weights, 0 USD).
 - Annotator B: `openai/gpt-oss-120b` (open weights, Apache-2.0), reasoning effort medium, 0.058 USD for 367 messages.

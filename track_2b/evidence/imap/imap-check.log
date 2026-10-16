@@ -1,4 +1,4 @@
-Inbrev IMAP import check, 2026-10-04 20:47:03 UTC, git ada0a50
+Inbrev IMAP import check, 2026-10-04 20:47:03 UTC, git 0bc8b3f
 mail server: greenmail/standalone:2.1.2@sha256:572d22796908375678119a13fabfcdc5416c9003404ab975fe824692fe02ba03 on network inbrev-mailtest (internal: true)
 sent: seed-001 | Labor Rheintal AG <befunde@labor-rheintal.example> | Befund: Hämatologie, Patient Weber Lukas
 sent: seed-002 | s.keller@mail.example | Termin verschieben

@@ -6,10 +6,10 @@ pipeline, with Apertus only, close that gap?
 
 **Method.** Dev split = dev set (60) + challenge set (115), 53 clinical messages. Every variant was built and
 compared on dev only (`dev-study.md`); the selection rule and the choice were committed before any hold-out
-run (`PREREGISTRATION.md`, commit `ee0daf7`). Hold-out = gold v0 (180), Nemotron (42), Swiss (30), plus
+run (`PREREGISTRATION.md`, commit `2208807`). Hold-out = gold v0 (180), Nemotron (42), Swiss (30), plus
 GraSCCo (40) and PARHAF (38) for false flags; run once (`holdout-*.md`). Two metric bugs found by review
 (wrong routes of clinical messages were not counted; gates used a different 8B run) were fixed before
-the hold-out was scored (commit `4e93787`). All runs: Hack Apertus endpoint, prompt p3, 3 samples.
+the hold-out was scored (commit `f701eec`). All runs: Hack Apertus endpoint, prompt p3, 3 samples.
 
 **Variants tried on dev** (unnoticed wrong route + unnoticed clinical; messages to a person, of 175):
 

@@ -1,6 +1,6 @@
 ls: cannot access '/env.txt': No such file or directory
 Fresh-clone check: 2026-10-04 21:08:13 UTC
-commit: f4c4b5a feat: IMAP-Import, beide Modi in App und README, run-local im Repo-Root
+commit: e63dc5a feat: IMAP-Import, beide Modi in App und README, run-local im Repo-Root
 host: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64; "Alpine Linux v3.21"; Docker version 27.5.1, build 9f9e405; Docker Compose version v2.33.0; GNU Make 4.4.1
 untracked files after clone: 0
 
